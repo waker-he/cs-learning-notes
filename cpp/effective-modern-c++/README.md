@@ -6,6 +6,7 @@
     - [item 4: viewing deduced types](#item-4-viewing-deduced-types)
 - [Chapter 2: auto](#chapter-2-auto)
     - [item 5: prefer auto to explicit type declaration](#item-5-prefer-auto-to-explicit-type-declarations)
+    - [item 6: use the explicitly typed initializer idiom when auto deduces undesired types.](#item-6-use-the-explicitly-typed-initializer-idiom-when-auto-deduces-undesired-types)
 
 
 # Chapter 1: Deducing Types
@@ -90,6 +91,7 @@ return/variable type.
 # Chapter 2: auto
 
 ## item 5: prefer auto to explicit type declarations
+- it forces initialization when declaring variables
 - less typing
 - readability issue not as severe as expected, which is demonstrated by
 dynamically typed languages such as Python
@@ -103,3 +105,14 @@ dynamically typed languages such as Python
             // should be const pair<const int, int>&
         }
         ```
+
+## item 6: use the explicitly typed initializer idiom when auto deduces undesired types
+
+- "invisible" proxy classes can cause `auto` to deduce the "wrong" type for an initializing expression.
+- Use explicitly typed initializer idiom in this case:
+    ```cpp
+    auto x = T{y};
+    ```
+- Why not just `T x = y`, refering to [stackoverflow](https://stackoverflow.com/questions/25607216/why-should-i-prefer-the-explicitly-typed-initializer-idiom-over-explicitly-giv) (still not fully convincing):
+    - The modern C++ style prefers the type on the right side
+    - `{}` guarantees no implicit conversions and no narrowing.
