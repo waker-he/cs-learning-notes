@@ -2,6 +2,7 @@
 - [Chapter1: Deducing Types](#chapter-1-deducing-types)
     - [item 1: C++98 template type deduction](#item-1-c98-template-type-deduction)
     - [item 2: auto type deduction (since C++11)](#item-2-auto-type-deduction-since-c11)
+    - [item 3: decltype (since C++11)](#item-3-decltype-since-c11)
 
 
 # Chapter 1: Deducing Types
@@ -47,3 +48,19 @@ One exception:
     auto a{42};     // initialize as int
     auto b{42, 1};  // ERROR
     ```
+
+## item 3: decltype (since C++11)
+`decltype` echoes back whatever type of the expression passed in.
+- for names, return the declaration type of that name
+- for lvalue expression other than names, return reference type
+```cpp
+int x = 0;
+// decltype(x) is int
+// decltype((x)) is int&
+```
+
+Useful for `trailing return type` until C++11. (C++14 supports return
+type deduction for all functions and lambdas.)
+
+C++14 supports `decltype(auto)` to use `decltype` rule to deduce auto 
+return/variable type.
