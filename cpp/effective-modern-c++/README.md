@@ -3,6 +3,7 @@
     - [item 1: C++98 template type deduction](#item-1-c98-template-type-deduction)
     - [item 2: auto type deduction (since C++11)](#item-2-auto-type-deduction-since-c11)
     - [item 3: decltype (since C++11)](#item-3-decltype-since-c11)
+    - [item 4: viewing deduced types](#item-4-viewing-deduced-types)
 
 
 # Chapter 1: Deducing Types
@@ -64,3 +65,21 @@ type deduction for all functions and lambdas.)
 
 C++14 supports `decltype(auto)` to use `decltype` rule to deduce auto 
 return/variable type.
+
+
+## item 4: viewing deduced types
+- During editing: IDE Editors
+  - hover the curosr
+  - may be unreliable
+- During compiling: Compiler diagnostics
+  - deliberately elicit an error message:
+    ```cpp
+    template <typename T> // declaration only for TD;
+    class TD;             // TD == "Type Disaplayer"
+
+    TD<decltype(x)> xType;
+    ```
+- During runtime: <boost/type_index.hpp>
+    ```cpp
+    std::cout << boost::typeindex::type_id_with_cvr<T>().pretty_name();
+    ```
