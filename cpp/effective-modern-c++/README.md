@@ -4,6 +4,8 @@
     - [item 2: auto type deduction (since C++11)](#item-2-auto-type-deduction-since-c11)
     - [item 3: decltype (since C++11)](#item-3-decltype-since-c11)
     - [item 4: viewing deduced types](#item-4-viewing-deduced-types)
+- [Chapter 2: auto](#chapter-2-auto)
+    - [item 5: prefer auto to explicit type declaration](#item-5-prefer-auto-to-explicit-type-declarations)
 
 
 # Chapter 1: Deducing Types
@@ -83,3 +85,21 @@ return/variable type.
     ```cpp
     std::cout << boost::typeindex::type_id_with_cvr<T>().pretty_name();
     ```
+
+
+# Chapter 2: auto
+
+## item 5: prefer auto to explicit type declarations
+- less typing
+- readability issue not as severe as expected, which is demonstrated by
+dynamically typed languages such as Python
+- more portable (32-bit and 64-bit size_t)
+- more efficient
+    - for closures, using `std::function` instead of `auto` to store a closure object might involve allocating heap memory to store the closure.
+    - in case of mismatches
+        ```cpp
+        for (const pair<int, int>& p : map<int, int>) {
+            // create a copy of pair in each iteration
+            // should be const pair<const int, int>&
+        }
+        ```
