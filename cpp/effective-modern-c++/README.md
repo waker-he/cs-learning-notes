@@ -18,6 +18,7 @@
     - [item 14: declare functions noexcept if ther won't emit exceptions](#item-14-declare-functions-noexcept-if-ther-wont-emit-exceptions)
     - [item 15: constexpr](#item-15-constexpr)
     - [item 15.5: overloading and overriding](#item-155-overloading-and-overriding)
+    - [item 17: understand special member function generation](#item-17-understand-special-member-function-generation)
 
 
 # Chapter 1: Deducing Types
@@ -233,3 +234,14 @@ self-explanatory
 | constexpr      | Yes               | No                                     | No                |
 | noexcept       | Yes               | No                                     | Yes               |
 | ref-qualifiers | Yes               | Yes                                    | Yes               |
+
+## item 17: understand special member function generation
+- special member function are the member functions that compiler might generate for you: `ctor, dtor, copy, move`
+- default ctor: generate only if the class contains no user-declared ctors, member would be default-initialized instead of value-initialized
+- default copy and move: memberwise copy/`std::move_if_noexcept` for non-static member variables
+
+### __Rule of Three__ extends to __Rule of Five__
+  - justification
+    - if one kind of memberwise resouce operation is not suitable, others would also be not suitable and need to de defined by users.
+    - dtor would also be participating in management of the resource
+### General rule of thumb: use `default` and `deleted` keywords explicitly
