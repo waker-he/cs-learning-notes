@@ -11,6 +11,7 @@
     - [item 7: uniform/brace initialization (since C++11)](#item-7-uniformbrace-initialization-since-c11)
     - [item 8: prefer nullptr to 0 or NULL](#item-8-prefer-nullptr-to-0-and-null)
     - [item 9: prefer alias declarations to typedefs](#item-9-prefer-alias-declarations-to-typedefs)
+    - [item 10: prefer scoped enums to unscoped enums](#item-10-prefer-scoped-enums-to-unscoped-enums)
 
 
 # Chapter 1: Deducing Types
@@ -168,4 +169,19 @@ dynamically typed languages such as Python
     struct Widget {
         typename vec<T>::type vec1;
     }
+    ```
+
+## item 10: prefer scoped enums to unscoped enums
+- scoped enum does not leak names
+- scoped enum does not allow implicit type conversion
+    ```cpp
+    enum class Color { white };
+    Color i = white;        // ERROR
+    int j = Color::white;   // ERROR
+    ```
+- scoped enum allows forward declaration without declaring underlying type, since the underlying type is defined to be `int` by default
+    ```cpp
+    enum Color;             // ERROR
+    enum Color: int;        // OK
+    enum class Color;       // OK, underlying type: int
     ```
