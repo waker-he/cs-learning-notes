@@ -7,6 +7,8 @@
 - [Chapter 2: auto](#chapter-2-auto)
     - [item 5: prefer auto to explicit type declaration](#item-5-prefer-auto-to-explicit-type-declarations)
     - [item 6: use the explicitly typed initializer idiom when auto deduces undesired types.](#item-6-use-the-explicitly-typed-initializer-idiom-when-auto-deduces-undesired-types)
+- [Chapter 3: Moving to Modern C++](#chapter-3-moving-to-modern-c)
+    - [item 7: uniform/brace initialization (since C++11)](#item-7-uniformbrace-initialization-since-c11)
 
 
 # Chapter 1: Deducing Types
@@ -115,4 +117,23 @@ dynamically typed languages such as Python
     ```
 - Why not just `T x = y`, refering to [stackoverflow](https://stackoverflow.com/questions/25607216/why-should-i-prefer-the-explicitly-typed-initializer-idiom-over-explicitly-giv) (still not fully convincing):
     - The modern C++ style prefers the type on the right side
-    - `{}` guarantees no implicit conversions and no narrowing.
+    - `{}` guarantees no narrowing.
+
+# Chapter 3: Moving to Modern C++
+
+## item 7: uniform/brace initialization (since C++11)
+- pros:
+  - versatile for initializing objects
+  - no narrowings
+  - immune to C++'s most vexing parse
+    ```cpp
+    Widget w1();    // function declaration
+    Widget w1{};    // call Widget ctor with no args
+    ```
+- cons:
+  - ctor with parameter type `std::initializer_list` would always be matched first if there is possible implicit type conversion from __the types of expressions within the braced list__ to __the element type of the `std::intializer_list`__ even though braced list does not allow narrowing.
+    - exception:
+      ```cpp
+      Widget w{};   // call Widget ctor with no args
+      Widget w({}); // call Widget ctor with empty std::initializer_list
+      ```
