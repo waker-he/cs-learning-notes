@@ -12,6 +12,7 @@
     - [item 8: prefer nullptr to 0 or NULL](#item-8-prefer-nullptr-to-0-and-null)
     - [item 9: prefer alias declarations to typedefs](#item-9-prefer-alias-declarations-to-typedefs)
     - [item 10: prefer scoped enums to unscoped enums](#item-10-prefer-scoped-enums-to-unscoped-enums)
+    - [item 11: prefer deleted functions to private undefined one](#item-11-prefer-deleted-functions-to-private-undefined-one)
 
 
 # Chapter 1: Deducing Types
@@ -185,3 +186,9 @@ dynamically typed languages such as Python
     enum Color: int;        // OK
     enum class Color;       // OK, underlying type: int
     ```
+
+## item 11: prefer deleted functions to private undefined one
+- allows non member function to be deleted, can be used in:
+  - disable implicit type conversions for arguments of function
+  - disable specific template instantiations
+- Better error message (`deleted` instead of `unable to access`)
