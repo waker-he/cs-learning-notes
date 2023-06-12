@@ -23,6 +23,7 @@
     - [item 18: `std::unique_ptr`](#item-18-stdunique_ptr)
     - [item 19: `std::shared_ptr`](#item-19-stdshared_ptr)
     - [item 20: `std::weak_ptr`](#item-20-stdweak_ptr)
+    - [item 21: prefer `std::make_unique` and `std::make_shared` to direct use of new](#item-21-prefer-stdmake_unique-and-stdmake_shared-to-direct-use-of-new)
 
 
 
@@ -279,3 +280,21 @@ self-explanatory
     std::weak_ptr wpw{spw};
     auto spw2 = wpw.lock();
     ```
+
+## item 21: prefer `std::make_unique` and `std::make_shared` to direct use of new
+- pros
+  - improve exception safety
+    ```cpp
+    int bar();
+    void foo(std::shared_ptr p, int i);
+    foo(new Widget{}, bar());
+    ```
+    - if executed in following order and bar() throws an exception, dinamically allocated `Widget` object in step 1 would be leaked, violating __basic exception safety__.
+      1. Perform `new Widget{}`
+      2. Execute `bar`
+      3. Run `std::shared_ptr` ctor
+  - more efficient: managed object and control block are allocated together
+- cons
+  - cannot specify custom deleter
+    - side note: we can specify custom allocator using `std::allocate_shared`
+  - when object is large and `std::weak_ptr` outlives `std::shared_ptr`
