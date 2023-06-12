@@ -19,6 +19,8 @@
     - [item 15: constexpr](#item-15-constexpr)
     - [item 15.5: overloading and overriding](#item-155-overloading-and-overriding)
     - [item 17: understand special member function generation](#item-17-understand-special-member-function-generation)
+- [Chapter 4: Smart Pointers](#chapter-4-smart-pointers)
+    - [item 18: `std::unique_ptr`](#item-18-stdunique_ptr)
 
 
 # Chapter 1: Deducing Types
@@ -245,3 +247,12 @@ self-explanatory
     - if one kind of memberwise resouce operation is not suitable, others would also be not suitable and need to de defined by users.
     - dtor would also be participating in management of the resource
 ### General rule of thumb: use `default` and `deleted` keywords explicitly
+
+
+# Chapter 4: Smart Pointers
+
+## item 18: `std::unique_ptr`
+- with custom deleter, size would grow from one word to two
+  - if the custom deleter has extensive state, size can grow more
+- easy and efficient to convert to `std::shared_ptr`, suitable for factory function
+
