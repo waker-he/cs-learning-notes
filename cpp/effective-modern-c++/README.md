@@ -16,6 +16,8 @@
     - [item 12: override, final and member function reference qualifiers (since C++11)](#item-12-override-final-and-member-function-reference-qualifiers-since-c11)
     - [item 13: prefer const_iterators to iterators](#item-13-prefer-const_iterators-to-iterators)
     - [item 14: declare functions noexcept if ther won't emit exceptions](#item-14-declare-functions-noexcept-if-ther-wont-emit-exceptions)
+    - [item 15: constexpr](#item-15-constexpr)
+    - [item 15.5: overloading and overriding](#item-155-overloading-and-overriding)
 
 
 # Chapter 1: Deducing Types
@@ -208,7 +210,33 @@ self-explanatory
 - noexcept functions are more optimizable
     - reduce exception handling overhead
         - do not need to handle stack unwinding and destruction of objects in the inverse order they are constructed
-    - call site optimizations
     - allow inline expansion
 - noexcept is part of the interface and caller can depend on it
 - dtor is noexcept by default
+
+## item 15: constexpr
+- `constexpr` give a function a feature: when it is called with compile-time constants, it will be executed during compile-time
+- `constexpr` is part of a function interface
+
+## item 15.5: overloading and overriding
+- function interface: high level abstraction, guarantees and contracts a function offers to its callers
+- function signature: syntactic representation, used for function overloading
+    - function name
+    - parameter types (number and order)
+    - qualifiers in member functions (`const`, `volitile`, `&`/`&&`)
+- `constexpr`, `noexcept` and return type are parts of function's type instead of signature
+- overriding does not allow looser exception specification
+
+|                | Part of Interface | Part of Signature |
+|----------------|-------------------|-------------------|
+| const          | Yes               | Yes               |
+| constexpr      | Yes               | No                |
+| noexcept       | Yes               | No                |
+| ref-qualifiers | Yes               | Yes               |
+
+|                | Affects Overloading | Affects Overriding |
+|----------------|---------------------|--------------------|
+| const          | Yes                 | Yes                |
+| constexpr      | No                  | No                 |
+| noexcept       | No                  | Yes                |
+| ref-qualifiers | Yes                 | Yes                |
