@@ -227,16 +227,9 @@ self-explanatory
 - `constexpr`, `noexcept` and return type are parts of function's type instead of signature
 - overriding does not allow looser exception specification
 
-|                | Part of Interface | Part of Signature |
-|----------------|-------------------|-------------------|
-| const          | Yes               | Yes               |
-| constexpr      | Yes               | No                |
-| noexcept       | Yes               | No                |
-| ref-qualifiers | Yes               | Yes               |
-
-|                | Affects Overloading | Affects Overriding |
-|----------------|---------------------|--------------------|
-| const          | Yes                 | Yes                |
-| constexpr      | No                  | No                 |
-| noexcept       | No                  | Yes                |
-| ref-qualifiers | Yes                 | Yes                |
+|                | Part of Interface | Part of Signature (Affects Overloading) | Affects Overriding |
+|----------------|-------------------|----------------------------------------|-------------------|
+| const          | Yes               | Yes                                    | Yes               |
+| constexpr      | Yes               | No                                     | No                |
+| noexcept       | Yes               | No                                     | Yes               |
+| ref-qualifiers | Yes               | Yes                                    | Yes               |
