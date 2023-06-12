@@ -9,6 +9,7 @@
     - [item 6: use the explicitly typed initializer idiom when auto deduces undesired types.](#item-6-use-the-explicitly-typed-initializer-idiom-when-auto-deduces-undesired-types)
 - [Chapter 3: Moving to Modern C++](#chapter-3-moving-to-modern-c)
     - [item 7: uniform/brace initialization (since C++11)](#item-7-uniformbrace-initialization-since-c11)
+    - [item 8: prefer nullptr to 0 or NULL](#item-8-prefer-nullptr-to-0-and-null)
 
 
 # Chapter 1: Deducing Types
@@ -137,3 +138,13 @@ dynamically typed languages such as Python
       Widget w{};   // call Widget ctor with no args
       Widget w({}); // call Widget ctor with empty std::initializer_list
       ```
+
+## item 8: prefer nullptr to 0 and NULL
+- `nullptr` is of type `std::nullptr_t` and can only be converted to pointer type (and it can only be implicitly converted to boolearn when a test expression is expected)
+    ```cpp
+    bool b = nullptr;   // ERROR
+    if (nullptr) {}     // OK
+    ```
+- using 0 or NULL can cause trouble in overload resolution:
+  - 0 can be implicitly converted to pointer type
+  - NULL depends on implementation, might be 0, 0L or nullptr
