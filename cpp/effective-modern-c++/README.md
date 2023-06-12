@@ -21,6 +21,7 @@
     - [item 17: understand special member function generation](#item-17-understand-special-member-function-generation)
 - [Chapter 4: Smart Pointers](#chapter-4-smart-pointers)
     - [item 18: `std::unique_ptr`](#item-18-stdunique_ptr)
+    - [item 19: `std::shared_ptr`](#item-19-stdshared_ptr)
 
 
 # Chapter 1: Deducing Types
@@ -256,3 +257,15 @@ self-explanatory
   - if the custom deleter has extensive state, size can grow more
 - easy and efficient to convert to `std::shared_ptr`, suitable for factory function
 
+## item 19: `std::shared_ptr`
+- typically twice as big as `std::unique_ptr`
+  - raw pointer to managed object
+  - pointer to a control block:
+    - reference count
+    - weak count
+    - deleter (not part of type as in `std::unique_ptr`)
+    - allocator
+- performance issues:
+  - control block is dynamically allocated on heap
+  - increments or decrements of counts are atomic operation
+    - `std::move` is preferred if possible since it does not involve counts
