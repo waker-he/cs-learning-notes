@@ -13,6 +13,7 @@
     - [item 9: prefer alias declarations to typedefs](#item-9-prefer-alias-declarations-to-typedefs)
     - [item 10: prefer scoped enums to unscoped enums](#item-10-prefer-scoped-enums-to-unscoped-enums)
     - [item 11: prefer deleted functions to private undefined one](#item-11-prefer-deleted-functions-to-private-undefined-one)
+    - [item 12: override, final and member function reference qualifiers (since C++11)](#item-12-override-final-and-member-function-reference-qualifiers-since-c11)
 
 
 # Chapter 1: Deducing Types
@@ -192,3 +193,8 @@ dynamically typed languages such as Python
   - disable implicit type conversions for arguments of function
   - disable specific template instantiations
 - Better error message (`deleted` instead of `unable to access`)
+
+## item 12: override, final and member function reference qualifiers (since C++11)
+- member function reference qualifers is part of member function signature
+- `override` keyword gives you a way to make explicit that a derived class function is supposed to overrride a base class version, it helps you find unexpected mismatches of function signature
+- `final` keyword can disable being inherited, used for class or member function
