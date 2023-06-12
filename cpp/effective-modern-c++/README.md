@@ -10,6 +10,7 @@
 - [Chapter 3: Moving to Modern C++](#chapter-3-moving-to-modern-c)
     - [item 7: uniform/brace initialization (since C++11)](#item-7-uniformbrace-initialization-since-c11)
     - [item 8: prefer nullptr to 0 or NULL](#item-8-prefer-nullptr-to-0-and-null)
+    - [item 9: prefer alias declarations to typedefs](#item-9-prefer-alias-declarations-to-typedefs)
 
 
 # Chapter 1: Deducing Types
@@ -148,3 +149,23 @@ dynamically typed languages such as Python
 - using 0 or NULL can cause trouble in overload resolution:
   - 0 can be implicitly converted to pointer type
   - NULL depends on implementation, might be 0, 0L or nullptr
+
+## item 9: prefer alias declarations to typedefs
+- alias declarations (using `using` keyword) support templatization
+    ```cpp
+    template <typename T>
+    using vec = std::vector<T>;
+    // vec<int> == std::vector<int>
+    ```
+- avoids `typename` prefix which is needed for compiler to distinguish between static variable and typename when the type is dependent on a template type parameter. (used in `type_traits`)
+    ```cpp
+    template <typename T>
+    struct vec {
+        typedef std::vector<T> type
+    }
+
+    template <typename T>
+    struct Widget {
+        typename vec<T>::type vec1;
+    }
+    ```
