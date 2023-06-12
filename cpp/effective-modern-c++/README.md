@@ -15,6 +15,7 @@
     - [item 11: prefer deleted functions to private undefined one](#item-11-prefer-deleted-functions-to-private-undefined-one)
     - [item 12: override, final and member function reference qualifiers (since C++11)](#item-12-override-final-and-member-function-reference-qualifiers-since-c11)
     - [item 13: prefer const_iterators to iterators](#item-13-prefer-const_iterators-to-iterators)
+    - [item 14: declare functions noexcept if ther won't emit exceptions](#item-14-declare-functions-noexcept-if-ther-wont-emit-exceptions)
 
 
 # Chapter 1: Deducing Types
@@ -202,3 +203,12 @@ dynamically typed languages such as Python
 
 ## item 13: prefer const_iterators to iterators
 self-explanatory
+
+## item 14: declare functions noexcept if ther won't emit exceptions
+- noexcept functions are more optimizable
+    - reduce exception handling overhead
+        - do not need to handle stack unwinding and destruction of objects in the inverse order they are constructed
+    - call site optimizations
+    - allow inline expansion
+- noexcept is part of the interface and caller can depend on it
+- dtor is noexcept by default
