@@ -22,6 +22,8 @@
 - [Chapter 4: Smart Pointers](#chapter-4-smart-pointers)
     - [item 18: `std::unique_ptr`](#item-18-stdunique_ptr)
     - [item 19: `std::shared_ptr`](#item-19-stdshared_ptr)
+    - [item 20: `std::weak_ptr`](#item-20-stdweak_ptr)
+
 
 
 # Chapter 1: Deducing Types
@@ -269,3 +271,11 @@ self-explanatory
   - control block is dynamically allocated on heap
   - increments or decrements of counts are atomic operation
     - `std::move` is preferred if possible since it does not involve counts
+
+## item 20: `std::weak_ptr`
+- augmentation to `std::shared_ptr` to prevent `std::shared_ptr` cycles
+    ```cpp
+    auto spw = std::make_share<Widget>();
+    std::weak_ptr wpw{spw};
+    auto spw2 = wpw.lock();
+    ```
