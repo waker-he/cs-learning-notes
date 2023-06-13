@@ -25,6 +25,8 @@
     - [item 20: `std::weak_ptr`](#item-20-stdweak_ptr)
     - [item 21: prefer `std::make_unique` and `std::make_shared` to direct use of new](#item-21-prefer-stdmake_unique-and-stdmake_shared-to-direct-use-of-new)
     - [item 22: When using the Pimpl Idiom, define special member functions in the implementation file](#item-22-when-using-the-pimpl-idiom-define-special-member-functions-in-the-implementation-file)
+- [Chapter 5: Rvalue References, Move Semantics and Perfect Forwarding](#chapter-5-rvalue-references-move-semantics-and-perfect-forwarding)
+    - [item 23: `std::move` and `std::forward`](#item-23-stdmove-and-stdforward)
 
 
 
@@ -339,3 +341,24 @@ self-explanatory
   - compiler-generated default dtor is implicitly `inline`
   - if we define dtor with definition of impl class in implementation file, it would be able to see the complete type when it is called
 - side effects: since dtor is defined, we also need to define `copy` and `move`
+
+# Chapter 5: Rvalue References, Move Semantics and Perfect Forwarding
+
+## item 23: `std::move` and `std::forward`
+
+### Neither `std::move` nor `std::forward` do anything at runtime
+### `std::move`
+- `std::move` unconditionally casts its argument to an rvalue, it tells
+ the compiler the object is eligible to be moved from
+- though rvalue reference is an lvalue, when it is returned from a function, it becomes an rvalue (xvalue)
+- don't declare an object you want to move from as `const`
+    ```cpp
+    string(const string& rhs);  // can take const string&&
+    string(string&& rhs);   // cannot take const string&&
+    ```
+- used for move semantics, which makes it possible for compilers to replace expensive copy operations with less expensive moves.
+  - in the same way that copy ctor and copy assignments give you control over what it means to copy objects, move ctor and move assignment operators offer control over semantics of moving.
+
+### `std::forward`
+- `std::forward` casts its argument to an rvalue only when its argument is an rvalue reference
+- used for perfect forwarding, which makes it possible to write function templates that takes arbitrary arguments and forward them to other functions such that the target functions receives exactly the same arguments as were received by the forwarding functions
