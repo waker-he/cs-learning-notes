@@ -36,6 +36,7 @@
     - [item 30: perfect forwarding failure cases](#item-30-perfect-forwarding-failure-cases)
 - [Chapter 6: Lambda Expressions](#chapter-6-lambda-expressions)
     - [item 31: avoid default capture modes](#item-31-avoid-default-capture-modes)
+    - [item 32: use init capture to move objects into closures](#item-32-use-init-capture-to-move-objects-into-closures)
 
 
 
@@ -501,3 +502,14 @@ std::forward( expr );
 - default by-value capture
   - is susceptible to dangling pointers (especially `this`)
   - static variables are captured by reference
+
+## item 32: use init capture to move objects into closures
+```cpp
+// scope on the left side of the init:
+//      scope of the closure class
+// scope on the right side of the init:
+//      where the lambda is defined
+auto func = [x = std::move(x)]() mutable {
+    x = ...;
+}
+```
