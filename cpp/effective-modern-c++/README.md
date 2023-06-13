@@ -32,6 +32,7 @@
     - [item 26: avoid overloading on universal references](#item-26-avoid-overloading-on-universal-references)
     - [item 27: alternatives to overloading on universal references](#item-27-alternatives-to-overloading-on-universal-references)
     - [item 28: reference collapsing](#item-28-reference-collapsing)
+    - [item 29: understand `std::move` useless cases](#item-29-understand-stdmove-useless-cases)
 
 
 
@@ -427,3 +428,23 @@ self-explanatory
 ```
 whether the result is rvalue reference == whether both references to be collapsed are rvalue references
 ```
+
+
+## item 29: understand `std::move` useless cases
+
+### think about __relationship between objects__
+
+### `std::move` useful cases
+- when an object A owns another object B, then A can transfer ownership of B to other object
+- the lifetime of object A and object B __can be seperated__ (not necessarily __are seperated__, eg. RAII)
+- example
+    - `std::unique_ptr` owns its managed object
+    - A reader object owns a file handler
+    - `std::vector` owns the dynamically allocated array
+
+### `std::move` useless cases
+- when object B is part of object A, there is no ownership relationship going on
+- lifetime of object A and object B cannot be seperated and are strictly tied together (object B lives on __stack__ inside object A)
+- example
+    - raw array is part of `std::array`
+    - small string optimization (SSO)
