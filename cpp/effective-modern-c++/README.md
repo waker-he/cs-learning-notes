@@ -28,6 +28,7 @@
 - [Chapter 5: Rvalue References, Move Semantics and Perfect Forwarding](#chapter-5-rvalue-references-move-semantics-and-perfect-forwarding)
     - [item 23: `std::move` and `std::forward`](#item-23-stdmove-and-stdforward)
     - [item 24: universal reference vs rvalue reference](#item-24-universal-reference-vs-rvalue-reference)
+    - [item 25: return value optimization (RVO)](#item-25-return-value-optimization-rvo)
 
 
 
@@ -370,3 +371,12 @@ self-explanatory
   - there must be type deduction for `T` when the function is called
 - otherwise it is an __rvalue reference__
 - for variable declared as `auto`, there must be type deduction going on, so `auto&&` suffices to be an __rvalue reference__
+
+## item 25: return value optimization (RVO)
+- RVO conditions:
+  - the local object is what is being returned (cannot be references or parameters)
+  - the local object has the same type as the return type
+- when RVO conditions are satisfied, the compiler would construct the return object directly in the memory allocated for the return value (in other words, in the caller's stack frame)
+- if not possible to construct the object directly in the caller's stack frame (eg. multiple return statements on lvalues), implicitly `std::move`d would be applied to the returned object
+
+- applied `std::move` to returned rvalue reference or `std::forward` to returned universal reference (that is init as rvalue-ref) can turn a copy construction into a move construction
