@@ -380,3 +380,33 @@ self-explanatory
 - if not possible to construct the object directly in the caller's stack frame (eg. multiple return statements on lvalues), implicitly `std::move`d would be applied to the returned object
 
 - applied `std::move` to returned rvalue reference or `std::forward` to returned universal reference (that is init as rvalue-ref) can turn a copy construction into a move construction
+
+## item 26: avoid overloading on universal references
+- function taking universal references are the greediest functions in C++, they instantiate to match any almost any type of argument
+- for overload resolution, when a non-template function and a template instantiation is equally good matches for a function call, the normal function is preferred
+
+## item 27: alternatives to overloading on universal references
+- abandon overloading (use different function names)
+- use `const T&`
+- pass by value
+- tag dispatch
+    ```cpp
+    template <typename T>
+    void foo(T&& t) {
+        fooImpl(
+            std::forward<T>(name),
+            std::is_integral<std::remove_reference_t<T>>()  // tag
+        );
+    }
+
+    template <typename T>
+    void fooImpl(T&& t, std::false_type) { ... }
+
+    void fooImpl(int t, std::true_type) { ... }
+    ```
+- constraining templates via `std::enable_if`
+    ```cpp
+    template <typename T,
+              typename = std::enable_if_t<condition>>
+    class Widget {}
+    ```
