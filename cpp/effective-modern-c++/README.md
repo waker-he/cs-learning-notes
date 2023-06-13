@@ -27,6 +27,7 @@
     - [item 22: When using the Pimpl Idiom, define special member functions in the implementation file](#item-22-when-using-the-pimpl-idiom-define-special-member-functions-in-the-implementation-file)
 - [Chapter 5: Rvalue References, Move Semantics and Perfect Forwarding](#chapter-5-rvalue-references-move-semantics-and-perfect-forwarding)
     - [item 23: `std::move` and `std::forward`](#item-23-stdmove-and-stdforward)
+    - [item 24: universal reference vs rvalue reference](#item-24-universal-reference-vs-rvalue-reference)
 
 
 
@@ -361,4 +362,11 @@ self-explanatory
 
 ### `std::forward`
 - `std::forward` casts its argument to an rvalue only when its argument is an rvalue reference
-- used for perfect forwarding, which makes it possible to write function templates that takes arbitrary arguments and forward them to other functions such that the target functions receives exactly the same arguments as were received by the forwarding functions
+- used for perfect forwarding, which makes it possible to write function __templates__ that takes arbitrary arguments and forward them to other functions such that the target functions receives exactly the same arguments as were received by the forwarding functions
+
+## item 24: universal reference vs rvalue reference
+- For function template parameter to be a __universal reference__:
+  - it must be exactly the form of `T&&` without any other qualifiers
+  - there must be type deduction for `T` when the function is called
+- otherwise it is an __rvalue reference__
+- for variable declared as `auto`, there must be type deduction going on, so `auto&&` suffices to be an __rvalue reference__
