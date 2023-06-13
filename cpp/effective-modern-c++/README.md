@@ -477,6 +477,11 @@ whether the result is rvalue reference == whether both references to be collapse
 
 
 ## item 30: perfect forwarding failure cases
+```cpp
+// if the processes of binding the expression of arguments to the function parameters are different, then perfect forwarding fails
+func( expr );
+std::forward( expr );
+```
 - braced list
 - 0 or NULL as null pointers
 - a non-const reference shall not be bound to a bit-field
