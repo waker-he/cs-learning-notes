@@ -354,6 +354,12 @@ self-explanatory
 
 ### Neither `std::move` nor `std::forward` do anything at runtime
 ### `std::move`
+```cpp
+template <typename T>
+std::remove_reference_t<T>&& move(T&& t) noexcept {
+    return static_cast<std::remove_reference_t<T>&&>(t);
+}
+```
 - `std::move` unconditionally casts its argument to an rvalue, it tells
  the compiler the object is eligible to be moved from
 - though rvalue reference is an lvalue, when it is returned from a function, it becomes an rvalue (xvalue)
@@ -364,8 +370,24 @@ self-explanatory
     ```
 - used for move semantics, which makes it possible for compilers to replace expensive copy operations with less expensive moves.
   - in the same way that copy ctor and copy assignments give you control over what it means to copy objects, move ctor and move assignment operators offer control over semantics of moving.
+- [understand `std::move` useless cases](#item-29-understand-stdmove-useless-cases)
 
 ### `std::forward`
+```cpp
+template <typename T>
+T&& forward(std::remove_reference_t<T>& t) noexcept {
+    // forward lvalues as either lvalues of rvalues, depending on T
+    return static_cast<T&&>(t);
+}
+
+template <typename T>
+T&& forward(std::remove_reference_t<T>& t) noexcept {
+    // forward rvalues as rvalues
+    // and prohibits forwarding rvalues as lvalues
+    static_assert(!std::is_lvalue_reference_v<T>);
+    return static_cast<T&&>(t)
+}
+```
 - `std::forward` casts its argument to an rvalue only when its argument is an rvalue reference
 - used for perfect forwarding, which makes it possible to write function __templates__ that takes arbitrary arguments and forward them to other functions such that the target functions receives exactly the same arguments as were received by the forwarding functions
 
@@ -448,3 +470,7 @@ whether the result is rvalue reference == whether both references to be collapse
 - example
     - raw array is part of `std::array`
     - small string optimization (SSO)
+
+
+## item 30: perfect forwarding failure cases
+
