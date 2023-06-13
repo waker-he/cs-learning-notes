@@ -29,6 +29,8 @@
     - [item 23: `std::move` and `std::forward`](#item-23-stdmove-and-stdforward)
     - [item 24: universal reference vs rvalue reference](#item-24-universal-reference-vs-rvalue-reference)
     - [item 25: return value optimization (RVO)](#item-25-return-value-optimization-rvo)
+    - [item 26: avoid overloading on universal references](#item-26-avoid-overloading-on-universal-references)
+    - [item 27: alternatives to overloading on universal references](#item-27-alternatives-to-overloading-on-universal-references)
 
 
 
