@@ -38,6 +38,7 @@
     - [item 31: avoid default capture modes](#item-31-avoid-default-capture-modes)
     - [item 32: use init capture to move objects into closures](#item-32-use-init-capture-to-move-objects-into-closures)
     - [item 33: variadic generic lambda (since C++14)](#item-33-variadic-generic-lambda-since-c14)
+    - [item 34: prefer lambda to `std::bind`](#item-34-prefer-lambda-to-stdbind)
 
 
 
@@ -519,5 +520,33 @@ auto func = [x = std::move(x)]() mutable {
 ```cpp
 auto f1 = [](auto&&... params) {
     return f2(std::forward<decltype(params)>(params)...);
+}
+```
+
+## item 34: prefer lambda to `std::bind`
+
+- `std::bind` takes a callable object and returns a new callable one
+- using lambda instead of `std::bind` is more efficient in terms of both speed and memory
+- lambdas are more readable and more expressive
+```cpp
+void print(const int i, const std::string &s) {
+    std::cout << s << i << '\n';
+}
+
+int main() {
+    // using std::bind
+    using namespace std::placeholders;
+    const auto f1 = std::bind(print, 3, _1);
+    const auto f2 = std::bind(&print, _2, _1);
+    f1("hello"); // print hello3
+    f2("world", 3); // print world6
+
+    // lambda alternatives
+    const auto f1_lambda = [i = 3](const std::string &s) {
+        print(i, s);
+    }
+    const auto f2_lambda = [](const std::string &s, const int i) {
+        print(s, i);
+    }
 }
 ```
