@@ -24,6 +24,7 @@
     - [item 19: `std::shared_ptr`](#item-19-stdshared_ptr)
     - [item 20: `std::weak_ptr`](#item-20-stdweak_ptr)
     - [item 21: prefer `std::make_unique` and `std::make_shared` to direct use of new](#item-21-prefer-stdmake_unique-and-stdmake_shared-to-direct-use-of-new)
+    - [item 22: When using the Pimpl Idiom, define special member functions in the implementation file](#item-22-when-using-the-pimpl-idiom-define-special-member-functions-in-the-implementation-file)
 
 
 
@@ -242,7 +243,7 @@ self-explanatory
 | ref-qualifiers | Yes               | Yes                                    | Yes               |
 
 ## item 17: understand special member function generation
-- special member function are the member functions that compiler might generate for you: `ctor, dtor, copy, move`
+- special member function are the member functions that compiler might generate for you: `ctor, dtor, copy, move` (implicitly `inline`)
 - default ctor: generate only if the class contains no user-declared ctors, member would be default-initialized instead of value-initialized
 - default copy and move: memberwise copy/`std::move_if_noexcept` for non-static member variables
 
@@ -298,3 +299,43 @@ self-explanatory
   - cannot specify custom deleter
     - side note: we can specify custom allocator using `std::allocate_shared`
   - when object is large and `std::weak_ptr` outlives `std::shared_ptr`
+
+## item 22: When using the Pimpl Idiom, define special member functions in the implementation file
+
+### Pimpl Idiom
+- it put private data members into an impl class and store a pointer to the impl class as the member variable
+- it decreases build time by reducing compilation dependencies between class clients and class implementations
+    ```cpp
+    #include "gadget.h" // gadget.h might frequently change
+
+    class Widget {  // in header widget.h
+    public:
+        Widget();
+        ...
+    private:
+        Gadget g1, g2, g3;
+    }
+    ```
+
+    ```cpp
+    // Alternative using Pimpl Idiom
+    #include <memory>
+
+    class Widget {  // in header widget.h
+    public:
+        Widget();
+        ~Widget();
+        ...
+    private:
+        // just declaration, implemented in widget.cpp
+        struct Impl; 
+        std::unique_ptr<Impl> pImpl;
+    }
+    ```
+
+### Caveats using `std::unique_ptr` as the impl pointer
+- dtor of the primary class must be defined in implementation file because:
+  - pointed-to types must be complete when `std::uniqute_ptr` tries to delete its managed object (it call `static_assert` before `delete`)
+  - compiler-generated default dtor is implicitly `inline`
+  - if we define dtor with definition of impl class in implementation file, it would be able to see the complete type when it is called
+- side effects: since dtor is defined, we also need to define `copy` and `move`
