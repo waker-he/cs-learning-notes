@@ -34,6 +34,8 @@
     - [item 28: reference collapsing](#item-28-reference-collapsing)
     - [item 29: understand `std::move` useless cases](#item-29-understand-stdmove-useless-cases)
     - [item 30: perfect forwarding failure cases](#item-30-perfect-forwarding-failure-cases)
+- [Chapter 6: Lambda Expressions](#chapter-6-lambda-expressions)
+    - [item 31: avoid default capture modes](#item-31-avoid-default-capture-modes)
 
 
 
@@ -485,3 +487,17 @@ std::forward( expr );
 - braced list
 - 0 or NULL as null pointers
 - a non-const reference shall not be bound to a bit-field
+
+
+# Chapter 6: Lambda Expressions
+- compile time
+  - each lambda expression causes the compiler to generate a unique closure class
+- run time
+  - a closure object is instantiated from the closure class as the value of lambda expression
+
+## item 31: avoid default capture modes
+- default by-reference capture
+  - can lead to dangling references
+- default by-value capture
+  - is susceptible to dangling pointers (especially `this`)
+  - static variables are captured by reference
