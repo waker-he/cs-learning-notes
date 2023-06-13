@@ -550,3 +550,35 @@ int main() {
     }
 }
 ```
+
+
+# Chapter 7: The Concurrency API
+
+## meanings of "threads"
+
+- Hardware threads
+    - threads that actually perform computation
+- Software threads / OS threads
+    - threads managed by operating system across all processes
+    - scheduled by os to get executed on hardware threads
+    - typically more than hardware threads
+- `std::thread`
+    - objects in a C++ process
+    - handle to the underlying software threads
+
+## item 35: prefer task-based (using `std::async`) programming to thread-based (using `std::thread`)
+- potential problems for thread-based
+    - thread exhaustion
+        - software threads are limited
+        - when no software thread is available, calling `std::thread` will throw a `std::system_error`
+    - oversubscription
+        - create too many ready-to-run software threads to run on hardware threads, resulting in poor performance
+            - context switch overheads
+            - high CPU cache miss rates
+    - load balancing
+        - runtime scheduler is likely to know more than you
+- solution: use `std::async` with default launch policy, shifting the thread management responsibility to the implementer of C++ Stand Libray
+- cases when you need `std::thread`
+    - acceess to the API of the underlying software thread
+    - need to and able to optimize thread usage for your application
+    - implement threading technology beyond the C++ concurrency API
