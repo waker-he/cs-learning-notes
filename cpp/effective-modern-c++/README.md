@@ -37,6 +37,7 @@
 - [Chapter 6: Lambda Expressions](#chapter-6-lambda-expressions)
     - [item 31: avoid default capture modes](#item-31-avoid-default-capture-modes)
     - [item 32: use init capture to move objects into closures](#item-32-use-init-capture-to-move-objects-into-closures)
+    - [item 33: variadic generic lambda (since C++14)](#item-33-variadic-generic-lambda-since-c14)
 
 
 
@@ -511,5 +512,12 @@ std::forward( expr );
 //      where the lambda is defined
 auto func = [x = std::move(x)]() mutable {
     x = ...;
+}
+```
+
+## item 33: variadic generic lambda (since C++14)
+```cpp
+auto f1 = [](auto&&... params) {
+    return f2(std::forward<decltype(params)>(params)...);
 }
 ```
