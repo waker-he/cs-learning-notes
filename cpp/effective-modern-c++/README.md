@@ -39,6 +39,9 @@
     - [item 32: use init capture to move objects into closures](#item-32-use-init-capture-to-move-objects-into-closures)
     - [item 33: variadic generic lambda (since C++14)](#item-33-variadic-generic-lambda-since-c14)
     - [item 34: prefer lambda to `std::bind`](#item-34-prefer-lambda-to-stdbind)
+- [Chapter 7: The Concurrency API](#chapter-7-the-concurrency-api)
+    - [item 35: prefer task-based (using `std::async`) programming to thread-based (using `std::thread`)](#item-35-prefer-task-based-using-stdasync-programming-to-thread-based-using-stdthread)
+    - [item 36: `std::async` launch policy](#item-36-stdasync-launch-policy)
 
 
 
@@ -582,3 +585,9 @@ int main() {
     - acceess to the API of the underlying software thread
     - need to and able to optimize thread usage for your application
     - implement threading technology beyond the C++ concurrency API
+
+## item 36: `std::async` launch policy
+For a function `f` passed to `std::async` for execution:
+- `std::launch::async` start `f` on a different thread and run asynchronously
+- `std::launch::deferred` deferred the execution of `f` until either `get` or `wait` is called, when `f` get executed it will execute synchronously
+- default (`std::launch::async || std::launch::deferred`) makes execution of `f` unpredictable, it depends on library implementation and the runtime system
