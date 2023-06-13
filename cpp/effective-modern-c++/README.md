@@ -42,6 +42,8 @@
 - [Chapter 7: The Concurrency API](#chapter-7-the-concurrency-api)
     - [item 35: prefer task-based (using `std::async`) programming to thread-based (using `std::thread`)](#item-35-prefer-task-based-using-stdasync-programming-to-thread-based-using-stdthread)
     - [item 36: `std::async` launch policy](#item-36-stdasync-launch-policy)
+- [Chapter 8: Tweaks](#chapter-8-tweaks)
+    - [item 41: pass by value analysis](#item-41-pass-by-value-analysis)
 
 
 
@@ -591,3 +593,19 @@ For a function `f` passed to `std::async` for execution:
 - `std::launch::async` start `f` on a different thread and run asynchronously
 - `std::launch::deferred` deferred the execution of `f` until either `get` or `wait` is called, when `f` get executed it will execute synchronously
 - default (`std::launch::async || std::launch::deferred`) makes execution of `f` unpredictable, it depends on library implementation and the runtime system
+
+
+# Chapter 8: Tweaks
+
+## item 41: pass by value analysis
+- pros
+    - create more maintainable and more readable code, avoid overloading and universal reference
+    - create a smaller size of object code
+- cons
+    - typically costs one extra move for both lvalues and rvalues arguments, this can be problematic:
+        - if move is not cheap
+        - a chain of function call is involved
+        - performance-critical and even avoiding cheap move is important
+    - for move-only object, overload is not needed and it makes no sense to use pass-by-value
+    - subject to slicing problem, inappropriate for base class parameter types
+    - parameters are conditionally copied inside the function body, there can be an extra move/copy if pass-by-value
