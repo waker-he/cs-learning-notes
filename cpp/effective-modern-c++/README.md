@@ -31,6 +31,7 @@
     - [item 25: return value optimization (RVO)](#item-25-return-value-optimization-rvo)
     - [item 26: avoid overloading on universal references](#item-26-avoid-overloading-on-universal-references)
     - [item 27: alternatives to overloading on universal references](#item-27-alternatives-to-overloading-on-universal-references)
+    - [item 28: reference collapsing](#item-28-reference-collapsing)
 
 
 
@@ -412,3 +413,17 @@ self-explanatory
               typename = std::enable_if_t<condition>>
     class Widget {}
     ```
+
+## item 28: reference collapsing
+
+### Context
+- template instantiation
+  - universal reference is rvalue reference in context of template instantiation
+- auto type generation
+- `typedef`s and alias declarations
+
+### Rules
+- in the contexts above, compilers will convert references to references to a single reference
+```
+whether the result is rvalue reference == whether both references to be collapsed are rvalue references
+```
