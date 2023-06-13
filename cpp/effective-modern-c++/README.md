@@ -33,6 +33,7 @@
     - [item 27: alternatives to overloading on universal references](#item-27-alternatives-to-overloading-on-universal-references)
     - [item 28: reference collapsing](#item-28-reference-collapsing)
     - [item 29: understand `std::move` useless cases](#item-29-understand-stdmove-useless-cases)
+    - [item 30: perfect forwarding failure cases](#item-30-perfect-forwarding-failure-cases)
 
 
 
@@ -390,6 +391,9 @@ T&& forward(std::remove_reference_t<T>& t) noexcept {
 ```
 - `std::forward` casts its argument to an rvalue only when its argument is an rvalue reference
 - used for perfect forwarding, which makes it possible to write function __templates__ that takes arbitrary arguments and forward them to other functions such that the target functions receives exactly the same arguments as were received by the forwarding functions
+  - types
+  - qualifiers
+  - whether they are lvalues or rvalues
 
 ## item 24: universal reference vs rvalue reference
 - For function template parameter to be a __universal reference__:
@@ -473,4 +477,6 @@ whether the result is rvalue reference == whether both references to be collapse
 
 
 ## item 30: perfect forwarding failure cases
-
+- braced list
+- 0 or NULL as null pointers
+- a non-const reference shall not be bound to a bit-field
