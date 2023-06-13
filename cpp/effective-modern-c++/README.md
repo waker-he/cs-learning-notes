@@ -546,7 +546,7 @@ int main() {
         print(i, s);
     }
     const auto f2_lambda = [](const std::string &s, const int i) {
-        print(s, i);
+        print(i, s);
     }
 }
 ```
