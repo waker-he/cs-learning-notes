@@ -571,7 +571,7 @@ int main() {
     - typically more than hardware threads
 - `std::thread`
     - objects in a C++ process
-    - handle to the underlying software threads
+    - a handle to the underlying software threads (if joinable)
 
 ## item 35: prefer task-based (using `std::async`) programming to thread-based (using `std::thread`)
 - potential problems for thread-based
@@ -592,7 +592,7 @@ int main() {
 
 ## item 36: `std::async` launch policy
 For a function `f` passed to `std::async` for execution:
-- `std::launch::async` start `f` on a different thread and run asynchronously
+- `std::launch::async` start `f` on a different thread and run asynchronously, the returned `std::future` object can be thought of as handle to system threads (as joinable `std::thread` is a handle to system thread)
 - `std::launch::deferred` deferred the execution of `f` until either `get` or `wait` is called, when `f` get executed it will execute synchronously
 - default (`std::launch::async || std::launch::deferred`) makes execution of `f` unpredictable, it depends on library implementation and the runtime system
 
