@@ -4,6 +4,7 @@
     - [Chapter 1: Structured Bindings](#chapter-1-structured-bindings)
     - [Chapter 2: `if` and `switch` with Initialization](#chapter-2-if-and-switch-with-initialization)
     - [Chapter 3: Inline Variables](#chapter-3-inline-variables)
+    - [Chapter 4: Aggregate Initialization Extension](#chapter-4-aggregate-initialization-extension)
 
 
 # Part I: Basic Language Features
@@ -80,3 +81,27 @@ else {
         ```
 - __main benefit__: allows a single globally available object by defining it only in a header file
 - __downside__: [magic statics](../README.md#magic-statics-since-c11)
+
+
+## Chapter 4: Aggregate Initialization Extension
+
+C++17's extended aggregate initialization to allow passing values for member variables of Base class when initialize an aggregate.
+```cpp
+struct Base {
+    int i;
+    double d;
+};
+
+Base b1 = {1, 2.3}; // since C
+Base b2{1, 2.3};    // since C++11
+
+struct Derive : Base {
+    bool k;
+}
+// since C++17
+if (std::is_aggregate_v<Derive>) {  // new type_trait in C++17
+    Derive d1{{1, 2.3}, false};
+    Derive d2{1, 2.3, false};
+}
+```
+
