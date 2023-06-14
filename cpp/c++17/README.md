@@ -3,6 +3,7 @@
 - [Part I: Basic Language Features](#part-i-basic-language-features)
     - [Chapter 1: Structured Bindings](#chapter-1-structured-bindings)
     - [Chapter 2: `if` and `switch` with Initialization](#chapter-2-if-and-switch-with-initialization)
+    - [Chapter 3: Inline Variables](#chapter-3-inline-variables)
 
 
 # Part I: Basic Language Features
@@ -55,3 +56,27 @@ else {
     // i and lg are both valid in this scope
 }
 ```
+
+## Chapter 3: Inline Variables
+
+- review [static member variables rules](../README.md#rules-of-static-member-variables)
+- since C++17, you can define an object/static member variable as `inline` in the header file to bypass __one definition rule__:
+    - before C++17
+        ```cpp
+        class A {
+            static const std::string msg;
+        }
+        const std::string A::msg = "ERROR";    // Link ERROR if included by multiple CPP files
+        A a_obj;    // Link ERROR if included by multiple CPP files
+        ```
+    - since C++17:
+        ```cpp
+        class A {
+            // OK to be included by multiple CPP files
+            inline static const std::string msg = "OK";
+        }
+        // OK to be included by multiple CPP files
+        inline A a_obj;
+        ```
+- __main benefit__: allows a single globally available object by defining it only in a header file
+- __downside__: [magic statics](../README.md#magic-statics-since-c11)
