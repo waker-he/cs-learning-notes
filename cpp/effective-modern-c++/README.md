@@ -42,6 +42,7 @@
 - [Chapter 7: The Concurrency API](#chapter-7-the-concurrency-api)
     - [item 35: prefer task-based (using `std::async`) programming to thread-based (using `std::thread`)](#item-35-prefer-task-based-using-stdasync-programming-to-thread-based-using-stdthread)
     - [item 36: `std::async` launch policy](#item-36-stdasync-launch-policy)
+    - [item 37: make `std::thread`s unjoinable on all paths](#item-37-make-stdthreads-unjoinable-on-all-paths)
 - [Chapter 8: Tweaks](#chapter-8-tweaks)
     - [item 41: pass by value analysis](#item-41-pass-by-value-analysis)
     - [item 42: Consider emplacement instead of insertion](#item-42-consider-emplacement-instead-of-insertion)
@@ -595,6 +596,16 @@ For a function `f` passed to `std::async` for execution:
 - `std::launch::deferred` deferred the execution of `f` until either `get` or `wait` is called, when `f` get executed it will execute synchronously
 - default (`std::launch::async || std::launch::deferred`) makes execution of `f` unpredictable, it depends on library implementation and the runtime system
 
+## item 37: make `std::thread`s unjoinable on all paths
+- `std::thread` is unjoinable when
+    - it is default-constructed
+    - it has been `std::move`d from
+    - it has been `detach`ed
+    - it has been `join`ed
+- `std::terminate` would be called if the destructor of a joinable `std::thread` is called, because:
+    - implicit join-on-destruction can lead to difficult-to-debug performance anomalies
+    - implicit join-on-detach can lead to difficult-to-debug undefined behavior
+- to handle this, we can use __RAII__, putting `std::thread` in a wrapper
 
 # Chapter 8: Tweaks
 
