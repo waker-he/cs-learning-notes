@@ -1,7 +1,13 @@
 # General C++ notes
 
 # Content
+- [translation unit]()
 - [rules of static member variables](#rules-of-static-member-variables)
+
+## trasnlation unit
+- a basic unit of C++ compilation
+- one translation unit generate one object file
+- consists of one source file plus all the header files it includes
 
 ## rules of static member variables
 
