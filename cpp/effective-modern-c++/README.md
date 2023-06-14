@@ -43,6 +43,7 @@
     - [item 35: prefer task-based (using `std::async`) programming to thread-based (using `std::thread`)](#item-35-prefer-task-based-using-stdasync-programming-to-thread-based-using-stdthread)
     - [item 36: `std::async` launch policy](#item-36-stdasync-launch-policy)
     - [item 37: make `std::thread`s unjoinable on all paths](#item-37-make-stdthreads-unjoinable-on-all-paths)
+    - [item 38: be aware of varying thread handle destructor behavior](#item-38-be-aware-of-varying-thread-handle-destructor-behavior)
 - [Chapter 8: Tweaks](#chapter-8-tweaks)
     - [item 41: pass by value analysis](#item-41-pass-by-value-analysis)
     - [item 42: Consider emplacement instead of insertion](#item-42-consider-emplacement-instead-of-insertion)
