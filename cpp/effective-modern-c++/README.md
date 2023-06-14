@@ -395,7 +395,7 @@ T&& forward(std::remove_reference_t<T>& t) noexcept {
 }
 
 template <typename T>
-T&& forward(std::remove_reference_t<T>& t) noexcept {
+T&& forward(std::remove_reference_t<T>&& t) noexcept {
     // forward rvalues as rvalues
     // and prohibits forwarding rvalues as lvalues
     static_assert(!std::is_lvalue_reference_v<T>);
