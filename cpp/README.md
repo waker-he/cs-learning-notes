@@ -1,15 +1,16 @@
 # General C++ notes
 
 # Content
-- [translation unit]()
+- [translation unit](#trasnlation-unit)
 - [rules of static member variables](#rules-of-static-member-variables)
+- [magic statics (since C++11)](#magic-statics-since-c11)
 
-## trasnlation unit
+# trasnlation unit
 - a basic unit of C++ compilation
 - one translation unit generate one object file
 - consists of one source file plus all the header files it includes
 
-## rules of static member variables
+# rules of static member variables
 
 ### normal cases
 - typically a static member variable is defined as follow:
@@ -34,3 +35,11 @@
 
 ### `inline` static variable (since C++17)
 Refer to [here](./c%2B%2B17/README.md#chapter-3-inline-variables)
+
+
+# magic statics (since C++11)
+- for `static` local variable in a function, there would be a thread-safe check to see if the `static` local variable has been initialized every time the function is called.
+- since C++17, with the introduction of [`inline` variable](./c%2B%2B17/README.md#chapter-3-inline-variables), this thread-safe check also applies to `inline static` member variables.
+- to bypass:
+    - for literal type, use compile-time constant to initialize
+    - for `std::string`, use `std::string_view`
