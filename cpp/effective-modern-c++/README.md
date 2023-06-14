@@ -607,6 +607,15 @@ For a function `f` passed to `std::async` for execution:
     - implicit join-on-detach can lead to difficult-to-debug undefined behavior
 - to handle this, we can use __RAII__, putting `std::thread` in a wrapper
 
+## item 38: be aware of varying thread handle destructor behavior
+- when callee tries to pass the result to caller, the result is stored in a __shared_state__ between caller and callee
+<img src="./item38.png">
+- future destructors normally just destroy the future's data members (and decrement the reference count in the __shared_state__) (like `detach`)
+- future destructor will block (like `join`) until the task completes if:
+    - the task is launched via `std::async`
+    - the task is non-deferred
+    - it is the last future referring to the __shared state__
+
 # Chapter 8: Tweaks
 
 ## item 41: pass by value analysis
