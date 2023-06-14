@@ -44,6 +44,7 @@
     - [item 36: `std::async` launch policy](#item-36-stdasync-launch-policy)
 - [Chapter 8: Tweaks](#chapter-8-tweaks)
     - [item 41: pass by value analysis](#item-41-pass-by-value-analysis)
+    - [item 42: Consider emplacement instead of insertion](#item-42-consider-emplacement-instead-of-insertion)
 
 
 
@@ -609,3 +610,17 @@ For a function `f` passed to `std::async` for execution:
     - for move-only object, overload is not needed and it makes no sense to use pass-by-value
     - subject to slicing problem, inappropriate for base class parameter types
     - parameters are conditionally copied inside the function body, there can be an extra move/copy if pass-by-value
+
+## item 42: Consider emplacement instead of insertion
+- Insertion takes objects to be inserted, while emplacement takes the constructor arguments for objects to be inserted.
+- this difference permits emplacement functions to avoid the creation and destruction of temporary objects that insertion functions can necessitate.
+- emplacement will almost certainly outperform insertion if:
+    - the obejct being added is constructed into the container, not assigned
+    - the argument types being passed differ from the element type of the container
+    - the container is unlikely to reject the new object as a duplicate
+        - permits duplicate
+        - most of the values you add will be unique
+- even if these followings are all wrong, assume we do not have an existing object in hand, we can say that
+    ```
+    efficiency of emplacement >= efficiency of insertion
+    ```
