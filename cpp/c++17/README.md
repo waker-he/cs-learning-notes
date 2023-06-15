@@ -105,3 +105,6 @@ if (std::is_aggregate_v<Derive>) {  // new type_trait in C++17
 }
 ```
 
+## Chapter 5: Mandatory Copy Elision
+
+refer to [Value Categories Evolution](../cppcon/value-categories/README.md)
