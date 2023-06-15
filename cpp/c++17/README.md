@@ -5,6 +5,8 @@
     - [Chapter 2: `if` and `switch` with Initialization](#chapter-2-if-and-switch-with-initialization)
     - [Chapter 3: Inline Variables](#chapter-3-inline-variables)
     - [Chapter 4: Aggregate Initialization Extension](#chapter-4-aggregate-initialization-extension)
+    - [Chapter 5: Mandatory Copy Elision](#chapter-5-mandatory-copy-elision)
+    - [Chapter 6: Lambda Extensions](#chapter-6-lambda-extensions)
 
 
 # Part I: Basic Language Features
@@ -108,3 +110,41 @@ if (std::is_aggregate_v<Derive>) {  // new type_trait in C++17
 ## Chapter 5: Mandatory Copy Elision
 
 refer to [Value Categories Evolution](../cppcon/value-categories/README.md)
+
+## Chapter 6: Lambda Extensions
+
+### `constexpr` Lambdas
+
+Lambdas are implicitly `constexpr` if possible
+```cpp
+// compile-time init is not necessary but recommended
+constexpr auto squared = [](auto val) { return val*val; };
+// same as
+class CompilerSpecificName {
+public:
+    template <typename T>
+    constexpr auto operator() (T val) const {
+        return val*val;
+    }
+}
+
+// use constexpr to check if can be used at compile-time
+auto squared2 = [](auto val) constexpr {    // ERROR
+    // static variable cannot be used in compile-time
+    static int calls = 0;   
+    calls++;
+    return val*val;
+}
+```
+
+### Passing Copies of `this` to Lambda
+```cpp
+void S::member_func() const {
+    // before C++17
+    auto f0 = [thisCopy = *this] {
+        std::cout << thisCopy.name << '\n';
+    };
+    // since C++17
+    auto f = [*this] { std::cout << name << '\n'; };
+}
+```
