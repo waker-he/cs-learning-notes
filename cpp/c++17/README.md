@@ -7,6 +7,7 @@
     - [Chapter 4: Aggregate Initialization Extension](#chapter-4-aggregate-initialization-extension)
     - [Chapter 5: Mandatory Copy Elision](#chapter-5-mandatory-copy-elision)
     - [Chapter 6: Lambda Extensions](#chapter-6-lambda-extensions)
+    - [Chapter 7: New Attributes](#chapter-7-new-attributes)
 
 
 # Part I: Basic Language Features
@@ -146,5 +147,38 @@ void S::member_func() const {
     };
     // since C++17
     auto f = [*this] { std::cout << name << '\n'; };
+}
+```
+
+## Chapter 7: New Attributes
+
+### `[[nodiscard]]`
+Generate warning if a returned object is discarded.
+
+```cpp
+struct [[nodiscard]] error_info { /*...*/ };
+[[nodiscard]] auto* factory { /*...*/ };
+```
+
+### `[[maybe_unused]]`
+Disable warning for unused variable.
+```cpp
+void foo(int val, [[maybe_unused]] int state) {
+    assert(state == 0); // not executed if compiled with -DNDEBUG
+}
+```
+
+### `[[fallthrough]]`
+Disable warning when lacking a `break` statement in `switch` statement.
+```cpp
+switch (place) {
+case 1:
+    std::cout << "very ";
+    [[fallthrough]];
+case 2:
+    std::cout << "well\n";
+    break;
+default:
+    std::cout << "OK\n";
 }
 ```
