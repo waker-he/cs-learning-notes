@@ -97,6 +97,7 @@
         - ...
 - since __xvalue__ can also bind to a reference without conversion (creating temporary object), it together with __lvalue__ are called __glvalue (generalized lvalue)__
 
+<img src="./value_categories.png">
 
 ## Since C++17
 
