@@ -13,6 +13,7 @@
     - [Chapter 10: Compile-Time `if`](#chapter-10-compile-time-if)
     - [Chapter 11: Fold Expression](#chapter-11-fold-expression)
     - [Chapter 12: Dealing with String Literals as Template Parameters](#chapter-12-dealing-with-string-literals-as-template-parameters)
+    - [Chapter 13: Placeholder Types (`auto` and `decltype(auto)`) as template parameters](#chapter-13-placeholder-types-auto-and-decltypeauto-as-template-parameters)
 
 
 # Part I: Basic Language Features
@@ -311,3 +312,21 @@ void print(const First& firstarg, const Args&... args) {
         Message<"hi"> msgError; // ERROR
     }
     ```
+
+## Chapter 13: Placeholder Types (`auto` and `decltype(auto)`) as template parameters
+
+Sicne C++17, you can use `auto` to declare a __non-type__ template parameter.
+
+```cpp
+template <const auto* P>
+struct S {};
+
+template <auto... VS>
+class HeteroValueList {};
+
+template <auto V1, decltype(V1)... VS>
+class HomoValueList {};
+
+template <auto N>
+constexpr auto val = N;
+```
