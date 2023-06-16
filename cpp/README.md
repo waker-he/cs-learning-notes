@@ -3,6 +3,7 @@
 # Content
 - [translation unit](#trasnlation-unit)
 - [linkage](#linkage)
+- [`using` keyword](#using-keyword)
 - [rules of static member variables](#rules-of-static-member-variables)
 - [magic statics (since C++11)](#magic-statics-since-c11)
 - [member pointers](#member-pointers)
@@ -21,9 +22,45 @@
 - __no linkage__: can only be seen within the scope where it is declared
     - local variables in function (`static` or not)
 
+# `using` keyword
+- using-directives for namespaces and using-declarations for namespace members
+    ```cpp
+    using namespace std::literals;
+    using std::cout;
+    ```
+- using-declarations for class members
+    ```cpp
+    struct B {
+        virtual void f(int) {}
+        void g(char) {}
+        void h(int) {}
+    protected:
+        int m;
+    }
+
+    struct D : B {
+        using B::m; // D::m is public
+        using B::f;
+        void f(int) {}  // D::f(int) overrides B::f(int)
+
+        using B::g;
+        void g(int) {}  // both g(int) and g(char) are visible
+
+        using B::h;
+        void h(int) {}  // D::h(int) hides B::h(int)
+    }
+    ```
+- type alias and alias template declaration (since C++11)
+    ```cpp
+    template <typename T>
+    using vec = std::vector<T>;
+
+    vec<int> v;
+    ```
+
 # rules of static member variables
 
-### normal cases
+## normal cases
 - typically a static member variable is defined as follow:
     ```cpp
     // header Widget.h
@@ -39,12 +76,12 @@
 - __linkage__: static member variable has external linkage (while static global variable has internal linkage)
 - __one definition rule(ODR)__: the out-of-line definition can only appear in one translation unit
 
-### `const`, `constexpr`
+## `const`, `constexpr`
 - for `const static` member variable, if the type is __integral__ or __enumeration__ types, it can be initialized inside the class during declaration
 - for `constexpr static` member variable, all literal types can be initialized inside the class during declaration
 - for in-class initialization, it can be included in multiple CPP files and it does not violate ODR
 
-### `inline` static variable (since C++17)
+## `inline` static variable (since C++17)
 Refer to [here](./c%2B%2B17/README.md#chapter-3-inline-variables)
 
 
