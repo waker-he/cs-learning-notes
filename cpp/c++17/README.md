@@ -14,6 +14,7 @@
     - [Chapter 11: Fold Expression](#chapter-11-fold-expression)
     - [Chapter 12: Dealing with String Literals as Template Parameters](#chapter-12-dealing-with-string-literals-as-template-parameters)
     - [Chapter 13: Placeholder Types (`auto` and `decltype(auto)`) as template parameters](#chapter-13-placeholder-types-auto-and-decltypeauto-as-template-parameters)
+    - [Chapter 14: Variadic Using Declarations](#chapter-14-variadic-using-declarations)
 
 
 # Part I: Basic Language Features
@@ -329,4 +330,18 @@ class HomoValueList {};
 
 template <auto N>
 constexpr auto val = N;
+```
+
+## Chapter 14: Variadic Using Declarations
+```cpp
+template <typename ... B>
+struct Merged : B... {   // inherit variadic callables
+    template <typename ... T>
+    Merged(T && ... t) : B(std::forward<T>(t))... {}
+
+    using B::operator()...;
+};
+
+template <typename ... T>
+Merged(T...) -> Merged<std::decay_t<T>...>;
 ```

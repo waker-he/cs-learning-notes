@@ -40,13 +40,11 @@
 
     struct D : B {
         using B::m; // D::m is public
-        using B::f;
+        using B::f, B::g, B::h; // since C++17: use comma
         void f(int) {}  // D::f(int) overrides B::f(int)
 
-        using B::g;
         void g(int) {}  // both g(int) and g(char) are visible
 
-        using B::h;
         void h(int) {}  // D::h(int) hides B::h(int)
     }
     ```
