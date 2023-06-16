@@ -225,3 +225,38 @@ std::pair<int> p1 = {3, 4.5};   // ERROR: partial specification
     ```cpp
     std::shared_ptr<Base> sp{new Derived(...)};
     ```
+
+## Chapter 10: Compile-Time `if`
+
+Compile-Time `if` can be used to decide whether to use _then_ part or the _else_ part at compile-time given a compile-time expression that is convertible to `bool`.
+
+```cpp
+template <typename T>
+std::string asString(T x) {
+    if constexpr (std::is_same_v<T, std::string>) {
+        return x;
+    }
+    else if constexpr (std::is_arithmetic_v<T>) {
+        return std::to_string(x);
+    }
+    else {
+        return std::string(x);
+    }
+}
+
+// asString<std::string> instantiated as
+std::string asString(std::string x) { return x; }
+```
+- for the above example, if using run-time `if`, the whole `if` statement is instantiated as a whole and compilation will fail
+- during compile-time, only the selected part is maintained and other parts are discarded, can be used to reduce executable size
+- even if discarded, it is not ignored and can lead to compile-time error:
+    - invalid syntax
+    - call to undeclared function
+    - `static_assert`
+- compile-time conditions do not short-circuit, they are instantiated and must be valid as a whole
+    ```cpp
+    // ERROR if instantiated T is not integral
+    if constexpr (std::is_integral_v<T> && T{} < 10) {
+        return val * 2;
+    }
+    ```

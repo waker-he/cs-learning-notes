@@ -447,6 +447,7 @@ T&& forward(std::remove_reference_t<T>&& t) noexcept {
 
     void fooImpl(int t, std::true_type) { ... }
     ```
+    - since C++17, use compile-time if to avoid extra function definitions
 - constraining templates via `std::enable_if`
     ```cpp
     template <typename T,
