@@ -2,6 +2,7 @@
 
 # Content
 - [translation unit](#trasnlation-unit)
+- [linkage](#linkage)
 - [rules of static member variables](#rules-of-static-member-variables)
 - [magic statics (since C++11)](#magic-statics-since-c11)
 - [member pointers](#member-pointers)
@@ -10,6 +11,15 @@
 - a basic unit of C++ compilation
 - one translation unit generate one object file
 - consists of one source file plus all the header files it includes
+
+# linkage
+- refers to the visibility of names across different translation units
+- __external linkage__: can be seen by other translation units with a declaration to tell the compiler it exists
+- __internal linkage__: can only be seen within the translation unit where it is declared
+    - `static` global variable
+    - `const` global variable (can add `extern` to make it external)
+- __no linkage__: can only be seen within the scope where it is declared
+    - local variables in function (`static` or not)
 
 # rules of static member variables
 
