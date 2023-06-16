@@ -8,6 +8,8 @@
     - [Chapter 5: Mandatory Copy Elision](#chapter-5-mandatory-copy-elision)
     - [Chapter 6: Lambda Extensions](#chapter-6-lambda-extensions)
     - [Chapter 7: New Attributes](#chapter-7-new-attributes)
+- [Part II: Template Features](#part-ii-template-features)
+    - [Chapter 9: Class Template Argument Deduction](#chapter-9-class-template-argument-deduction)
 
 
 # Part I: Basic Language Features
@@ -182,3 +184,44 @@ default:
     std::cout << "OK\n";
 }
 ```
+
+# Part II: Template Features
+
+## Chapter 9: Class Template Argument Deduction
+
+By using __class template argument deduction (CTAD)__, you can omit explicit definition of the template arguments if the __constructor__ can deduce __all__ the template parameters.
+```cpp
+std::pair p = {3, 4.5};
+std::vector v1{42}; // vector<int> with one element
+std::vector v2{v1}; // copy by default, still vector<int>
+std::vector v3{v1, v2}; // vector<vector<int>>
+// NOTE: for containers with complicated ctors, better not use CTAD
+std::pair<int> p1 = {3, 4.5};   // ERROR: partial specification 
+```
+
+### deduction guides
+
+- deduction guides allows us to fix the deduction rules for the constructors, like forcing the decay of raw array, since raw array does not decay to a pointer when pass-by-reference
+    ```cpp
+    template <typename T1, typename T2>
+    struct Pair {
+        T1 first;
+        T2 second;
+        Pair(const T1& t1, const T2& t2) : first{t1}, second{t2} {}
+    };
+
+    // use pass-by-value type deduction rule
+    template <typename T1, typename T2>
+    Pair(T1, T2) -> Pair<T1, T2>;
+
+    Pair p{3, "abc"};   // Pair<int, const char *>
+    ```
+- for CTAD, there is an overload resolution to find the best match for type deduction given the arguments of the constructor call:
+    - first the best-matched constructor is found
+    - then it is compared against all the deduction guides
+    - if a constructor and a deduction guide match equally well, the deduction guide is preferred
+    - no preference between call-by-value and call-by-reference
+- no CTAD or deduction guides for smart pointers, allows for
+    ```cpp
+    std::shared_ptr<Base> sp{new Derived(...)};
+    ```
