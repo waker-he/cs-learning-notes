@@ -10,6 +10,8 @@
     - [Chapter 7: New Attributes](#chapter-7-new-attributes)
 - [Part II: Template Features](#part-ii-template-features)
     - [Chapter 9: Class Template Argument Deduction](#chapter-9-class-template-argument-deduction)
+    - [Chapter 10: Compile-Time `if`](#chapter-10-compile-time-if)
+    - [Chapter 11: Fold Expression](#chapter-11-fold-expression)
 
 
 # Part I: Basic Language Features
@@ -260,3 +262,26 @@ std::string asString(std::string x) { return x; }
         return val * 2;
     }
     ```
+
+## Chapter 11: Fold Expression
+
+Fold expression allows us to apply binary operators over all the arguments of a parameter pack.
+
+- unary left fold (most intuitive)
+    - `(... op args)`
+    - expands to `arg1 op arg2 op arg3 ...`
+- binary left fold (with initial value)
+    - `(val op ... op args)`
+    - expands to `val op arg1 op arg2 ...`
+- right folds are exactly the reverse
+```cpp
+template <typename First, typename... Args>
+void print(const First& firstarg, const Args&... args) {
+    std::cout << firstarg;
+    auto outWithSpace = [](const auto& arg) {
+        std::cout << ' ' << arg;
+    };
+    (..., outWithSpace(args));
+    std::cout << '\n';
+}
+```
