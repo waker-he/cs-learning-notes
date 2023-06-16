@@ -4,6 +4,7 @@
 - [translation unit](#trasnlation-unit)
 - [rules of static member variables](#rules-of-static-member-variables)
 - [magic statics (since C++11)](#magic-statics-since-c11)
+- [member pointers](#member-pointers)
 
 # trasnlation unit
 - a basic unit of C++ compilation
@@ -43,3 +44,28 @@ Refer to [here](./c%2B%2B17/README.md#chapter-3-inline-variables)
 - to bypass:
     - for literal type, use compile-time constant to initialize
     - for `std::string`, use `std::string_view`
+
+# member pointers
+
+Member pointers allow us to dynamically refer to a member of the class
+```cpp
+struct Point {
+    int x;
+    int y;
+    static constexpr auto X = &Pointer::x;
+    static constexpr auto Y = &Pointer::y;
+    void decrease (int Point::mem_ptr, int delta) {
+        this->*mem_ptr -= delta;
+    }
+};
+
+void increase(Point& point, int Point::*mem_ptr, int delta) {
+    point.*mem_ptr += delta;
+}
+
+int main() {
+    Point point{10, 20};
+    increase(point, Point::X, 5);
+    point.decrease(Point::Y, 6);
+}
+```
