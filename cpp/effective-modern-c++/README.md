@@ -64,16 +64,15 @@ f(arg); // arg is of type ArgType
 
 Rules:
 ```
-if ArgType is array or function:
-    ArgType does not decay to pointer if ParamType is reference
-
 if ParamType is universal reference and arg is lvalue:
     T, ParamType = lvalue reference
     return
-else if pass by value:
-    Ignore qualifiers of ArgType
-Ignore reference-ness of ArgType
-Pattern-match the rest of ArgType against ParamType to determine T
+
+if pass-by-value:
+    ArgType = std::decay_t<ArgType>
+else:   // pass-by-reference
+    ArgType = std::remove_reference_t<ArgType>
+Pattern-match the ArgType against ParamType to determine T
 ```
 
 
