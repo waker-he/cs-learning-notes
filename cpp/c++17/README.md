@@ -12,6 +12,7 @@
     - [Chapter 9: Class Template Argument Deduction](#chapter-9-class-template-argument-deduction)
     - [Chapter 10: Compile-Time `if`](#chapter-10-compile-time-if)
     - [Chapter 11: Fold Expression](#chapter-11-fold-expression)
+    - [Chapter 12: Dealing with String Literals as Template Parameters](#chapter-12-dealing-with-string-literals-as-template-parameters)
 
 
 # Part I: Basic Language Features
@@ -285,3 +286,28 @@ void print(const First& firstarg, const Args&... args) {
     std::cout << '\n';
 }
 ```
+
+## Chapter 12: Dealing with String Literals as Template Parameters
+
+- Non-type template parameters:
+    - integral values
+    - pointers to objects/functions/members
+    - lvalue references
+    - `std::nullptr_t`
+- Since C++17, pointers with "no linkage" is allowed (but still require `static` storage duration):
+    ```cpp
+    template <const char* str>
+    class Message { ... };
+
+    extern const char hello[] = "Hello World!"; // external linkage
+    const char hello11[] = "Hello World!";      // internal linkage
+
+    void foo() {
+        Message<hello> msg; // OK for all C++ versions
+        Message<hello11> msg11; // OK since C++11
+
+        static const char hello17[] = "Hello World!";   // no linkage
+        Message<hello17> msg17; // OK since C++17
+        Message<"hi"> msgError; // ERROR
+    }
+    ```
