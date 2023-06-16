@@ -3,4 +3,4 @@
 
 # Content
 
-- [Understand Value Categories](./value-category/README.md)
+- [Understand Value Categories](./value-categories/README.md)
