@@ -15,6 +15,8 @@
     - [Chapter 12: Dealing with String Literals as Template Parameters](#chapter-12-dealing-with-string-literals-as-template-parameters)
     - [Chapter 13: Placeholder Types (`auto` and `decltype(auto)`) as template parameters](#chapter-13-placeholder-types-auto-and-decltypeauto-as-template-parameters)
     - [Chapter 14: Variadic Using Declarations](#chapter-14-variadic-using-declarations)
+- [Part III: New Library Components](#part-iii-new-library-components)
+    - [Chapter 15: `std::optional<>`](#chapter-15-stdoptional)
 
 
 # Part I: Basic Language Features
@@ -345,3 +347,21 @@ struct Merged : B... {   // inherit variadic callables
 template <typename ... T>
 Merged(T...) -> Merged<std::decay_t<T>...>;
 ```
+
+# Part III: New Library Components
+
+## Chapter 15: `std::optional<>`
+
+Wraps a type and add a new boolean flag to check if it has value.
+
+better refer to [cppreference](https://en.cppreference.com/w/cpp/utility/optional)
+<img src='./optional.png'>
+
+- comparison
+    - both have values: compare values
+    - only one has value: greater than w/o value
+    - neither have values: equal
+- call ctor of wrapping type
+    ```cpp
+    std::optional<std::complex> c{std::in_place, 3.0, 4.5};
+    ```
