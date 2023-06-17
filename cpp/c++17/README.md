@@ -18,6 +18,7 @@
 - [Part III: New Library Components](#part-iii-new-library-components)
     - [Chapter 15: `std::optional<>`](#chapter-15-stdoptional)
     - [Chapter 16: `std::variant<>`](#chapter-16-stdvariant)
+    - [Chapter 17: `std::any`](#chapter-17-stdany)
 
 
 # Part I: Basic Language Features
@@ -398,3 +399,23 @@ better refer to [cppreference](https://en.cppreference.com/w/cpp/utility/optiona
 - supports copy/move if all alternatives support copy/move
 - visitors must have overload for all alternatives
     - can use generic lambda with compile-time `if`
+
+## Chapter 17: `std::any`
+
+Can bind to any type, keeps both the cantained value and the type of the contained value.
+- memory might be allocated on the heap
+- implementations should avoid the use of heap memory for small contained values
+
+[cppreference any](https://en.cppreference.com/w/cpp/utility/any)
+
+<img src='./any.png'>
+
+- call ctor of a specifed type
+    ```cpp
+    std::any s{std::in_place_type<std::string>, "abc"};
+    if (auto sp{std::any_cast<std::string>(&a)}; sp != nullptr) {
+        assert(s.type() == typeid(std::string));
+        assert(sp->size() == 3);
+    }
+    ```
+- no comparison
