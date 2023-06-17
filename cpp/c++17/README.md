@@ -19,6 +19,7 @@
     - [Chapter 15: `std::optional<>`](#chapter-15-stdoptional)
     - [Chapter 16: `std::variant<>`](#chapter-16-stdvariant)
     - [Chapter 17: `std::any`](#chapter-17-stdany)
+    - [Chapter 18: `std::byte`](#chapter-18-stdbyte)
 
 
 # Part I: Basic Language Features
@@ -419,3 +420,21 @@ Can bind to any type, keeps both the cantained value and the type of the contain
     }
     ```
 - no comparison
+
+## Chapter 18: `std::byte`
+
+Literally just byte without numeric or character interpretation.
+
+- implemented as __scoped enumeration__ with `unsigned char` as underlying type
+    ```cpp
+    enum class byte : unsigned char {
+    };
+    std::byte b1{0x3f}; // OK (as for all enums with fixed underlying type since C++17)
+    std::byte b2{0b1111'0000};
+
+    std::byte b3(0x3f); // ERROR
+    std::cout << b1;    // ERROR
+    if (b2) ...         // ERROR
+    ```
+
+<img src='./byte.png'>
