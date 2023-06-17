@@ -17,6 +17,7 @@
     - [Chapter 14: Variadic Using Declarations](#chapter-14-variadic-using-declarations)
 - [Part III: New Library Components](#part-iii-new-library-components)
     - [Chapter 15: `std::optional<>`](#chapter-15-stdoptional)
+    - [Chapter 16: `std::variant<>`](#chapter-16-stdvariant)
 
 
 # Part I: Basic Language Features
@@ -363,5 +364,37 @@ better refer to [cppreference](https://en.cppreference.com/w/cpp/utility/optiona
     - neither have values: equal
 - call ctor of wrapping type
     ```cpp
-    std::optional<std::complex> c{std::in_place, 3.0, 4.5};
+    std::optional<std::complex<double>> c{std::in_place, 3.0, 4.5};
     ```
+
+## Chapter 16: `std::variant<>`
+
+- Alternative to `union` class:
+    - what is the type of current value is known
+    - can hold values of any specified type
+    - can derive from
+- size
+    - the maximum size of the underlying types
+    - overhead to manage which alternative is used (an integer for index)
+
+
+[cppreference: `std:variant<>`](https://en.cppreference.com/w/cpp/utility/variant)
+
+<img src='./variant.png'>
+
+- "empty" variant
+    ```cpp
+    std::variant<std::monostate, int> v1;   // v1.index() == 0
+    ```
+- call ctor of underlying type
+    ```cpp
+    std::variant<std::complex<double>, int> v1{std::in_place_index<0>, 3.0, 4.0};
+
+    std::variant<std::complex<double>, int> v2{std::in_place_type<std::complex<double>>, 3.0, 4.0};
+    ```
+- comparison can only be done with the same `std::variant<>` type
+    - compare by index
+    - if indices are the same, compare by value
+- supports copy/move if all alternatives support copy/move
+- visitors must have overload for all alternatives
+    - can use generic lambda with compile-time `if`
