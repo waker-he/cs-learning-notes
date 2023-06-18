@@ -20,6 +20,8 @@
     - [Chapter 16: `std::variant<>`](#chapter-16-stdvariant)
     - [Chapter 17: `std::any`](#chapter-17-stdany)
     - [Chapter 18: `std::byte`](#chapter-18-stdbyte)
+- [Part V: Expert Utilities](#part-v-expert-utilities)
+    - [Chapter 31: `std::to_chars()` and `std::from_chars()`](#chapter-31-stdto_chars-and-stdfrom_chars)
 
 
 # Part I: Basic Language Features
@@ -438,3 +440,32 @@ Literally just byte without numeric or character interpretation.
     ```
 
 <img src='./byte.png'>
+
+# Part V: Expert Utilities
+
+## Chapter 31: `std::to_chars()` and `std::from_chars()`
+
+- fast and efficient conversion between textual and integral/floating point types, without throwing exceptions
+- more performant than `std::to_string` and `std::stoi`
+- can provide an optional fourth argument as base for value
+
+```cpp
+std::from_chars_result {
+    const char* ptr;    // point to first not-parsed character
+    std::errc ec;
+};
+const char* s = "12 monkeys";
+int val;
+
+if (auto [ptr, ec] = std::from_chars(s, s+10, val); ec != std::errc{}) {
+    std::cout << "Error\n";
+}
+```
+
+```cpp
+double value = 0.00001;
+char str[1000];
+if (auto [ptr, ec] = std::to_chars(s, s+999, value); ec == std::errc{}) {
+    *ptr = '\0';    // ensure a trailing null character is behind
+}
+```
