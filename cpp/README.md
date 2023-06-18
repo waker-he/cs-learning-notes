@@ -97,14 +97,14 @@ Member pointers allow us to dynamically refer to a member of the class
 struct Point {
     int x;
     int y;
-    static constexpr auto X = &Pointer::x;
-    static constexpr auto Y = &Pointer::y;
-    void decrease (int Point::mem_ptr, int delta) {
+    static constexpr auto X = &Point::x;
+    static constexpr auto Y = &Point::y;
+    void decrease (int Point::* mem_ptr, int delta) {
         this->*mem_ptr -= delta;
     }
 };
 
-void increase(Point& point, int Point::*mem_ptr, int delta) {
+void increase(Point& point, int Point::* mem_ptr, int delta) {
     point.*mem_ptr += delta;
 }
 
