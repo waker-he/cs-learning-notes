@@ -20,6 +20,7 @@
     - [Chapter 16: `std::variant<>`](#chapter-16-stdvariant)
     - [Chapter 17: `std::any`](#chapter-17-stdany)
     - [Chapter 18: `std::byte`](#chapter-18-stdbyte)
+    - [Chapter 19: `std::string_view`](#chapter-19-stdstring_view)
 - [Part V: Expert Utilities](#part-v-expert-utilities)
     - [Chapter 31: `std::to_chars()` and `std::from_chars()`](#chapter-31-stdto_chars-and-stdfrom_chars)
 
@@ -440,6 +441,38 @@ Literally just byte without numeric or character interpretation.
     ```
 
 <img src='./byte.png'>
+
+## Chapter 19: `std::string_view`
+
+- A view into a character sequence
+    - no ownership involved, read only
+    - character sequence is not guaranteed to be null terminated
+    - value returned by `data()` might be `nullptr`
+- data members:
+    - `const char*`
+    - `size_t`
+
+    ```cpp
+    // sort according to substrings:
+    // using substrings of string views is much faster
+    sort(coll.begin(), coll.end(),
+        [] (const auto& a, const auto& b) {
+            return std::string_view{a}.substr(2) < std::string_view{b}.substr(2);
+        });
+
+    sort(coll.begin(), coll.end(),
+        [] (const auto& a, const auto& b) {
+            return a.substr(2) < b.substr(2);
+        });
+    ```
+
+### Safe Use of String Views
+
+- Do not return a string view
+    ```cpp
+    auto n = createPerson().getName();  // OOPS: deletes temporary string
+    ```
+- never used a returned value to initialize a string view
 
 # Part V: Expert Utilities
 
