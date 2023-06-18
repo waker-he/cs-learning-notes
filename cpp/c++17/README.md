@@ -21,6 +21,8 @@
     - [Chapter 17: `std::any`](#chapter-17-stdany)
     - [Chapter 18: `std::byte`](#chapter-18-stdbyte)
     - [Chapter 19: `std::string_view`](#chapter-19-stdstring_view)
+- [Part IV: Library Extensions and Modifications](#part-iv-library-extensions-and-modifications)
+    - [Chapter 32: Parallel STL Algorithms](#chapter-32-parallel-stl-algorithms)
 - [Part V: Expert Utilities](#part-v-expert-utilities)
     - [Chapter 31: `std::to_chars()` and `std::from_chars()`](#chapter-31-stdto_chars-and-stdfrom_chars)
 
@@ -473,6 +475,16 @@ Literally just byte without numeric or character interpretation.
     auto n = createPerson().getName();  // OOPS: deletes temporary string
     ```
 - never used a returned value to initialize a string view
+
+
+# Part IV: Library Extensions and Modifications
+
+## Chapter 32: Parallel STL Algorithms
+
+pass the execution policy as the first argument for algorithm functions to enable parallelism:
+- `std::execution::seq`: This policy specifies that the algorithm will be executed sequentially and there will be no parallelism.
+- `std::execution::par`: This policy specifies that the algorithm may be parallelized which can take advantage of multiple cores in your processor for faster execution.
+- `std::execution::par_unseq`: This policy specifies that the algorithm may be parallelized and vectorized. Vectorization is a form of parallelism where the same operation is applied to different data in parallel, which can further improve performance on modern processors that support SIMD (Single Instruction Multiple Data) instructions.
 
 # Part V: Expert Utilities
 
