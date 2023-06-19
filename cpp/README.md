@@ -7,6 +7,7 @@
 - [rules of static member variables](#rules-of-static-member-variables)
 - [magic statics (since C++11)](#magic-statics-since-c11)
 - [member pointers](#member-pointers)
+- [casting](#casting)
 
 # trasnlation unit
 - a basic unit of C++ compilation
@@ -114,3 +115,23 @@ int main() {
     point.decrease(Point::Y, 6);
 }
 ```
+
+# casting
+
+- `static_cast`: make implicit type conversion explicit, if not compatible, it will lead to a compile error.
+- `dynamic_cast`
+    - run-time cast, can be expensive
+    - usually used to downcast a pointer or reference from a base type to a derived type
+    - if fail:
+        - return `nullptr`(when casting pointers)
+        - throw `std::bad_cast`
+- `const_cast`: only way to add or remove `const` qualifier in variable
+- `reinterpret_cast`
+    - mainly used in low-level pragramming
+    - casting pointer/ref to any other pointer/ref
+
+## advantage over C-style casts
+- different notation or different casts, improve code maintainability
+    - easily recognized and searchable
+- eliminate unintended error
+- perform all operations that C casts can
