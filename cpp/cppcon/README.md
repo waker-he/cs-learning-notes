@@ -8,3 +8,4 @@
 - [Back to Basics: Casting - Brian Ruth - CppCon 2021](https://www.youtube.com/watch?v=2h2hdRqRIRk)
 - allocator
     - [CppCon 2015: Andrei Alexandrescu “std::allocator...”](https://www.youtube.com/watch?v=LIb3L4vKZ7U)
+     - [CppCon 2017: Pablo Halpern “Allocators: The Good Parts”](https://www.youtube.com/watch?v=v3dz-AKOVL8)
