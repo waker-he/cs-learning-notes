@@ -89,3 +89,8 @@ for large system and long-running system, there absolutely will be performance a
     - DR (degradation ratio) = access after shuffle / access before shuffle
     - without local allocators, __DR > 10__
     - with local allocators, __DR around 1.5__, order of magnitudes speed-up than without local allocators!
+
+## Question I have
+- local allocator also controls a local sub-region of memory, but how do they get this control?
+    - do they use some system calls to interact with os directly?
+    - or do they use `malloc` or pre-allocated buffer on stack to get a sub-region up-front?
