@@ -17,7 +17,7 @@ same reasons why we like C++;
     - the logic lives in the allocator
     - but the memory is just memory, not value, cannot be copied
 
-### Gloabl/Local x Gloabl/Local
+### Gloabl/Local x General/Special
 - global allocator
     - operates a single ubiquitous region of memory
     - exists throughout the lifetime of a program
