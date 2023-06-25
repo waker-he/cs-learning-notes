@@ -5,7 +5,7 @@
 same reasons why we like C++;
 - enable us to "fine-tune" at a low level when needed
     - not all memory is alike
-        - fast, shared, protected
+        - fast, shared, protected, persistent
     - qualitative benefits
         - testing, debugging, measuring
 - help to improve runtime performance
