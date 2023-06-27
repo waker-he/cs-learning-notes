@@ -16,6 +16,16 @@
         - x86, Intel, AMD
     - Big Endian: used by many network protocols
 
+## Data Alignment
+
+- the address of data should be a multiple of the size of data
+    - for struct (composite data)
+        - address must be the multiple of size of its largest primitive-type members
+        - total size is multiple of its largest primitive-type members
+- benefits
+    - access efficiency: modern CPUs access memory in chunks that are the size of a word, if not aligned, may need to access two words for one single unit of data
+    - cache optimizations: avoid unnecessary extra cache lines loading
+
 
 # Assembly
 
