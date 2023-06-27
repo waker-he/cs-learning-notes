@@ -1,1 +1,1 @@
-- [EECS 370: Computer Organization](./eecs370/README.md)
+- [EECS 370: Computer Organization](./eecs370/370review.md)

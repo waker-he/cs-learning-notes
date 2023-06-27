@@ -81,12 +81,12 @@
 - for in-class initialization, it can be included in multiple CPP files and it does not violate ODR
 
 ## `inline` static variable (since C++17)
-Refer to [here](./c%2B%2B17/README.md#chapter-3-inline-variables)
+Refer to [here](./c%2B%2B17/cpp17.md#chapter-3-inline-variables)
 
 
 # magic statics (since C++11)
 - for `static` local variable in a function, there would be a thread-safe check to see if the `static` local variable has been initialized every time the function is called.
-- since C++17, with the introduction of [`inline` variable](./c%2B%2B17/README.md#chapter-3-inline-variables), this thread-safe check also applies to `inline static` member variables.
+- since C++17, with the introduction of [`inline` variable](./c%2B%2B17/cpp17.md#chapter-3-inline-variables), this thread-safe check also applies to `inline static` member variables.
 - to bypass:
     - for literal type, use compile-time constant to initialize
     - for `std::string`, use `std::string_view`
