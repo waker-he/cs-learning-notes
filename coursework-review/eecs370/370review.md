@@ -26,6 +26,11 @@
     - access efficiency: modern CPUs access memory in chunks that are the size of a word, if not aligned, may need to access two words for one single unit of data
     - cache optimizations: avoid unnecessary extra cache lines loading
 
+## Overhead of Function Calls
+
+- saving and restoring of registers
+    - __callee-saved registers__: callee push registers onto stack at the beginning and pop them at the end
+    - __caller-saved registers__: saved before a function call and restore after the call
 
 # Assembly
 
