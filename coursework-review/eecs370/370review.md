@@ -50,5 +50,7 @@ specification for a processor
 
 1. Assembling: convert assembly code into object files
 2. Linking: link object files into an executable
-3. Loading: place an executable into memory, allowing the processor to run the program
-
+    - enables separate compilation, unchanged files need not be recompiled
+    - adjusts relative offset when combining object files
+    - resolves declared but undefined global entities (variables and functions)
+3. Loading: place an executable into memory, asks the os to shedule it as a new process
