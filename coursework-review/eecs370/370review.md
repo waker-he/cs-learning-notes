@@ -31,6 +31,18 @@
 - saving and restoring of registers
     - __callee-saved registers__: callee push registers onto stack at the beginning and pop them at the end
     - __caller-saved registers__: saved before a function call and restore after the call
+- instruction cache
+    - jumps to a different area of memory
+    - causes instruction cache misses
+- extra instructions needed
+    - parameter passing: push on stack or mov in registers
+    - push and pop return address
+    - manipulating frame pointer
+- possible pipeline stalls
+    - instead of just PC=PC+1, need to wait for other instructions like `jump` or `pop eip` to get the next instruction to execute
+- indirection
+    - function call made through function pointers and virtual methods needs to be resolved at runtime
+    - cannot be `inline`d
 
 # Assembly
 
