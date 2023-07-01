@@ -144,6 +144,8 @@ int main() {
 # reference vs pointer
 
 - from the assembly code perspective, reference is basically a `const` pointer with automatic dereference
+    - `int&` equivalent to `int * const`
+    - `const int&` equivalent to `const int * const`
 - two exceptions:
     - cannot be null
     - `const reference` can bind to rvalue while `pointer to const` cannot
