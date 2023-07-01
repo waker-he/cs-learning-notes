@@ -1,3 +1,7 @@
+- [Effective Modern C++](./effective-modern-c%2B%2B/effective-modern-cpp.md)
+- [C++17](./c%2B%2B17/cpp17.md)
+- [CppCon](./cppcon/README.md)
+
 # General C++ notes
 
 # Content
