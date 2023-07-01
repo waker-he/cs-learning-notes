@@ -12,6 +12,7 @@
 - [magic statics (since C++11)](#magic-statics-since-c11)
 - [member pointers](#member-pointers)
 - [casting](#casting)
+- [reference vs pointer]()
 
 # trasnlation unit
 - a basic unit of C++ compilation
@@ -139,3 +140,10 @@ int main() {
     - easily recognized and searchable
 - eliminate unintended error
 - perform all operations that C casts can
+
+# reference vs pointer
+
+- from the assembly code perspective, reference is basically a `const` pointer with automatic dereference
+- two exceptions:
+    - cannot be null
+    - `const reference` can bind to rvalue while `pointer to const` cannot
