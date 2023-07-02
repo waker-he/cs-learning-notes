@@ -139,7 +139,12 @@ int main() {
 - different notation or different casts, improve code maintainability
     - easily recognized and searchable
 - eliminate unintended error
-- perform all operations that C casts can
+- perform all __valid__ operations that C casts can
+    ```cpp
+    int i = 1;
+    char j = (char) i;  // compiled
+    char k = reinterpret_cast<char>(i); // ERROR
+    ```
 
 # reference vs pointer
 
