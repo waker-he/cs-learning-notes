@@ -1,1 +1,2 @@
 - [EECS 370: Computer Organization](./eecs370/370review.md)
+- [EECS 482: Operating System](./eecs482/482review.md)
