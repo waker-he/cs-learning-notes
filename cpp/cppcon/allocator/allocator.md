@@ -1,3 +1,13 @@
+# Content
+
+- [Memory Allocator](#memory-allocator)
+    - [Why care about memory allocator?](#why-care-about-memory-allocators)
+    - [Definition](#definition)
+    - [Interface](#interface)
+    - [Aspects of Software that affect allocation strategy](#aspects-of-software-that-affect-allocation-strategy)
+    - [Benchmark Take-away Tips](#benchmark-take-away-tips)
+
+
 # Memory Allocator
 
 ## Why care about memory allocators?
@@ -94,3 +104,11 @@ for large system and long-running system, there absolutely will be performance a
 - local allocator also controls a local sub-region of memory, but how do they get this control?
     - do they use some system calls to interact with os directly?
     - or do they use `malloc` or pre-allocated buffer on stack to get a sub-region up-front?
+- Ans: second one, local allocator is also called arena allocator, refer to [definition of arena](https://stackoverflow.com/questions/12825148/what-is-the-meaning-of-the-term-arena-in-relation-to-memory)
+
+
+# Question to resolve
+
+1. size of stack segment fixed? if not, how does it grow?
+2. `malloc` implementation
+3. difference between `malloc` and `calloc`
