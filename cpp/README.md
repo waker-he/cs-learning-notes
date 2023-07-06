@@ -5,6 +5,7 @@
 # General C++ notes
 
 # Content
+- [Helpful Online Resouces and Tools](#helpful-resouces-and-tools)
 - [translation unit](#trasnlation-unit)
 - [linkage](#linkage)
 - [`using` keyword](#using-keyword)
@@ -13,6 +14,18 @@
 - [member pointers](#member-pointers)
 - [casting](#casting)
 - [reference vs pointer]()
+
+# Helpful Resouces and Tools
+
+- Online Resouces
+    - [CppCon](https://www.youtube.com/@CppCon)
+    - [C++ Weekly by Jason Turner](https://www.youtube.com/@cppweekly)
+- Online Tools
+    - [Compiler Explorer](https://godbolt.org/)
+    - [C++ Insignts](https://cppinsights.io/)
+    - [Online GDB and Compiler](https://www.onlinegdb.com/online_c++_compiler#)
+    - [Quick C++ Benchmark](https://quick-bench.com/)
+
 
 # trasnlation unit
 - a basic unit of C++ compilation
