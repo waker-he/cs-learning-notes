@@ -111,4 +111,12 @@ for large system and long-running system, there absolutely will be performance a
 
 1. size of stack segment fixed? if not, how does it grow?
 2. `malloc` implementation
+    - does `malloc` allocate memory from heap from lower address to higher address?
+    - how are heap divided when there are multiple threads?
+    - what syscall does `malloc` use?
 3. difference between `malloc` and `calloc`
+    - according to gnulibc, `calloc` is simply `malloc` with all bytes in data blocks set to 0
+    - and it can be used when `count * eltsize` might cause integer overflow
+4. how does `free` know the size of block to be freed?
+    - `malloc` will write some metadata before the datablock
+    - `free` will read the metadata, which includes size info
