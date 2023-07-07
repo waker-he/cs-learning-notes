@@ -6,6 +6,10 @@
     - [Interface](#interface)
     - [Aspects of Software that affect allocation strategy](#aspects-of-software-that-affect-allocation-strategy)
     - [Benchmark Take-away Tips](#benchmark-take-away-tips)
+- [About `malloc`](#about-malloc)
+    - [Purpose](#purpose)
+    - [Implementation](#implementation)
+    - [`malloc`-related functions](#malloc-related-functions)
 
 
 # Memory Allocator
@@ -107,16 +111,56 @@ for large system and long-running system, there absolutely will be performance a
 - Ans: second one, local allocator is also called arena allocator, refer to [definition of arena](https://stackoverflow.com/questions/12825148/what-is-the-meaning-of-the-term-arena-in-relation-to-memory)
 
 
-# Question to resolve
+# About `malloc`
 
-1. size of stack segment fixed? if not, how does it grow?
-2. `malloc` implementation
-    - does `malloc` allocate memory from heap from lower address to higher address?
-    - how are heap divided when there are multiple threads?
-    - what syscall does `malloc` use?
-3. difference between `malloc` and `calloc`
-    - according to gnulibc, `calloc` is simply `malloc` with all bytes in data blocks set to 0
-    - and it can be used when `count * eltsize` might cause integer overflow
-4. how does `free` know the size of block to be freed?
-    - `malloc` will write some metadata before the datablock
-    - `free` will read the metadata, which includes size info
+## Purpose
+
+- C Language supports two kinds of memory allocation through variables
+    - static or global variables has __static allocation__, their lifetimes are throughout the execution of the process and never get freed
+    - local virables has __automatic allocation__, their lifetimes bind to the block where they are declared
+        - they are freed at the end of the block
+        - a block is a section of program text that contains name bindings local to the block
+- __dynamic allocation__ are not supported by variables (there cannot be variables with dynamic allocation)
+- `malloc` then is provided by C library to support dynamic allocation
+
+## Implementation
+
+### high-level steps for typical `malloc` implementation:
+1. a request for memory with specified size comes in via `malloc`
+2. search for a suitable block in free list
+    - if not found, need to increase the size of the heap
+        - if the request size is small, use `sbrk`
+        - else, use `mmap`
+
+### notes
+- system calls used:
+    - `void* sbrk(intptr_t increment)`
+        - extends program break (the boundary of heap segment) by specified `increment`
+        - use `sbrk(0)` to see current program break
+        - when `sbrk` grows into a new page, kernel will mark the corresponding page table entry as valid
+    - `void* mmap`
+        - get a valid memory page
+        - can be located anywhere between stack and heap segments
+- `malloc` will create multiple arenas (heaps) when there are multiple threads
+    - cannot use `sbrk` to grow arenas seperated from heap segment, use `mmap` instead
+- free list is a list of blocks of memory that are available for use
+    - there might be multiple free lists to hold different sizes of blocks
+
+## `malloc`-related functions
+- `void* malloc(size_t size)`
+    - allocate a block of `size` bytes
+- `void free(void *addr)`
+    - free a block previously allocated by `malloc`
+    - metadata about the data block is stored before the data blcok, check if to determine size to free
+- `void *realloc(void* addr, size_t size)`
+    - make a block previously allocated by `malloc` larger or smaller
+    - if larger, possibly copying it to a new location
+- `void *calloc(size_t count, size_t eltsize)`
+    - allocate a block of `count * eltsize` bytes
+    - set its contents to zero
+- `void *aligned_alloc(size_t alignment, size_t size)`
+    - allocate a block of `size` bytes whose address is a multiple of `alignment`
+
+# About Stack Segment
+
+- process requests stack memory from the kernel via `mmap()` system call
