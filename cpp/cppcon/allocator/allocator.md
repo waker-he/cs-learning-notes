@@ -10,6 +10,7 @@
     - [Purpose](#purpose)
     - [Implementation](#implementation)
     - [`malloc`-related functions](#malloc-related-functions)
+- [About Stack Segment](#about-stack-segment)
 
 
 # Memory Allocator
@@ -139,7 +140,7 @@ for large system and long-running system, there absolutely will be performance a
         - use `sbrk(0)` to see current program break
         - when `sbrk` grows into a new page, kernel will mark the corresponding page table entry as valid
     - `void* mmap`
-        - get a valid memory page
+        - create new memory mapping, might include multiple pages
         - can be located anywhere between stack and heap segments
 - `malloc` will create multiple arenas (heaps) when there are multiple threads
     - cannot use `sbrk` to grow arenas seperated from heap segment, use `mmap` instead
@@ -163,4 +164,8 @@ for large system and long-running system, there absolutely will be performance a
 
 # About Stack Segment
 
-- process requests stack memory from the kernel via `mmap()` system call
+- to set up initial thread, process requests stack memory from the kernel via `mmap()` system call with `MAP_GROWSDOWN` flag
+- memory after the end of the initial mapping is guard area
+    - when guard page is first accessed through stack pointer, a page fault occurs
+    - page fault handler automatically commits more of the guard area, allowing the stack to grow
+- can be thought as `mremap()` is implicitly called when growing stack
