@@ -13,7 +13,8 @@
 - [magic statics (since C++11)](#magic-statics-since-c11)
 - [member pointers](#member-pointers)
 - [casting](#casting)
-- [reference vs pointer]()
+- [reference vs pointer](#reference-vs-pointer)
+- [conversion operator](#conversion-operator)
 
 # Helpful Resouces and Tools
 
@@ -167,3 +168,16 @@ int main() {
 - two exceptions:
     - cannot be null
     - `const reference` can bind to rvalue while `pointer to const` cannot
+
+
+# conversion operator
+
+- a special member function that a class can define to specify how to convert an object of its type to another type
+    ```cpp
+    class Foo {
+    public:
+    operator OtherType() const {}
+    };
+    ```
+- can be defined as `explicit` to only allow conversion with `static_cast`
+- example: `std::string` has a conversion operator to `std::string_view`, that is why `std::string` can be used where `std::string_view` is expected while `std::string_view` does not have a ctor takes `std::string`
