@@ -11,6 +11,7 @@
     - [Implementation](#implementation)
     - [`malloc`-related functions](#malloc-related-functions)
 - [About Stack Segment](#about-stack-segment)
+- [Case Study: TCMalloc](#case-study-tcmalloc)
 
 
 # Memory Allocator
@@ -24,6 +25,9 @@ same reasons why we like C++;
     - qualitative benefits
         - testing, debugging, measuring
 - help to improve runtime performance
+    - reduce fragmentation
+    - reduce diffusion
+    - avoid concurrency locks
 
 ## Definition
 
@@ -169,3 +173,31 @@ for large system and long-running system, there absolutely will be performance a
     - when guard page is first accessed through stack pointer, a page fault occurs
     - page fault handler automatically commits more of the guard area, allowing the stack to grow
 - can be thought as `mremap()` is implicitly called when growing stack
+
+# Case Study: TCMalloc
+
+- read [TCMalloc Design Doc](https://github.com/google/tcmalloc/blob/master/docs/design.md)
+- basically a series of caches
+    - front-end
+        - fast allocation and deallocation
+        - per-thread cache / per-CPU cache (logical CPU)
+        - no synchronization needed
+        - for per-CPU cache, use `rseq` to optimize common case instead of using atomics
+    - middle-end
+        - responsible for refilling the front-end cache
+        - protected by a mutex lock
+        - each size class has a transfer cache and central free list
+    - back-end
+        - responsible for refilling the middle-end cache
+        - fetching memory from OS when no suitably sized memory available
+- design that reflects key assumptions for designing memory allocator
+    - assumptions:
+        - small objects are allocated more frequently and have a shorter lifespan
+        - large objects are allocated less frequently and have a longer lifespan
+        - objects with the same sizde are usually allocated, accessed and destroyed together
+    - large objects: allocated directly from the back-end
+    - small objects: allocating from front-end and have "pages" of objects of the same size
+        - fast
+        - low per object memory overhead
+        - less internal fragmentation
+        - less diffusion
