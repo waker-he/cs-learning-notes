@@ -12,6 +12,10 @@
     - [`malloc`-related functions](#malloc-related-functions)
 - [About Stack Segment](#about-stack-segment)
 - [Case Study: TCMalloc](#case-study-tcmalloc)
+- [From `std::allocator` to Polymorphic Memory Resource (PMR)](#from-stdallocator-to-polymorphic-memory-resource-pmr)
+    - [`std::allocator`](#stdallocator)
+    - [C++11 `std::allocator_traits`](#c11-stdallocator_traits)
+    - [C++17 Allocator Model: Polymorphic Memory Resource (PMR)](#c17-allocator-model-polymorphic-memory-resource)
 
 
 # Memory Allocator
@@ -201,3 +205,51 @@ for large system and long-running system, there absolutely will be performance a
         - low per object memory overhead
         - less internal fragmentation
         - less diffusion
+
+
+# From `std::allocator` to Polymorphic Memory Resource (PMR)
+
+## `std::allocator`
+- why we don't like `std::allocator`
+    - not originally designed for improving memory allocation
+        - initially intended to handle `near` and `far` pointers problems
+    - memory allocator should just allocate bytes, but `std::allocator` takes in a type parameter, which makes no sense
+        - it also introduces the need to define `rebind` template
+    - forcing client container to be template
+    - the same container with different allocator type are different types
+    - implementation complexity
+        - large number of `typedefs`
+        - propogation traits
+        - `rebind` template
+
+## C++11 `std::allocator_traits`
+- C++11 introduces `std::allocator_traits<Alloc>`
+    - a utility template provides uniform interface for allocators
+    - STL containers now talks to allcator using `allocator_traits`
+    - implementation of allocators get easier
+        - just need to define `allocate`, `deallocate`, `value_type` and `==/!=` operators
+        - when wrapped inside `allocator_traits`, it provides default version for functions, type aliases, `rebind` and propogation traits that are not defined
+- we also want the scoped allocator model: container and its members to use the same allocator
+    - simple and less memory diffusion
+    - can use `scoped_allocator_adaptor` in C++11
+        - viral template, difficult to use
+
+## C++17 Allocator Model: Polymorphic Memory Resource
+
+- `std::pmr::memory_resource`: simple base class support `allocate` and `deallocate`
+    - get rid of type parameter, just allocating raw bytes
+    - override `do_allocate`, `do_deallocate` and `do_is_equal` to create custom memory resource
+    - can be chained together
+    ```cpp
+    class custom_resource : public pmr::memory_resource {
+    public:
+    explicit custom_resouce(pmr::memory_resource *parent
+                            = pmr::get_default_resource());
+    ...
+    };
+    ```
+- `std::pmr::polymorphic_allocator<T>`: a thin wrapper of `std::pmr::memory_resource`
+    - has a non-`explicit` constructor that takes `memory_resource *`
+    - have type template parameter only for the purpose of backwards compatibility
+    - `T` by default is `std::byte`
+<div style="text-align:center"><img src="allocator_evolution.png" width="500" alt="Alternate Text" /></div>
