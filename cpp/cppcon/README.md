@@ -12,3 +12,6 @@
      - [CppCon 2017: John Lakos “Local ('Arena') Memory Allocators (part 2 of 2)”](https://www.youtube.com/watch?v=CFzuFNSpycI)
      - [What Programmers Should Know About Memory Allocation - S. Al Bahra, H. Sowa, P. Khuong - CppCon 2019](https://www.youtube.com/watch?v=gYfd25Bdmws)
      - [Getting Allocators out of Our Way - Alisdair Meredith & Pablo Halpern - CppCon 2019](https://www.youtube.com/watch?v=RLezJuqNcEQ)
+- [`template` note](./template/template.md), referred from:
+    - [Back to Basics: Templates (part 1 of 2) - Bob Steagall - CppCon 2021](https://www.youtube.com/watch?v=XN319NYEOcE)
+    - [Back to Basics: Templates (part 2 of 2) - Bob Steagall - CppCon 2021](https://www.youtube.com/watch?v=2Y9XbltAfXs)
