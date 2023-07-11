@@ -24,6 +24,7 @@
 - [Part IV: Library Extensions and Modifications](#part-iv-library-extensions-and-modifications)
     - [Chapter 32: Parallel STL Algorithms](#chapter-32-parallel-stl-algorithms)
 - [Part V: Expert Utilities](#part-v-expert-utilities)
+    - [Chapter 29: Polymorphic Memory Resources (PMR)](#chapter-29-polymorphic-memory-resources-pmr)
     - [Chapter 31: `std::to_chars()` and `std::from_chars()`](#chapter-31-stdto_chars-and-stdfrom_chars)
 
 
@@ -487,6 +488,10 @@ pass the execution policy as the first argument for algorithm functions to enabl
 - `std::execution::par_unseq`: This policy specifies that the algorithm may be parallelized and vectorized. Vectorization is a form of parallelism where the same operation is applied to different data in parallel, which can further improve performance on modern processors that support SIMD (Single Instruction Multiple Data) instructions.
 
 # Part V: Expert Utilities
+
+## Chapter 29: Polymorphic Memory Resources (PMR)
+
+refer to [allocator note](../cppcon/allocator/allocator.md)
 
 ## Chapter 31: `std::to_chars()` and `std::from_chars()`
 

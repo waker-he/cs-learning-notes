@@ -251,5 +251,42 @@ for large system and long-running system, there absolutely will be performance a
 - `std::pmr::polymorphic_allocator<T>`: a thin wrapper of `std::pmr::memory_resource`
     - has a non-`explicit` constructor that takes `memory_resource *`
     - have type template parameter only for the purpose of backwards compatibility
-    - `T` by default is `std::byte`
+    - `T` by default is `std::byte` (since C++20)
+    ```cpp
+    std::array<int, 1000> buf;
+    std::pmr::monotonic_buffer_resource pool{buf.data(), buf.size()};
+    std::pmr::vector<int> vec{&pool};
+    // equivalent to
+    std::vector<int, std::pmr::polymorphic_allocator<int>> vec1{std::pmr::polymorphic_allocator<int>(&pool)};
+    ```
 <div style="text-align:center"><img src="allocator_evolution.png" width="500" alt="Alternate Text" /></div>
+
+### standard memory resources
+
+- gloabl memory resources
+    - `new_delete_resource`: using `new` and `delete`
+        - returned by `get_default_resource` when `set_defualt_resource` has not been called
+    - `null_memory_resource`: throw on allocation
+        - used as a fallback allocator of an allocator who should not propogate
+- classes who need to instantiate
+    - `monotonic_buffer_resource`: super-fase, non-thread-safe, allocation into a buffer with do-nothing deallocation
+    - `(un)synchronized_pool_resource`: (non)-thread-safe pools of similar-sized memory blocks
+
+### polymorphic allcator aware container
+
+- __copy construction__: use default polymorphic allocator by default
+- __move construction__: use other's allocator by default
+- __copy/move assignment__: never propogate allocator
+    - move assignment delegate to copy assignment if allocator not equal
+- for contructing members, use `construct` instead of placement new to make members use same allocator (scoped allocator model)
+- refer to [slist.h by Pablo Halpern](https://github.com/phalpern/CppCon2017Code/blob/master/slist.h)
+```cpp
+class S {
+    using allocator_type = std::pmr::polymorphic_allocator<>;
+
+    explicit S(allcator_type a = {});
+    S(const S& other, allcator_type a = {});    // do not copy allocator
+    S(S&& other);
+    S(S&& other, allocator_type a);
+};
+```
