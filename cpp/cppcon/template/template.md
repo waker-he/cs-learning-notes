@@ -1,5 +1,5 @@
 
-- [Template](#template)
+- [Template Basics](#template)
     - [Definition](#definition)
     - [Template Parameters](#template-parameters)
     - [Related Terms](#related-terms)
@@ -58,19 +58,32 @@ _thing_ template is a parametrized description of a family of _things_
             ```
 - explicit specialization
     - __user__-provided implementation of a template with all template parameters fully substituted
-    ```cpp
-    template<>
-    const char* min(const char* pa, const char* pb) {
-        return (strcmp(pa, pb) < 0) ? pa : pb;
-    }
+    - caveats for __function template__:
+        - avoid using explicit specialization for function templates, use ordinary function with the same name instead
+        - explicit specialization is __NOT__ a candidate for function overload resolution, for following code:
+            - (b) is an explicit speicalization of (a)
+            - (a) and (c) compared
+            - (c) is chosen since it is more specialized
+            - if (b) is declared after (c), (b) becomes explicit specialization of (c), then (b) will get called
+            ```cpp
+            template <class T> void foo(T t);    // (a)
+            template <> void foo(int* t);        // (b)
+            template <class T> void foo(T* t);   // (c)
 
-    template<>
-    struct is_int<int> {
-        static const bool value = true;
-    };
-    ```
+            int *ptr = nullptr;
+            foo(ptr);           // calls (c)
+            ```
 - partial specialization
+    - used for class template and variable template
+    - examples
     ```cpp
+    template <class T, class U>
+    struct S;
+    
+    // more specialized
+    template <class T>
+    struct S<T, T>;
+
     template<class T>
     struct isPointer {
         static constexpr bool value = false;
