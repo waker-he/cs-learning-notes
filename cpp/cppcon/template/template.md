@@ -1,4 +1,10 @@
 
+- [Template](#template)
+    - [Definition](#definition)
+    - [Template Parameters](#template-parameters)
+    - [Related Terms](#related-terms)
+- [Template Metaprogramming](#template-metaprogramming)
+
 # Template
 
 ## Definition
@@ -65,16 +71,58 @@ _thing_ template is a parametrized description of a family of _things_
     ```
 - partial specialization
     ```cpp
-    template<T>
+    template<class T>
     struct isPointer {
         static constexpr bool value = false;
     };
 
-    template<T>
+    // more specialized
+    template<class T>
     struct isPointer<T *> {
         static constexpr bool value = true;
     };
+    ```
 
-    template<T>
-    inline constexpr bool isPointer_v = isPointer<T>::value;
+# Template Metaprogramming
+
+- Metaprogramming
+    - writing computer programs that
+        - treat other programs (or themselves) as data
+        - do work at compile time that would otherwise be done at runtime
+- C++ template metaprogramming uses __template instantiation__ to drive compile-time evaluation
+    - purpose
+        - source code flexibility
+        - runtime performance
+- metafunctions
+    - class template
+    - called by requesting public data members
+    - use metafunction calls (possibly recursive), inheritance and aliasing to factor commonalities
+    - pros over `constexpr` function
+        - can have type result
+        - can have public members and `constexpr` functions
+    - conventions
+        - type result should be named `type`
+        - value result should be named `value`
+    - check [is_one_of.cpp](./is_one_of.cpp)
+- SFINAE
+    - substitution failure is not an error
+    - if substitution fails during template instantiation, it does not immediately result in an error, compiler will search for other overload candidates, if cannot find one, ERROR
+    - used to direct overload resolution
+    ```cpp
+    // decltype operand is never evaluated
+    template <class T>
+    using copy_assignable = decltype(declval<T&>() = declval<const T&>());
+    // change `const T&` to `T&&` for move_assignable
+
+    // default `void` is essential
+    template <class T, class = void>
+    struct is_copy_assignable : false_type {};
+
+    // more specialized, considered first for overload resolution
+    // substitution failure if not copy assignable
+    template <class T>
+    struct is_copy_assignable<T,
+                              void_t< copy_assignable<T> >
+                              >
+            : is_same<T&, copy_assignable<T>> {};
     ```

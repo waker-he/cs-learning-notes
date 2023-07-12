@@ -15,3 +15,5 @@
 - [`template` note](./template/template.md), referred from:
     - [Back to Basics: Templates (part 1 of 2) - Bob Steagall - CppCon 2021](https://www.youtube.com/watch?v=XN319NYEOcE)
     - [Back to Basics: Templates (part 2 of 2) - Bob Steagall - CppCon 2021](https://www.youtube.com/watch?v=2Y9XbltAfXs)
+    - [CppCon 2014: Walter E. Brown "Modern Template Metaprogramming: A Compendium, Part I"](https://www.youtube.com/watch?v=Am2is2QCvxY)
+    - [CppCon 2014: Walter E. Brown "Modern Template Metaprogramming: A Compendium, Part II"](https://www.youtube.com/watch?v=a0FliKwcwXE)
