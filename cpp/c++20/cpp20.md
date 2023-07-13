@@ -47,3 +47,18 @@
                 weak_ordering
             >);
         ```
+
+# Chapter 2: Placeholder Types for Function Parameters
+
+- function template syntax can be abbreviated
+    ```cpp
+    void foo(auto t);
+    ```
+- in the following code, `foo1` is equivalent to `foo2`
+    ```cpp
+    template <class T>
+    void foo1(auto t1, T t2);
+
+    template <class T2, class T1>
+    void foo2(T1 t1, T2 t2);
+    ```
