@@ -4,6 +4,7 @@
     - [Template Parameters](#template-parameters)
     - [Related Terms](#related-terms)
 - [Template Metaprogramming](#template-metaprogramming)
+- [Concepts (since C++20)](#concepts-since-c20)
 
 # Template
 
@@ -75,6 +76,8 @@ _thing_ template is a parametrized description of a family of _things_
             ```
 - partial specialization
     - used for class template and variable template
+    - cannot specify default template arguments
+        - uses default template arguments in primary template
     - examples
     ```cpp
     template <class T, class U>
@@ -119,7 +122,7 @@ _thing_ template is a parametrized description of a family of _things_
     - check [is_one_of.cpp](./is_one_of.cpp)
 - SFINAE
     - substitution failure is not an error
-    - if substitution fails during template instantiation, it does not immediately result in an error, compiler will search for other overload candidates, if cannot find one, ERROR
+    - if substitution fails during template instantiation (__get ill-formed declaration__), it does not immediately result in an error, compiler will search for other overload candidates, if cannot find one, ERROR
     - used to direct overload resolution
     ```cpp
     // decltype operand is never evaluated
@@ -139,3 +142,106 @@ _thing_ template is a parametrized description of a family of _things_
                               >
             : is_same<T&, copy_assignable<T>> {};
     ```
+
+
+# Concepts (since C++20)
+
+- C++20 feature _concepts_ allows specifying ___constraints___ for generic code, with the keyword `requires` and `concept`
+
+## `requires` clause, `concept` and `requires` expression
+
+- `requires` clause
+    - used to restrict the availability of template
+        ```cpp
+        template <class T>
+        requires COMPILE_TIME_BOOLEAN
+        void foo(T arg);
+        ```
+- `concept`
+    ```cpp
+    template <class From, class To>
+    concept convertible = std::is_convertible_v<From, To>;
+    ```
+    - can be thought as `constexpr` boolean variable template
+    - three key differences from actual `constexpr` boolean variable template
+        1. can be used as __type constraints__
+            ```cpp
+            template <Integral T>
+            void foo();
+
+            // equivalent to:
+            template <class T>
+            requires Integral<T>
+            void foo();
+            ```
+            - can also be used to constrain `auto`
+                ```cpp
+                // convertible automatically takes
+                // auto type as the first template argument
+                convertible<int> auto i = foo();
+                ```
+        2. concepts __subsume__
+            ```cpp
+            template <class T>
+            requires std::movable<T>
+            void foo(T arg);    // (1)
+
+            template <class T>
+            requires std::copyable<T>
+            void foo(T arg);    // (2)
+
+            // results in ambiguity if using type traits
+            // in the requires clauses
+            // calls (2) since concept in requires clause(2)
+            // subsumes concept in (1)
+            foo<int>(0);    
+            ```
+            - order matters for subsume to take place, be careful when defining commutative concepts
+        3. is __prvalue__, cannot take its address
+
+- `requires` expression
+    - evaluates to compile-time `bool` value
+    - facilitates definition of `concept`
+    - used to specify requirements on one or more template parameters
+        1. __simple requirements__: expressions that have to be valid
+        2. __type requirements__: type names that have to be defined
+        3. __compound requirements__: what types an expression yields and whether the expression can throw
+        4. __nested requirements__: use syntax of `requires` clause to speicify the compile-time boolean result an expression should yield
+            - used `concept` here is not subsumed
+        ```cpp
+        template <class T1, class T2>
+        concept c = requires(T1 p /*optional parameter list*/) {
+            // 1. operator[] has to be supported for T1
+            p[0]; 
+
+            // 2. T1 and T2 have to have a common type
+            //  the preceding typename is necessary
+            typename std::common_type_t<T1, T2>;
+
+            // 3. note that covertible_to and is_same_v takes 
+            //  the yielding type as first argument
+            { p == p }noexcept -> std::convertible_to<bool>;
+            { *p } -> std::is_same_v<int>;
+
+            // meaningless, always valid
+            std::is_const_v<T>;
+            typename std::remove_const_t<T>;
+            // 4. requires T to be non-const
+            requires !std::is_const_v<T>;
+        };
+        ```
+
+## notes
+- advantages over SFINAE for specifying constraints
+    - more readable generic code
+    - more readable and understandable error message when constraints are broken
+        - show which requirement is broken
+        - instead of showing internals of substitution process
+    - less error-prone and easier to implement
+- `concept`: between type and `auto`
+    - type specifies the interface and layout in the memory
+    - `concept` only specifies the interface
+        - more generic than concrete type
+        - makes the interface of generic functions clear and understandable
+            - make generic code more like ordinary
+    - `auto` does not specify anything at all
