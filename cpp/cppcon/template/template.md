@@ -238,6 +238,10 @@ _thing_ template is a parametrized description of a family of _things_
         - show which requirement is broken
         - instead of showing internals of substitution process
     - less error-prone and easier to implement
+- concept, as a general term in generic programming, specifies requirements on types they constrain
+    - keyword `concept` is part of this general term which specifies __syntactic requirements__, which can be checked in compile time
+    - __semantic requirements__ cannot be checked in compile-time
+        - like `std::ranges::range` requires amortized constant time for call to `begin()` and `end()`
 - `concept`: between type and `auto`
     - type specifies the interface and layout in the memory
     - `concept` only specifies the interface
