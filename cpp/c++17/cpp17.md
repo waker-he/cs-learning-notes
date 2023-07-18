@@ -81,7 +81,7 @@ else {
 
 ## Chapter 3: Inline Variables
 
-- review [static member variables rules](../cpp.md#rules-of-static-member-variables)
+- review [static member variables rules](../README.md#rules-of-static-member-variables)
 - since C++17, you can define an object/static member variable as `inline` in the header file to bypass __one definition rule__:
     - before C++17
         ```cpp
@@ -101,7 +101,7 @@ else {
         inline A a_obj;
         ```
 - __main benefit__: allows a single globally available object by defining it only in a header file
-- __downside__: [magic statics](../cpp.md#magic-statics-since-c11)
+- __downside__: [magic statics](../README.md#magic-statics-since-c11)
 
 
 ## Chapter 4: Aggregate Initialization Extension
