@@ -4,6 +4,7 @@
 - [Chapter 2: Placeholder Types for Function Parameters](#chapter-2-placeholder-types-for-function-parameters)
 - [Chapter 3~5: Concepts, Requirements and Constraints](#chapter-35-concepts-requirements-and-constraints)
 - [Chapter 6~9: Ranges and Views](./ranges/ranges.md)
+- [Chapter 10: Formatted Output](#chapter-10-formatted-output)
 
 # Chapter 1: Comparisons and Operator `<=>`
 
@@ -72,3 +73,37 @@ refer to [template note](../cppcon/template/template.md)
 
 # Chapter 6~9: Ranges and Views
 refer to [ranges note](./ranges/ranges.md)
+
+# Chapter 10: Formatted Output
+
+## format of format strings
+- replacement fields specified `{}`
+    - use `{{` to print `{`, use `}}` to print `}`
+- in replacement fields: `{n:fmt}`
+    - `n`: argument index
+    - `fmt`: format specifier
+    - both are optional and seperated by colon `:`
+- format specifiers: `fill align sign # 0 width .prec L type`
+    - all are optional, bulit-in types have default format specifiers
+    - `align`
+        - `<`(left-aligned), `>`(right-aligned), `^`(centered)
+        - `fill`
+            - must be used with `align`
+            - the character to fill the field up to `width`
+            - default: space
+    - `width` specifies minimum field width
+    - `.prec`
+        - for floating-point types, specifies number of digits after dot(`.`)
+        - for strings, specifies maximum number of characters
+
+## usage
+
+```cpp
+constexpr const char* fmt = "key: {1:06.3}, val: {0:.3}";
+std::format(fmt, "abcdefg", 3.4);
+// "key: 03.400, val: abc"
+```
+- format string must be a compile-time value
+    - allows error checking in compile time, better performance
+    - if not, use `std::vformat()`
+- since C++23, `std::print()` equivalent to `std::cout << std::format()`
