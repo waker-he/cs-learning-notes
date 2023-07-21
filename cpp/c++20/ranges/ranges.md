@@ -31,7 +31,7 @@
             - `decltype(rg)` if `rg` is already a view
             - `std::ranges::ref_view` of `rg` if `rg` is an lvalue
             - `std::ranges::owning_view` of `rg` if `rg` is rvalue
-    - all `viewType`s in `std` inherit from `view_interface<viewType>`
+    - all `viewType`s in `std::ranges` inherit from `view_interface<viewType>`
 - `borrowed range` is a range that a function can take it by value and return a iterator obtained from it without danger of dangling
     ```cpp
     template <class R>
