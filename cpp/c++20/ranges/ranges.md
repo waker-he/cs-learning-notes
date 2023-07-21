@@ -1,6 +1,7 @@
 - [Ranges and Views](#ranges-and-views)
 - [Benefits](#benefits)
 - [Caveats](#caveats)
+- [Spans](#spans)
 
 # Ranges and Views
 
@@ -107,3 +108,37 @@
     - compiler error for usage
 - iterator can still dangle if the underlying range of `borrowed range` is destructed before the `borrowed range`
     - `std::string_view`, `std::span`, `std::ranges::subrange`, ...
+
+
+# Spans
+
+```cpp
+inline constexpr std::size_t dynamic_extent = -1; // max size_t
+template <class T, std::size_t Extent = std::dynamic_extent>
+class span;
+
+vector<int> vec = {1,2,3};
+std::span sp1{vec}; // dynamic extent, size can vary
+
+array<int, 3> arr = {1,2,3};
+std::span sp2{vec}; // static extent, size fixed
+```
+- refer to [cppreference `std::span`](https://en.cppreference.com/w/cpp/container/span) for operations
+- generalization of string views, in `std` namespace instead of `std::ranges`
+- requires contiguous storage of elements
+    - major difference to `subrange`
+    - can be created using `std::views::counted`
+    - do not require iterator support for the type referring to
+        - just need to provide a `data()` member
+- cheap and fast `std::ranges::view`
+    - `sizeof(span<T>) == sizeof(T*) + sizeof(std::size_t)`
+    - `sizeof(span<T, 3>) == sizeof(T*)`
+- careful when referrring to dynamically growing container
+    - might need to reinitialize
+    ```cpp
+    auto oldCapa = vec.capacity();
+    vec.push_back(1);
+    if (oldCapa != vec.capacity()) {
+        sp = std::span{vec};
+    }
+    ```

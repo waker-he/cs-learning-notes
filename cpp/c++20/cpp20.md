@@ -3,6 +3,7 @@
 - [Chapter 1: Comparisons and Operator `<=>`](#chapter-1-comparisons-and-operator)
 - [Chapter 2: Placeholder Types for Function Parameters](#chapter-2-placeholder-types-for-function-parameters)
 - [Chapter 3~5: Concepts, Requirements and Constraints](#chapter-35-concepts-requirements-and-constraints)
+- [Chapter 6~9: Ranges and Views](./ranges/ranges.md)
 
 # Chapter 1: Comparisons and Operator `<=>`
 
@@ -68,3 +69,6 @@
 # Chapter 3~5: Concepts, Requirements and Constraints
 
 refer to [template note](../cppcon/template/template.md)
+
+# Chapter 6~9: Ranges and Views
+refer to [ranges note](./ranges/ranges.md)
