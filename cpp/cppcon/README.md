@@ -18,6 +18,9 @@
     - [CppCon 2014: Walter E. Brown "Modern Template Metaprogramming: A Compendium, Part I"](https://www.youtube.com/watch?v=Am2is2QCvxY)
     - [CppCon 2014: Walter E. Brown "Modern Template Metaprogramming: A Compendium, Part II"](https://www.youtube.com/watch?v=a0FliKwcwXE)
     - [CppCon 2018: Walter E. Brown “C++ Function Templates: How Do They Really Work?”](https://www.youtube.com/watch?v=NIDEjY5ywqU)
-- [An Overview of Standard Ranges - Tristan Brindle - CppCon 2019](https://www.youtube.com/watch?v=SYLgG7Q5Zws)
-- [C++20 Ranges in Practice - Tristan Brindle - CppCon 2020](https://www.youtube.com/watch?v=d_E-VLyUnzc)
-- [Conquering C++20 Ranges - Tristan Brindle - CppCon 2021](https://www.youtube.com/watch?v=3MBtLeyJKg0&t=1s)
+- C++20 Related
+    - [An Overview of Standard Ranges - Tristan Brindle - CppCon 2019](https://www.youtube.com/watch?v=SYLgG7Q5Zws)
+    - [C++20 Ranges in Practice - Tristan Brindle - CppCon 2020](https://www.youtube.com/watch?v=d_E-VLyUnzc)
+    - [Conquering C++20 Ranges - Tristan Brindle - CppCon 2021](https://www.youtube.com/watch?v=3MBtLeyJKg0&t=1s)
+- [CppCon 2016: Howard Hinnant “A ＜chrono＞ Tutorial"](https://www.youtube.com/watch?v=P32hvk8b13M)
+    - [note](./chrono/chrono.md)
