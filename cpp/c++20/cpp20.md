@@ -5,6 +5,7 @@
 - [Chapter 3~5: Concepts, Requirements and Constraints](#chapter-35-concepts-requirements-and-constraints)
 - [Chapter 6~9: Ranges and Views](./ranges/ranges.md)
 - [Chapter 10: Formatted Output](#chapter-10-formatted-output)
+- [Chapter 12: `std::jthread` and Stop Tokens](#chapter-12-stdjthread-and-stop-tokens)
 
 # Chapter 1: Comparisons and Operator `<=>`
 
@@ -107,3 +108,66 @@ std::format(fmt, "abcdefg", 3.4);
     - allows error checking in compile time, better performance
     - if not, use `std::vformat()`
 - since C++23, `std::print()` equivalent to `std::cout << std::format()`
+
+# Chapter 12: `std::jthread` and Stop Tokens
+
+## Stop Sources and Stop Tokens
+
+- code example [stop.cpp](./stop.cpp)
+- a general-purpose mechanism to asynchronously request a stop
+    - the asynchronous task that is requested to stop can have multiple ways to react to it
+- `std::stop_source` is used to request a stop and `std::stop_token` is used to react to a stop request
+- each `std::stop_source` and `std::stop_token` is associated with a shared stop state
+    - stop state is created when default constructing `std::stop_source`
+    - a stop state can only be requested stop once
+    - stop state is destroyed only when the last of `std::stop_source`, `std::stop_token` and `std::stop_callback` is destroyed
+- `std::stop_callback` can be used to register a callable when a stop is requested
+    - it is constructed using a `std::stop_token` and a callable
+    ```cpp
+    void task(std::stop_token st) {
+        // register temporary callback:
+        std::stop_callback cb{st, []{
+            std::cout << "stop requested\n";
+        }};
+    }   // unregisters callback
+    ```
+    - the callable cannot throw, otherwise `std::terminate` is called
+    - register and unregister process are carefully synchronized that only one of __three__ cases can happen:
+        - stop request before construction of `std::stop_callback`, then __callable__ will be called immediately where the callback is initialized
+        - stop request after construction and before destruction of `std::stop_callback`, then __callable__ will be called immediately where `request_stop()` was called
+            - `request_stop()` blocks until all registered callables have been called
+            - order of calls not defined
+        - stop request after destruction of `std::stop_callback`, then __callable__ will never be called
+
+
+## `std::jthread`
+
+- an enhanced version of `std::thread`
+    - `RAII`: `join` is called in destructor (if `joinable`)
+    - provides a _cooperative_ mechanism to signal that a thread should no longer run
+        - it is _cooperative_ since the stop request does not kill the thread, which will leave the program in a corrupt state
+        - uses [stop tokens](#stop-sources-and-stop-tokens)
+        - the ctor that starts a thread creates a `std::stop_source` and stores it as a member of the thread object
+        - if the called function's first parameter is `std::stop_token` and ctor does not receive a argument for it, then ctor will generate a `std::stop_token` to pass to the function
+
+<p align="center">
+    <img src="./jthread_op.png" width="700" align="center">
+</p>
+
+```cpp
+{
+    std::vector<std::jthread> threads;
+    auto task = [](std::stop_token st) {
+        while (!st.stop_requested()) {
+            std::cout << "do something\n";
+        }
+    };
+    for (int i = 0; i < numThreads; i++) {
+        threads.push_back(std::jthread{task});
+    }
+    // request stops for all threads before we start to join
+    for (auto& t : threads) t.request_stop();
+}   // dtor joins all threads
+```
+
+
