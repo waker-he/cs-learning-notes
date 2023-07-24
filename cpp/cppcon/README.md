@@ -24,3 +24,4 @@
     - [Conquering C++20 Ranges - Tristan Brindle - CppCon 2021](https://www.youtube.com/watch?v=3MBtLeyJKg0&t=1s)
 - [CppCon 2016: Howard Hinnant “A ＜chrono＞ Tutorial"](https://www.youtube.com/watch?v=P32hvk8b13M)
     - [note](./chrono/chrono.md)
+- [Embracing Trailing Return Types and `auto` Return SAFELY in Modern C++ - Pablo Halpern - CppCon 2022](https://www.youtube.com/watch?v=Tnl7FnwJ2Uw)
