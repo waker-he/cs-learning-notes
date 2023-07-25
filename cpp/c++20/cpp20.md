@@ -102,7 +102,7 @@ refer to [ranges note](./ranges/ranges.md)
 ```cpp
 constexpr const char* fmt = "key: {1:06.3}, val: {0:.3}";
 std::format(fmt, "abcdefg", 3.4);
-// "key: 03.400, val: abc"
+// "key: 0003.4, val: abc"
 ```
 - format string must be a compile-time value
     - allows error checking in compile time, better performance
