@@ -1,0 +1,5 @@
+module m1:p2;   // internal partition declaration
+
+int sq(int i) {
+    return i * i;
+}

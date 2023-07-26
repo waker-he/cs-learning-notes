@@ -6,6 +6,7 @@
 - [Chapter 6~9: Ranges and Views](./ranges/ranges.md)
 - [Chapter 10: Formatted Output](#chapter-10-formatted-output)
 - [Chapter 12: `std::jthread` and Stop Tokens](#chapter-12-stdjthread-and-stop-tokens)
+- [Chapter 16: Modules](#chapter-16-modules)
 
 # Chapter 1: Comparisons and Operator `<=>`
 
@@ -171,3 +172,49 @@ std::format(fmt, "abcdefg", 3.4);
 ```
 
 
+# Chapter 16: Modules
+
+- modules allow programmers to define a clear API for a __large__ logical entity
+    - the logical entity might have a significant size of code distributed over multiple files
+
+## Components of a Module
+
+- a module consist of one or more __module units__, which are translation units that belong to a module
+- the kind of module unit is identified by the `module` declaration within the C++ source file
+    - [__primary interface__](#primary-interface): `export module` _name_`;`
+    - [__interface partition__](#interface-partition): `export module` _name_`:`_partname_`;`
+    - [__implementation unit__](#implementation-unit): `module` _name_`;`
+    - [__internal partition__](#internal-partition): `module` _name_`:`_partname_`;`
+- recommended file suffix
+    - interfaces files (__primary interface__ and __interface partition__): `.cppm`
+    - __implementation unit__: `.cpp`
+    - __internal partition__: `cppp`
+- example code:
+    - __primary interface__: [m1.cppm](./modules/m1.cppm)
+    - __interface partition__: [m1p1.cppm](./modules/m1p1.cppm)
+    - __implementation unit__: [foobar.cpp](./modules/foobar.cpp)
+    - __internal partition__: [m1p2.cppp](./modules/m1p2.cppp)
+    - __user__: [m1test.cpp](./modules/m1test.cpp)
+    - note: `g++` just partially supports modules by now (2023.7), hard to experiment
+
+### __Primary Interface__
+
+- each module have and only have one __primary interface__
+    - all other module units are optional
+- uses `export` keyword to speicify all the entities that can be used (visible) by the program that `import` this module
+- `export`ed entities will not violate ODR when imported by multiple translation units
+
+### __Interface Partition__
+
+- allows projects to maintain `export`ed interfaces in different files
+- for __primary interface__ to `export` interfaces that is declared with `export` in __interface partition__: `export import :`_partname_`;`
+
+### __Implementation Unit__
+
+- allows projects to split definitions into multiple files 
+    - can be maintained seperately
+    - if local things change we don't need to recompile the whole module
+
+### __Internal Partition__
+
+- allows projects to move __module-local__ declarations and definitions outside the primary interface
