@@ -181,10 +181,10 @@ std::format(fmt, "abcdefg", 3.4);
 
 - a module consist of one or more __module units__, which are translation units that belong to a module
 - the kind of module unit is identified by the `module` declaration within the C++ source file
-    - [__primary interface__](#primary-interface): `export module` _name_`;`
-    - [__interface partition__](#interface-partition): `export module` _name_`:`_partname_`;`
-    - [__implementation unit__](#implementation-unit): `module` _name_`;`
-    - [__internal partition__](#internal-partition): `module` _name_`:`_partname_`;`
+    - [__primary interface__](#primary-interface): `export module name;`
+    - [__interface partition__](#interface-partition): `export module name:partname`;`
+    - [__implementation unit__](#implementation-unit): `module name;`
+    - [__internal partition__](#internal-partition): `module name:partname`;`
 - recommended file suffix
     - interfaces files (__primary interface__ and __interface partition__): `.cppm`
     - __implementation unit__: `.cpp`
