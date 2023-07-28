@@ -7,6 +7,7 @@
 - [Chapter 10: Formatted Output](#chapter-10-formatted-output)
 - [Chapter 12: `std::jthread` and Stop Tokens](#chapter-12-stdjthread-and-stop-tokens)
 - [Chapter 16: Modules](#chapter-16-modules)
+- [Chapter 18: Compile-Time Computing](#chapter-18-compile-time-computing)
 
 # Chapter 1: Comparisons and Operator `<=>`
 
@@ -218,3 +219,35 @@ std::format(fmt, "abcdefg", 3.4);
 ### __Internal Partition__
 
 - allows projects to move __module-local__ declarations and definitions outside the primary interface
+
+# Chapter 18: Compile-Time Computing
+
+- `constinit`
+    - used to force and ensure that a _mutable_ static or global variable is initialized at compile time
+    - `constinit = constexpr - const`
+    - intialization value can only be a __constant__ value at compile time
+        - `constinit` variable is not __constant__ so cannot be used to initialize another `constinit` variable
+- `consteval`
+    - forces a function to only be called in compile-time
+- `std::is_constant_evaluated()`
+    - generally speaking, yields true if
+        - called in compile-time
+        - in a constant expression, both the followings yield `true`:
+            - `const bool i = std::is_constant_evaluated()`
+            - `static bool i = std::is_constant_evaluated()`
+
+## Contraints and Extensions for `constexpr` Functions
+
+- can use __heap memory__ at compile time
+    - enables the use of `std::vector` and `std::string` in `constexpr` function
+    - need to ensure that memory allocated in one constant expression context be deallocated in the same context
+        - [Why `constexpr` specifier is not allowed for non-empty `std::vector` in `consteval` function?](https://stackoverflow.com/questions/76774877/why-constexpr-specifier-is-not-allowed-for-non-empty-stdvector)
+        - [What are the conditions that `constexpr` will start a new constant expression context?](https://stackoverflow.com/questions/76775335/what-are-the-conditions-that-constexpr-will-start-a-new-constant-expression-co)
+- only literal types in declaration and body
+    - literal type: type that can be declared as `constexpr`
+    - variables cannot be `static` or `thread_local`
+- runtime polymorphism
+    - can use `virtual` function and `dynamic_cast`
+- ctor and dtor can be `constexpr` only if the class has no virtual base class
+- implicitly `inline`
+
