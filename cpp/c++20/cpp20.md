@@ -9,7 +9,9 @@
 - [Chapter 16: Modules](#chapter-16-modules)
 - [Chapter 18: Compile-Time Computing](#chapter-18-compile-time-computing)
 - [Chapter 19: Non-Type Template Parameter (NTTP) Extensions](../cppcon/template/template.md#template-parameters)
-- []
+- [Chapter 20: Small Improvements for the Core Language](#chapter-20-small-improvements-for-the-core-language)
+- [Chapter 21: Small Improvements for Generic Programming](#chapter-22-small-improvements-for-generic-programming)
+- [Chapter 22: Small Improvements for the C++ Standard Library](#chapter-23-small-improvements-for-the-c-standard-library)
 
 # Chapter 1: Comparisons and Operator `<=>`
 
@@ -258,3 +260,108 @@ std::format(fmt, "abcdefg", 3.4);
 
 refer to [template note](../cppcon/template/template.md#template-parameters)
 
+
+# Chapter 20: Small Improvements for the Core Language
+
+- range-based `for` loop with initialization
+    ```cpp
+    for (auto&& coll = getValues(); int i : coll) {}
+    ```
+- `using` for enum class
+    ```cpp
+    enum class Status {open, close};
+    Status s1 = open;   // ERROR
+    using enum Status;
+    auto s2 = open;     // OK
+    ```
+- attributes
+    - `[[likely]]` and `[[unlikely]]` to give compiler hints for branch optimizations
+        ```cpp
+        if (n > 0) [[likely]] n++;
+        else n--;
+        ```
+        - excessive use might be counter-productive
+    - `[[no_unique_address]]`: used to make state-less members not occupying memory storage
+        - state-less members examples
+            - hash function of an unordered container
+            - deleter of `std::unique_ptr`
+            - standard allocator of containers or strings
+        ```cpp
+        struct Empty {};
+        // before C++20: empty base calss optimization
+        struct S1 : Empty {
+            int i;
+        };  // sizeof(S1) == 4
+
+        // since C++20
+        struct S2 {
+            [[no_unique_address]] Empty e;
+            int i;
+        };  // sizeof(S2) == 4
+        ```
+    - `[[nodiscard]]` can have parameters for warning message
+        - used to indicate which of the followings:
+            - memory leaks
+            - non-intuitive behavior 
+                - ignore return result of `empty()`
+            - unnecessary overhead
+                - ignore result of a pure function
+        ```cpp
+        [[nodiscard("Did you mean clear()?")]]
+        bool empty() const;
+        ```
+
+# Chapter 22: Small Improvements for Generic Programming
+
+- conditional `explicit`
+    - usage example: delegate type conversion support to a wrapper type
+        ```cpp
+        #include <type_traits> // for std::is_convertible_v<>
+
+        template <class T>
+        class Wrapper {
+            T value;
+          public:
+            template <class U>
+            explicit(!std::is_convertible_v<U, T>)
+            Wrapper(const U& val) : value{val} {}
+        };
+        ```
+
+# Chapter 23: Small Improvements for the C++ Standard Library
+
+- `std::source_location`
+    ```cpp
+    #include <source_location>
+    #include <iostream>
+    #include <format>
+
+    void bar(std::source_location sl = std::source_location::current()) {
+        std::cout << std::format("file:\t\t{}\n", sl.file_name());
+        std::cout << std::format("function:\t\t{}\n", sl.function_name());
+        std::cout << std::format("line:\t\t{}\n", sl.line());
+    }
+    ```
+- safe comparisons of integral values
+
+    <img src="./int_cmp.png">
+
+    ```cpp
+    int x = -7;
+    unsigned y = 42;
+    bool b1 = x < y;            // false
+    bool b2 = comp_less(x, y);  // true
+    ```
+
+    - `std::ssize` can be used to get signed value of the size fo a range
+        ```cpp
+        for (int i = 0; i < ssize(coll) /* use ADL here */; ++i) {
+        }
+        ```
+- utilities for dealing with bits
+    - bit operations
+
+        <img src="./bit_op.png">
+    
+        - _val_ must be __unsigned integral__
+    - `std::bit_cast<>()`: cast between integral types with the same number of bits
