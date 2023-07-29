@@ -28,3 +28,4 @@
 - [ABI note](./abi/abi.md), referred from:
     - [CppCon 2019: Louis Dionne “The C++ ABI From the Ground Up”](https://www.youtube.com/watch?v=DZ93lP1I7wU)
     - [C++ Weekly - Ep 270 - Break ABI to Save C++](https://www.youtube.com/watch?v=By7b19YIv8Q)
+- [C++ Code Smells - Jason Turner - CppCon 2019](https://www.youtube.com/watch?v=f_tLQl0wLUM)
