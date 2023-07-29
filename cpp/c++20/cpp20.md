@@ -8,6 +8,8 @@
 - [Chapter 12: `std::jthread` and Stop Tokens](#chapter-12-stdjthread-and-stop-tokens)
 - [Chapter 16: Modules](#chapter-16-modules)
 - [Chapter 18: Compile-Time Computing](#chapter-18-compile-time-computing)
+- [Chapter 19: Non-Type Template Parameter (NTTP) Extensions](../cppcon/template/template.md#template-parameters)
+- []
 
 # Chapter 1: Comparisons and Operator `<=>`
 
@@ -250,4 +252,9 @@ std::format(fmt, "abcdefg", 3.4);
     - can use `virtual` function and `dynamic_cast`
 - ctor and dtor can be `constexpr` only if the class has no virtual base class
 - implicitly `inline`
+
+
+# Chapter 19: Non-Type Template Parameter (NTTP) Extensions
+
+refer to [template note](../cppcon/template/template.md#template-parameters)
 
