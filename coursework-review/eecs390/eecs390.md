@@ -1,14 +1,15 @@
+Reference: [Programming Language Principles and Paradigms, by Amir Kamil](https://eecs390.github.io/notes/)
+
 # Content
 
 - [Foundations](#foundation)
     - [Basic Elements](#basic-elements)
     - [Names and Environments](#names-and-environments)
     - [Memory Management](#memory-management)
-
 - [Functional Programming](#functional-programming)
     - [Higher-Order Functions](#higher-order-functions)
     - [Continuations](#continuations)
-- Data Abstraction
+- [Data Abstraction](#data-abstraction)
 
 # Foundation
 
@@ -168,3 +169,149 @@
     ; continuation object
     (define error error-continuation)
     ```
+
+# Data Abstraction
+
+- __Abstract Data Type (ADT)__: data type that only behavior is defined, not implementation
+- object-oriented languages provide means for the following features of ADT:
+    - [__encapsulation__](#encapsulation): the ability to bundle together data of an ADT along with the functions that operate on that data
+    - [__information hiding__](#information-hiding): the ability to restrict access to implementation details of an ADT
+    - [__inheritance__](#inheritance): the ability to reuse code of an existing ADT when defining another ADT
+    - [__subtype polymorphism__](#subtype-polymorphism): the ability to use an instance of a derived type where a base type is expected
+
+## __encapsulation__
+
+- member functions / methods
+    - non-`static` methods operate on instances of a class, they take in the instance itself as a parameter
+        - implicit: C++ `this`
+        - explicit: Python `self`
+- implementation strategies for access to member
+    - access to members can be thought as __sending a message__ to the object
+        - languages differ in whether or not the set of messages an object responds to is fixed at compile time
+    - __offset-based__: access to data members is translated to a fixed offset into the object at compile time
+    - __dictionary-based__: members looked up in a dictionary
+        - enable members to be added to an object in run time
+
+## information hiding
+
+- keyword `public`, `private`, `protected`
+<img src="./access-control.png">
+    - `protected`: C++, C#, and Java prohibit `Derived` from accessing protected member of `Base` through static type `Base`
+        ```cpp
+        class Base {
+        protected:
+            int x = 4;
+        };
+
+        class Derived : public Base {
+        public:
+            void foo(Base *b, Derived *d) {
+                b->x;   // ERROR
+                d->x;   // OK
+            }
+        };
+        ```
+- C++ keyword `friend`
+    ```cpp
+    class Bar { /*...*/ };
+    class Foo { 
+        friend class Bar;
+        // Bar now has access to Foo's private member x
+        int x;
+    };
+    ```
+    
+## inheritance
+
+- types of inheritance
+    - __implementation inheritance__ vs __interface inheritance__
+        - __implementation inheritance__ includes __interface inheritnace__
+        - a method can be _abstract_ (_pure virtual_) if no implementation is provided
+            - a class is _abstract interface_ if all methods are _abstract_
+    - C++: `public`, `protected`, `private`
+        ```
+        accessibility of inherited member = more restrictive of (original accessibility, type of inheritance)
+        ```
+
+
+## subtype polymorphism
+
+### method overriding
+
+- the ability to _override_ a method of base class in derived class is the key to polymorphism
+- in some languages, base-class methods that are not overriden but redefined in a derived class are __hidden__ by the definition in the derived class
+    - C++
+        - non-`virtual` functions
+        - `virtual` functions with different signatures
+    - in Java, treat as __overload__ instead of __hidden__
+    - example: __contravariance__ (see below)
+- overriding requires __dynamic binding__, where the actual method to be invoked is determined by the object's __dynamic type__ rather than the __static type__ apparent in the source code
+    - to enable __dynamic binding__ in C++, an instance method needs to be declared as `virtual`
+        - to help compiler detect whether a method is actually __overriding__, place `override` keyword at the end of method signature
+- access to __hidden__ or __overriden__ members
+    -
+    - C++
+        - use scope resolution operator
+        - base-class ctor can be explicitly invoked in initializer list
+            ```cpp
+            struct A { A(int x); };
+            struct B : A {
+                B(int x) : A(x) {}
+            };
+            ```
+            - if not explicitly invoked, a call to the default ctor of the base class is inserted by compiler
+                - `ERROR` if there is no default ctor
+            - the base class ctor runs before any other initializers or the body of the derived-class ctor
+    - Java and Python
+        - uses `super().foo()` to call `foo()` in base class
+- __covariance__ vs __contravariance__ patterns
+    -
+    - __covariance__: return type of an overriding method can be a derived type of the return type in the overridden method
+    - __contravariance__: parameter type of an overriding method can be a base type of the parameter type in the overriden method
+
+### implementing dynamic binding
+
+- dictionary-based languages such as Python
+    - a sequence of dictionary lookups at runtime
+        1. search in the dictionary of the object itself
+        2. search in the dictionary of the class
+        3. search in the dictionary of base class
+- offset-based languages such as C++
+    - store pointers to `virtual` methods in a data strcutre called __virtual table__ (__vtable__)
+    - the storage of an object of type `A` contains a pointer to the __vtable__ for class `A` as the first item (if `A` has `virtual` methods)
+        ```cpp
+        struct A {
+            int x;
+            double y;
+            virtual void a();
+            virtual int b(int i);
+            virtual c(double d);
+            void f();
+        };
+
+        struct B : A {
+            int z;
+            char w;
+            virtual void d();
+            virtual double e();
+            virtual int b(int i);
+            void f();
+        };
+        ```
+        <img src="./layout-derived.png">
+
+        1. look up the member in the __static type__ of the receiver
+        2. if non-`virtual`, generate a direct dispatch
+        3. if `virtual`, determine its offset in the __vtable__ of the static type
+            - two extra dereferences:
+                ```cpp
+                A *aptr = new B;
+                aptr->b();
+
+                // extract vtable pointer from start of object
+                vtable_ptr = aptr-><vtable>;
+                // index into vtable at statically computed offset for b
+                func_ptr = vtable_ptr[1];
+                // call function, pass the implicit this parameter
+                func_ptr(aptr);
+                ```
