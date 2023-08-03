@@ -178,6 +178,7 @@ int main() {
 - two exceptions:
     - cannot be null
     - `const reference` can bind to rvalue while `pointer to const` cannot
+- despite its implementation, we should regard __reference__ as an _alias to an existing object_, it is the nature of __reference__ and the abstraction __reference__ provides
 
 
 # conversion operator

@@ -22,13 +22,7 @@ _thing_ template is a parametrized description of a family of _things_
 ## Template Parameters
 - type parameters(`typename`/`class`)
 - Non-type template parameter (NTTP)
-    - integral, enumeration and floating-point (since C++20)
-    - pointers to objects/functions/members with static storage
-    - lvalue reference
-    - `std::nullptr_t`
-    - classes that can be `constexpr` (since C++20)
-        - `std::pair`, `std::array`
-        - lambda (function object)
+    - [structural type](../type-categories.md#structural-type)
 - template
     ```cpp
     template <class T, template<class U, class A = std::allocator<U>> class Container>

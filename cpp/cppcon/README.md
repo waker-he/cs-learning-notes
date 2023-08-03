@@ -30,3 +30,5 @@
     - [C++ Weekly - Ep 270 - Break ABI to Save C++](https://www.youtube.com/watch?v=By7b19YIv8Q)
 - [C++ Code Smells - Jason Turner - CppCon 2019](https://www.youtube.com/watch?v=f_tLQl0wLUM)
 - [CppCon 2019: Kate Gregory “Naming is Hard: Let's Do Better”](https://www.youtube.com/watch?v=MBRoCdtZOYg)
+- [A Tour of C++ Recognised User Type Categories - Nina Ranns - CppCon 2022](https://www.youtube.com/watch?v=pdoUnvTwnr4)
+    - [note](./type-categories.md)
