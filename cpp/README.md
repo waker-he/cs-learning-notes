@@ -7,6 +7,7 @@
 
 - [template](./cppcon/template/template.md)
 - [value-categories](./cppcon/value-categories/value-categories.md)
+- [type-categories](./cppcon/type-categories.md)
 - [allocator](./cppcon/allocator/allocator.md)
 - [\<chrono>](./cppcon/chrono/chrono.md)
 - [Application Binary Interface (ABI)](./cppcon/abi/abi.md)

@@ -32,3 +32,5 @@
 - [CppCon 2019: Kate Gregory “Naming is Hard: Let's Do Better”](https://www.youtube.com/watch?v=MBRoCdtZOYg)
 - [A Tour of C++ Recognised User Type Categories - Nina Ranns - CppCon 2022](https://www.youtube.com/watch?v=pdoUnvTwnr4)
     - [note](./type-categories.md)
+- [Breaking Dependencies: The SOLID Principles - Klaus Iglberger - CppCon 2020](https://www.youtube.com/watch?v=Ntraj80qN2k&t=2776s)
+- [Breaking Dependencies: Type Erasure - A Design Analysis - Klaus Iglberger - CppCon 2021](https://www.youtube.com/watch?v=4eeESJQk-mw)
