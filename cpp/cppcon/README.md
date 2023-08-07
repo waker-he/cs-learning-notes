@@ -35,3 +35,5 @@
 - [Breaking Dependencies: The SOLID Principles - Klaus Iglberger - CppCon 2020](https://www.youtube.com/watch?v=Ntraj80qN2k&t=2776s)
 - [Breaking Dependencies: Type Erasure - A Design Analysis - Klaus Iglberger - CppCon 2021](https://www.youtube.com/watch?v=4eeESJQk-mw)
 - [Back to Basics: Lambdas from Scratch - Arthur O'Dwyer - CppCon 2019](https://www.youtube.com/watch?v=3jCOwajNch0&t=1347s)
+- [Breaking Dependencies - C++ Type Erasure - The Implementation Details - Klaus Iglberger CppCon 2022](https://www.youtube.com/watch?v=qn6OqefuH08)
+- [Back to Basics: Type Erasure - Arthur O'Dwyer - CppCon 2019](https://www.youtube.com/watch?v=tbUCHifyT24&t=33s)
