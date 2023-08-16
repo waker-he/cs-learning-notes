@@ -85,6 +85,7 @@
             - they pair with each other when operating on the __same mutex__
     - to achieve __SC-DRF memory model__, __release operation__ and __acquire operation__ act as __memory barrier__
     - __memory barrier__ prevents code from being reordered across it in one direction or both directions
+        - it requires cooperation with software (compiler) and hardware (processor and cache)
         - memory operations before a __release operation__ cannot be reordered to be after the __release operation__
             - __release__ is considered as publishing data that has been written to other threads
         - memory operations after a __acquire operation__ cannot be reordered to be before the __acquire operation__
@@ -175,3 +176,27 @@
         - atomic load in thread A reads the value that is written by the atomic store in thread B
     - `std::memory_order_release`, `std::memory_order_acq_rel`, `std::memory_order_seq_cst`: atomic store with these `std::memory_order` is a __release operation__
     - `std::memory_order_acquire`, `std::memory_order_acq_rel`, `std::memory_order_seq_cst`: atomic store with these `std::memory_order` is an __acquire operation__
+
+## usage in double-checked locking pattern (DCLP)
+
+```cpp
+// singleton initialization
+std::atomic<Widget*> Widget::ptrInstance{nullptr};
+Widget* Widget::instance() {
+    Widget* ptr = ptrInstance.load(std::memory_order_acquire);  // 1
+    if (ptr == nullptr) {       // first check
+        std::lock_guard<std::mutex> lg{mutW};
+        ptr = ptrInstance.load(std::memory_order_relaxed);      // 2
+        if (ptr == nullptr) {   // second check
+            ptr = new Widget();
+            ptrInstance.store(ptr, std::memory_order_release);  // 3
+        }
+    }
+
+    // using temporary variable ptr to avoid an extra atomic load when return
+    return ptr;
+}
+```
+- for atomic load `1`, if it uses `std::memory_order_relaxed`, it will not synchronize with release operation `3`
+    - it can see that ptrInstance is not `nullptr` but the memory it points to can still be garbage
+    - in this case, it will return a pointer to the `Widget` object that is in a "partially-constructed" state
