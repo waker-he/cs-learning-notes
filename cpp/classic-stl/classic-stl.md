@@ -49,6 +49,8 @@
 
 # Iterators
 
+- provide access to container elements through well-defined interfaces with strict guarantees
+
 <p align="center">
   <img src="./iterators.png">
 </p>
