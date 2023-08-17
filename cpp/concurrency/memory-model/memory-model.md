@@ -75,9 +75,8 @@
 - C++11's default memory model is __Sequentially Consistent for Data Race Free (SC-DRF) programs__
     - this means that if a program is __data race-free__, then the system will provide the illusion that all memory operations are executed in the program order
     - otherwise, it is __undefined behavior__
-- __data race__: a program is said to have __data race__ if two or more threads access the same memory location and:
+- __data race__: a program is said to have __data race__ if two or more threads access the same memory location concurrently and:
     - at least one of the thread performs a __write operation__
-    - at least one operation is not __atomic__
     - without __synchronization__
 - __synchronize-with__:
     - operation A in one thread __synchronizes with__ operation B in another thread if A is a __release operation__ and B is an __acquire operation__ that is __paired with A__
