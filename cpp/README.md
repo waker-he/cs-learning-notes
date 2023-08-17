@@ -5,6 +5,7 @@
 
 # General C++ notes
 
+- [Classic STL](./classic-stl/classic-stl.md)
 - [template](./cppcon/template/template.md)
 - [value-categories](./cppcon/value-categories/value-categories.md)
 - [type-categories](./cppcon/type-categories.md)
