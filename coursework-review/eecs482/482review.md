@@ -2,6 +2,7 @@
 
 - [Overview](#overview)
 - [Process and Thread](#process-and-thread)
+    - [Concurrency](#concurrency)
     - [CPU Scheduling](#cpu-scheduling)
 - [Virtual Memory](#virtual-memory)
     - [Implementation of Address Translation](#implementation-of-address-translation)
@@ -57,6 +58,18 @@
  
 ## Concurrency
 
+### race condition
+
+- __data race__: a program is said to have __data race__ if two or more threads access the same memory location concurrently and:
+    - at least one of the thread performs a __write operation__
+    - without __synchronization__
+- __race condition__: a logical error in the context of concurrency (in threads, processes or even distributed systems), where program produces unexpected result non-deterministicly
+    - all __data race__ leads to __race condition__, but race condition might not be caused by data race
+        - check [Baris Kasikci's answer on stack overflow](https://stackoverflow.com/questions/11276259/are-data-races-and-race-condition-actually-the-same-thing-in-context-of-conc)
+        - see [race_condition.cpp](./race_condition.cpp)
+
+### monitor
+
 - a monitor = a lock + conditional variables associated with that lock
 - to program with monitor:
     - __lock/mutex__ for mutual exclusion
@@ -78,6 +91,33 @@
     signal/broadcast about the stuff you did
     unlock
     ```
+
+### deadlock
+
+- cyclical waiting for resources which prevents progress
+- necessary conditions
+    - __limited resources__: not enough to serve all threads simultaneously
+    - __no preemption__: cannot force threads to give up resources
+    - __cyclical chain of requests__
+    - __hold and wait__: threads hold resources whil waiting to acquire other resources
+- to prevent:
+    - eliminating __cyclycal chain of requests__
+        - impose gloabl ordering of resources and grab resources in order
+    - eliminating __hold-and-wait__
+        - either grab all resources or grab no resources at all (e.g. `std::scoped_lock`)
+        - banker's algorithm
+            - phases
+                1. __declare__ all resources
+                2.  ```
+                    while (!done) {
+                        acuquire resource if safe
+                        work
+                    }
+                    ```
+                3. release all resources
+            - grant resources if it's "safe", otherwise block
+                - safe means it is guaranteed that all threads can finish in some specific order after the requesting resources are granted
+
  
 ## CPU Scheduling
 
