@@ -2,6 +2,7 @@
 
 - [Overview](#overview)
 - [Process and Thread](#process-and-thread)
+    - [System call](#system-call)
     - [Concurrency](#concurrency)
     - [CPU Scheduling](#cpu-scheduling)
 - [Virtual Memory](#virtual-memory)
@@ -56,6 +57,29 @@
     }
     ```
  
+## System Call
+
+- trap vs interrupt
+    - source
+        - trap is an exception caused by the program's own operations
+            - division-by-zero
+            - invalid memory access
+            - a system call
+        - interrupt is caused by external events
+            - timer interrupt
+            - peripheral device (like keyboard or mouse)
+    - asynchrony
+        - trap is synchronous with respect to the program's flow since it is caused directly by a specific instruction execution
+        - interrupt is asynchronous with respect to CPU's operation, it can occur virtually at any point in a program's execution
+- `syscall` assembly-language instruction traps to kernel at pre-specified location
+    1. system call arguments are passed in registers or on the stack
+        - system call number argument identifies the handler
+    2. set mode bit to kernel
+    3. save current context: registers, PC, SP
+    4. load context for the kernel's system call handler
+    5. system call handler dispatches the call to appropriate system call handler function according to __system call number__ and __interrupt vector table__
+
+
 ## Concurrency
 
 ### race condition
