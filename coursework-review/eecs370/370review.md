@@ -34,13 +34,13 @@
 
 ## Overheads of Function Call
 
-- saving and restoring of registers
-    - __callee-saved registers__: callee push registers onto stack at the beginning and pop them at the end
-    - __caller-saved registers__: saved before a function call and restore after the call
 - instruction cache
     - jumps to a different area of memory
     - causes instruction cache misses
 - extra instructions needed
+    - saving and restoring of registers
+        - __callee-saved registers__: callee push registers onto stack at the beginning and pop them at the end
+        - __caller-saved registers__: saved before a function call and restore after the call
     - parameter passing: push on stack or mov in registers
     - push and pop return address
     - manipulating frame pointer
