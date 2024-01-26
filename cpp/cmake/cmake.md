@@ -1,3 +1,18 @@
+## Reference
+
+- [C++Now 2017: Daniel Pfeifer “Effective CMake"](https://www.youtube.com/watch?v=bsXLMQ6WgIk)
+
+## Contents
+
+- [Build/Install Commands](#buildinstall-commands)
+- [Basics](#basics)
+    - [Organization](#organization)
+    - [Commands](#commands)
+    - [Variables](#variables)
+    - [Targets and Properties](#targets-and-properties)
+- [Custom Commands](#custom-commands)
+- [Build Tree vs Install Tree](#build-tree-vs-install-tree)
+
 ## Build/Install Commands
 
 ```sh
@@ -18,16 +33,113 @@ cmake --build .
 cmake --install . --prefix <destination of install>
 ```
 
-## `PUBLIC`|`PRIVATE`|`INTERFACE`
+## Basics
 
-### Example: `target_include_directories()`
-- `PUBLIC`: When you specify an include directory as `PUBLIC`, it means two things:
-    - The specified directory will be added to the include path for the target itself.
-    - The directory will also be added to the include path for any other targets that link against this target. In other words, the include directories are propagated to dependent targets.
-- `PRIVATE`: When you specify an include directory as `PRIVATE`, it means:
-    - The specified directory will be added to the include path for the target itself.
-    - However, it will not be added to the include path for targets that link against this target. So, the include directories are not propagated to dependent targets.
-- `INTERFACE`: This keyword is used when you don't need to add the directories to the target itself, but you want them to be used by targets that link against this target.
+### Organization
+
+- __Directories__ that contain a `CMakeLists.txt` are the entry point for the build system generator. Subdirectories may be added with `add_subdirectory()` and must contain a `CMakeLists.txt` too.
+- __Scripts__ are `<script>.cmake` files that can be executed with `cmake -P <script>.cmake`. Not all commands are supported.
+- __Modules__ are `<script>.cmake` files located in the `CMAKE_MODULE_PATH`. Modules can be loaded with the `include()` command. When being loaded, all the commands in it will be executed immediately.
+
+### Commands
+
+```cmake
+command_name(space separated list of strings)
+```
+
+- __Scripting commands__: change state of command processor
+    - set variables
+    - change behavior of other commands
+- __Project commands__: specific to defining and configuring a build system for a software project.
+    - set the name and version of project
+    - create build targets
+- Command invocations are not expressions
+
+### Variables
+
+```cmake
+set(hello world)
+message(STATUS "hello, ${hello}")
+```
+
+- set with the `set()` command
+- expand with `${}`
+- variables and values are strings
+- list are `;`-separated strings
+- CMake variables are not enviroment variables (unlike `Makefile`)
+- unset variable expands to empty string
+
+### Targets and Properties
+
+- Variables are so CMake 2.8.12. __Modern__ CMake is about __Targets__ and __Properties__! Avoid __custom__ variables in the arguments of project commands.
+- Imagine Targets as Objects
+    - Constructors:
+        - `add_executable()`
+        - `add_library()`
+    - Member variables:
+        - Target properties
+    - Member functions:
+        - `get_target_property()`
+        - `set_target_properties()`
+        - `get_property(TARGET)`
+        - `set_property(TARGET)`
+        - `target_compile_definitions()`
+        - `target_compile_features()`
+        - `target_compile_options()`
+        - `target_include_directories()`
+        - `target_link_libraries()`
+        - `target_sources()`
+- Non-`INTERFACE_` properties define the __build specification__ of a target
+- `INTERFACE_` properties define the __usage requirements__ of a target
+- `PRIVATE` populates the non-`INTERFACE_` property
+- `INTERFACE` populates the `INTERFACE_` property
+- `PUBLIC` populates both
+- Example: `target_include_directories()`
+    - `PUBLIC`: When you specify an include directory as `PUBLIC`, it means two things:
+        - The specified directory will be added to the include path for the target itself.
+        - The directory will also be added to the include path for any other targets that link against this target. In other words, the include directories are propagated to dependent targets.
+    - `PRIVATE`: When you specify an include directory as `PRIVATE`, it means:
+        - The specified directory will be added to the include path for the target itself.
+        - However, it will not be added to the include path for targets that link against this target. So, the include directories are not propagated to dependent targets.
+    - `INTERFACE`: This keyword is used when you don't need to add the directories to the target itself, but you want them to be used by targets that link against this target.
+- Use `target_link_libraries()` to express direct dependencies!
+
+## Custom Commands
+
+- Commands can be added with `function()` or `macro()`.
+    - Difference is like in C++.
+    - Create macros to wrap commands that have output parameters. Otherwise, create a function.
+- When a new command replaces an existing command, the old one can be accessed with a `_` prefix.
+
+### Function
+
+```cmake
+function(my_command input output)
+  # ...
+  set(${output} ... PARENT_SCOPE)
+endfunction()
+my_command(foo bar)
+```
+
+- variables are scoped to the function, unless set with `PARENT_SCOPE`
+- available variables:
+    - parameters: `input`, `output` (above example)
+    - others: `ARGC`, `ARGV`, `ARGN`, `ARG0`, `ARG1`, ...
+- `${output}` expands to `bar`
+
+### Macro
+
+```cmake
+macro(my_command input output)
+  # ...
+endmacro()
+my_command(foo bar)
+```
+
+- no extra scope
+- text replacements: `${input}`, `${output}`, `${ARGC}`, ...
+- `${output}` is _replaced by_ `bar`
+
 
 ## Build Tree vs Install Tree
 
