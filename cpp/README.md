@@ -27,6 +27,7 @@
     - [reference vs pointer](#reference-vs-pointer)
     - [conversion operator](#conversion-operator)
     - [Argument Dependent Lookup (ADL)](#argument-dependent-lookup-adl)
+    - [Trailing Return Types Advantages](#trailing-return-types-advantages)
 
 # Helpful Resouces and Tools
 
@@ -248,3 +249,52 @@ int main() {
                 - other benefits: we have a __centralized customization point__ to check if the arguments pass
                 the requirements of the template
                 - utilities in `std::ranges` are implemented using CPO, so prefer `std::ranges` utilities over `std` utilities
+
+
+# Trailing Return Types Advantages
+
+> reference: [Embracing Trailing Return Types and `auto` Return SAFELY in Modern C++ - Pablo Halpern - CppCon 2022](https://www.youtube.com/watch?v=Tnl7FnwJ2Uw)
+1. Omitting Namespace and Class Qualifiers
+
+    ```cpp
+    namespace NS {
+        template <typename T> class C {};
+        struct S {
+            using E = int;
+            auto f() -> E;
+        };
+    }
+
+    // leading return type
+    NS::C<NS::S::E> NS::S::f() {}
+    // trailing return type
+    auto NS::S::f() -> C<E> {}
+    ```
+2. Using a Runtime Argument by Name
+
+    ```cpp
+    template <typename A, typename B>
+    decltype((std::declval<A>() + std::declval<B>()) / 2)
+        avg(A a, B b)
+    {
+        return (a + b) / 2;
+    }
+
+    template <typename A, typename B>
+    auto avg(A a, B b) -> decltype((a + b) / 2)
+    {
+        return (a + b) / 2;
+    }
+    ```
+3. Readable Complex Return Types
+    ```cpp
+    // return pointer-to-function
+    double (*f1(short s))(int *);
+    auto f2(short s) -> double (*)(int *);
+
+    // return pointer-to-class-member
+    int (Calc::*g(kind k))(int);
+    auto g(kind k) -> int (Calc::*)(int);
+    ```
+4. Lambda Expression can only use trailing return types
+    - consistency between regular function and lambda expression syntax
