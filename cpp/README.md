@@ -5,6 +5,7 @@
 
 # General C++ notes
 
+- [C++ Abstract Machine](./c++_abstract_machine/c++_abstract_machine.md)
 - [Classic STL](./classic-stl/classic-stl.md)
 - [template](./cppcon/template/template.md)
 - [value-categories](./cppcon/value-categories/value-categories.md)
