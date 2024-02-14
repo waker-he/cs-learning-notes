@@ -10,6 +10,7 @@ __All following types definition are in C++20__
 
 # Scalar Type
 
+Simple type without any internal structure (compared to aggregates, these two types cover all types in C)
 - arithmetic types
 - enumeration types
 - pointer types
