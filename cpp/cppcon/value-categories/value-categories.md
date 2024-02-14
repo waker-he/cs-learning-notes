@@ -112,16 +112,11 @@
     S foo() { return S{}; }
 
     S s = foo();
+    // s might be copy/move-constructed
+    // S must define copy/move ctor
     ```
 - with mandatory copy elision:
-    - prvalue is guaranteed to be passed around as an unmaterialized object until:
-        - when passed to a reference
-            - __temporary materialization__: creates a temporary object in memory according to the prvalue
-                - converted to __xvalue__
-            - bind the reference to the temporary object
-        - used to initialize an object
-            - if type matches the object type, constructed in place
-            - if type matches the argument of the object's ctor, call the corresponding ctor
+    - a prvalue is not materialized until needed, and then it is constructed directly into the storage of its final destination
     - benefits:
         - performance is guaranteed
         - can declare copy/move constructor as `deleted` if needed
