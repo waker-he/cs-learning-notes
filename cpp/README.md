@@ -5,17 +5,20 @@
 # General C++ notes
 
 - [C++ Abstract Machine](./c++_abstract_machine/c++_abstract_machine.md)
-- [Object Lifetime](./object_lifetime/object_lifetime.md)
-- [Classic STL](./classic-stl/classic-stl.md)
+- C++ Objects
+    - [Object Lifetime](./object_lifetime/object_lifetime.md)
+    - [Initialization](./initialization/initialization.md)
+    - [type-categories](./cppcon/type-categories.md)
 - [template](./cppcon/template/template.md)
 - [value-categories](./cppcon/value-categories/value-categories.md)
-- [type-categories](./cppcon/type-categories.md)
 - [allocator](./cppcon/allocator/allocator.md)
-- [\<chrono>](./cppcon/chrono/chrono.md)
 - [Application Binary Interface (ABI)](./cppcon/abi/abi.md)
 - [CMake](./cmake/cmake.md)
 - Concurrency
     - [C++ Memory Model](./concurrency/memory-model/memory-model.md)
+- C++ Standard Library
+    - [Classic STL](./classic-stl/classic-stl.md)
+    - [\<chrono>](./cppcon/chrono/chrono.md)
 - others
     - [Helpful Online Resouces and Tools](#helpful-resouces-and-tools)
     - [translation unit](#trasnlation-unit)
