@@ -1,11 +1,11 @@
 - [Effective Modern C++](./effective-modern-c%2B%2B/effective-modern-cpp.md)
 - [C++17](./c%2B%2B17/cpp17.md)
 - [C++20](./c%2B%2B20/cpp20.md)
-- [CppCon](./cppcon/README.md)
 
 # General C++ notes
 
 - [C++ Abstract Machine](./c++_abstract_machine/c++_abstract_machine.md)
+- [Object Lifetime](./object_lifetime/object_lifetime.md)
 - [Classic STL](./classic-stl/classic-stl.md)
 - [template](./cppcon/template/template.md)
 - [value-categories](./cppcon/value-categories/value-categories.md)

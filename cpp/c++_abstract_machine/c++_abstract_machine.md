@@ -88,9 +88,7 @@
         - static
         - dynamic
         - thread_local
-    - lifetime
-        - begins when storage with the proper size and alignment is obtained and its initialization is complete
-        - ends when the storage which the object occupies is released or the dtor call starts
+    - [lifetime](../object_lifetime/object_lifetime.md)
     - type
         - specify size and alignment and allowable operations on it
     - value
