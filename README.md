@@ -1,5 +1,3 @@
-# Start from 2022.6.11
-
 # Currently Learning:
 - [C++](./cpp/README.md)
 
