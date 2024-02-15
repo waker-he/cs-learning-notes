@@ -14,7 +14,8 @@
 - [allocator](./cppcon/allocator/allocator.md)
 - [Application Binary Interface (ABI)](./cppcon/abi/abi.md)
 - [CMake](./cmake/cmake.md)
-- Concurrency
+- Concurrency and Parallelism
+    - [Concurrency vs Parallelism](./concurrency/VSparallelism/VSparallelism.md)
     - [C++ Memory Model](./concurrency/memory-model/memory-model.md)
 - C++ Standard Library
     - [Classic STL](./classic-stl/classic-stl.md)
