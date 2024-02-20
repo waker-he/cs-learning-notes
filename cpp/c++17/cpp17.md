@@ -22,10 +22,11 @@
     - [Chapter 18: `std::byte`](#chapter-18-stdbyte)
     - [Chapter 19: `std::string_view`](#chapter-19-stdstring_view)
 - [Part IV: Library Extensions and Modifications](#part-iv-library-extensions-and-modifications)
-    - [Chapter 32: Parallel STL Algorithms](#chapter-32-parallel-stl-algorithms)
+    - [Chapter 22: Parallel STL Algorithms](#chapter-22-parallel-stl-algorithms)
 - [Part V: Expert Utilities](#part-v-expert-utilities)
     - [Chapter 29: Polymorphic Memory Resources (PMR)](#chapter-29-polymorphic-memory-resources-pmr)
     - [Chapter 31: `std::to_chars()` and `std::from_chars()`](#chapter-31-stdto_chars-and-stdfrom_chars)
+    - [Chapter 32: `std::launder()`](#chapter-32-stdlaunder)
 
 
 # Part I: Basic Language Features
@@ -480,7 +481,7 @@ Literally just byte without numeric or character interpretation.
 
 # Part IV: Library Extensions and Modifications
 
-## Chapter 32: Parallel STL Algorithms
+## Chapter 22: Parallel STL Algorithms
 
 pass the execution policy as the first argument for algorithm functions to enable parallelism:
 - `std::execution::seq`: This policy specifies that the algorithm will be executed sequentially and there will be no parallelism.
@@ -519,3 +520,29 @@ if (auto [ptr, ec] = std::to_chars(s, s+999, value); ec == std::errc{}) {
     *ptr = '\0';    // ensure a trailing null character is behind
 }
 ```
+
+## Chapter 32: `std::launder()`
+
+According to C++ standard, if a new object is created at the storage location which the original object occupied,
+- a pointer that pointed to the original object
+- a reference that referred to the original object
+- the name of the original object
+
+will automatically refer to the new object if:
+- the type of the original object is not `const`-qualified, and, if a class type, does not contain any non-static data member whose type is `const`-qualified or a reference type,
+- ...
+
+```cpp
+struct X {
+    const int n;
+};
+X* p = new X{1};
+new (p) X{2};
+int j = std::launder(p)->n; // OK: j == 2
+int i = p->n;               // UB: can be 1 or 2
+```
+
+- `std::launder()` works only for pointers to objects for which the lifetime has ended.
+    - `std::launder(this)->elem_ptr->some_value` does not work
+    - should be `std::launder(elem_ptr)->some_value`
+- `std::launder()` does not fix the problem when using p afterwards, it only solves the problem for the particular expression it is used in
