@@ -10,6 +10,11 @@
     <img src="./coro_components.png">
 </p> -->
 
+When it is said that C++ coroutines are not tied to any particular runtime, it means that the C++ standard specifies the syntax and semantics of coroutines but does not prescribe how they should be scheduled, executed, or integrated with the rest of the system. This is unlike languages such as JavaScript (with its event loop model) or C# and Python (which have built-in support for async/await patterns tightly integrated with their runtime environments).
+
+In C++, the coroutine support is designed to be low-level and flexible, allowing library authors and application developers to build their abstractions on top of it. This design choice gives C++ programmers the freedom to implement coroutines in a way that best fits their application's architecture, performance requirements, and existing libraries/frameworks.
+
+
 ## Keywords
 
 - a function is coroutine if it contains any coroutine keywords: `co_await`, `co_yield`, `co_return`
