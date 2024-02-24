@@ -6,6 +6,7 @@
 - [Chapter 6~9: Ranges and Views](./ranges/ranges.md)
 - [Chapter 10: Formatted Output](#chapter-10-formatted-output)
 - [Chapter 12: `std::jthread` and Stop Tokens](#chapter-12-stdjthread-and-stop-tokens)
+- [Chapter 13: Cocurrency Features](#chapter-13-concurrency-features)
 - [Chapter 14~15: Coroutines](./coroutines/coroutines.md)
 - [Chapter 16: Modules](#chapter-16-modules)
 - [Chapter 18: Compile-Time Computing](#chapter-18-compile-time-computing)
@@ -175,6 +176,38 @@ std::format(fmt, "abcdefg", 3.4);
     // request stops for all threads before we start to join
     for (auto& t : threads) t.request_stop();
 }   // dtor joins all threads
+```
+
+# Chapter 13: Concurrency Features
+
+## Latches and Barriers
+
+- synchronization primitives
+- __latch__: supports single-use asynchronous countdown
+
+<img src="./latch.png" width="500">
+
+- __barrier__: supports multiple-use asynchronous countdown and allows register callback to be called when reaching zero
+
+## Semaphore
+
+- light-weight synchronization primitive that allow you to synchronize or restrict access to one or a group of resources
+- `std::counting_semaphore<>` to limit the use of multiple resources up to a maximum value
+- `std::binary_semaphore<>` to limit the use of a single resource
+    - `std::counting_semaphore<1>`
+
+<img src="./semaphore.png">
+
+## New Atomics
+
+- `std::atomic_ref`: provide a temporary atomic API for trivially copyable type
+- floating-point type
+- atomic shared pointers
+
+## Synchronized Output Stream
+
+```cpp
+std::osyncstream(std::cout) << "Hello, " << "World!" << '\n';
 ```
 
 # Chapter 14~15: Coroutines
