@@ -9,6 +9,7 @@
 - [Chapter 13: Cocurrency Features](#chapter-13-concurrency-features)
 - [Chapter 14~15: Coroutines](./coroutines/coroutines.md)
 - [Chapter 16: Modules](#chapter-16-modules)
+- [Chapter 17: Lambda Extensions]
 - [Chapter 18: Compile-Time Computing](#chapter-18-compile-time-computing)
 - [Chapter 19: Non-Type Template Parameter (NTTP) Extensions](../cppcon/template/template.md#template-parameters)
 - [Chapter 20: Small Improvements for the Core Language](#chapter-20-small-improvements-for-the-core-language)
@@ -261,6 +262,42 @@ refer to [Coroutines note](./coroutines/coroutines.md)
 ### __Internal Partition__
 
 - allows projects to move __module-local__ declarations and definitions outside the primary interface
+
+
+# Chapter 17: Lambda Extensions
+
+## Generic Lambda with Template Parameters
+
+```cpp
+auto f = []<class T>(const T& t) { T tmp{}; /*...*/ };
+// call: must writes out `operator()`
+f.operator()<int>(2);
+```
+
+## Calling the Default Constructor of Lambda
+
+- lambda with no captures have a default ctor and assignment op
+```cpp
+auto cmp1 = []{};
+decltype(cmp1) cmp2;    // default ctor provided
+cmp1 = cmp2;            // assignment operator provided
+```
+
+## As NTTP
+
+- side effect of extension of NTTP in C++20
+- lambda with no captures is [structural type](../cppcon/type-categories.md#structural-type)
+
+## `consteval` Lambdas
+
+```cpp
+// can only be called in compile time
+auto hashed = [](const char* str) consteval { /*...*/ };
+```
+
+## Lambdas as Coroutines
+
+- lambdas with no captures can be coroutines
 
 # Chapter 18: Compile-Time Computing
 
