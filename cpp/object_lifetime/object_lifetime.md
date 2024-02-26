@@ -26,7 +26,7 @@ Foo{}, doSomething(); // ~Foo() is called after doSomething() is finished
 ### Lifetime Extension
 
 - lifetime of a temporary object `T` will be extended when
-    - prvalue of `T` or its data member (must be accessed through field access operator `.`) is used to initialize an lvalue reference-to-`const` or rvalue reference
+    - prvalue of `T` or its data member (must be accessed through field access operator `.`) is used to initialize an `const U&` or `U&&`, where `std::convertible<T, U>`
 
 
 
