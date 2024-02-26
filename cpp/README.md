@@ -15,7 +15,7 @@
 - [Application Binary Interface (ABI)](./cppcon/abi/abi.md)
 - [CMake](./cmake/cmake.md)
 - Concurrency and Parallelism
-    - [Concurrency vs Parallelism](./concurrency/VSparallelism/VSparallelism.md)
+    - [C++ Concurrency in Action, by Anthony Willians](./concurrency/concurrency_in_action/concurrency_in_action.md)
     - [C++ Memory Model](./concurrency/memory-model/memory-model.md)
 - C++ Standard Library
     - [Classic STL](./classic-stl/classic-stl.md)
