@@ -119,15 +119,25 @@
 - for in-class initialization, it can be included in multiple CPP files and it does not violate ODR
 
 ## `inline` static variable (since C++17)
-Refer to [here](./c%2B%2B17/cpp17.md#chapter-3-inline-variables)
+
+- the variable can be any type
+```cpp
+class A {
+    // OK to be included by multiple CPP files
+    inline static const std::string msg = "OK";
+    inline static const std::string msg2;
+};
+
+// OK to be included by multiple CPP files
+inline const std::string A::msg2{"OK2"};
+```
 
 
 # magic statics (since C++11)
 - for `static` local variable in a function, [double-checked locking pattern](./concurrency/memory-model/memory-model.md#usage-in-double-checked-locking-pattern-dclp) is used to initialize it
 - since C++17, with the introduction of [`inline` variable](./c%2B%2B17/cpp17.md#chapter-3-inline-variables), this also applies to `inline static` member variables
-- to bypass:
-    - for literal type, use compile-time constant to initialize
-    - for `std::string`, use `std::string_view`
+    - though it is always initialized before `main()` is called and I don't see any race condition that can happen with it
+- to bypass: for literal type, use compile-time constant to initialize
 
 # member pointers
 
