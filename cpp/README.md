@@ -22,6 +22,7 @@
     - [\<chrono>](./cppcon/chrono/chrono.md)
 - others
     - [Helpful Online Resouces and Tools](#helpful-resouces-and-tools)
+    - [C++ Runtime](#c-runtime)
     - [translation unit](#trasnlation-unit)
     - [linkage](#linkage)
     - [`using` keyword](#using-keyword)
@@ -44,6 +45,13 @@
     - [C++ Insignts](https://cppinsights.io/)
     - [Online GDB and Compiler](https://www.onlinegdb.com/online_c++_compiler#)
     - [Quick C++ Benchmark](https://quick-bench.com/)
+
+# C++ Runtime
+
+- The term "C++ runtime" refers to the runtime support provided to C++ programs, which includes both library support and certain behaviors implemented by the compiler that are required for the execution of a C++ program.
+    - __library support__: runtime libraries (implicitly included) that provide support for dynamic memory management, exception handling, etc.
+    - __support for language features__: exception handling, `dynamic_cast`, etc.
+    - __startup and shutdown__: init and destroy variables of static storage, and call `main()` and return the return code of `main`
 
 
 # trasnlation unit
