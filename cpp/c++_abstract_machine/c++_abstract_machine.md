@@ -19,6 +19,10 @@
 > ___“Programming language specifications (not just C and C++, all high-level programming language specifications), define the languages in terms of an abstract machine, which, in this usage, is the simplest imaginary computer capable of executing a program in the source language (or a family of languages, as in the case of the JVM).”___
 <br> - Sergey Zubkow, www.quora.com (2015)
 
+
+The C++ abstract machine is a theoretical model defined by the C++ standard that describes the behavior of C++ programs. It specifies how C++ constructs should behave, but it doesn't dictate how they must be implemented by compilers or run on actual hardware. This model allows for portability, enabling C++ code to run on various platforms and architectures as long as the compiler and runtime environment adhere to the standard's specifications.
+
+
 <img src="./abstract_machine.png">
 
 ### Design of the C++ Abstract Machines
