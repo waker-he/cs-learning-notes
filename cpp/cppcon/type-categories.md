@@ -72,7 +72,8 @@ Types with predicatable and consistent layout
 - at least one non-deleted copy operation
 - all copy operations are trivial
 - has a trivial non-deleted destructor
-- to be `trivial` type, need a non-`deleted` trivial ctor
+- to be `trivial` type, need a non-`deleted` trivial default ctor
+    - note we might already have trivial ctors (copy/move), but that is not enough for trivially copyable type to be `trivial`
 
 
 # POD Type
