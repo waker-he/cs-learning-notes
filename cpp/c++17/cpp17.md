@@ -356,6 +356,10 @@ struct Merged : B... {   // inherit variadic callables
 
 template <typename ... T>
 Merged(T...) -> Merged<std::decay_t<T>...>;
+
+// since C++20, we have CTAD for aggregate
+template <class Ts>
+struct overloads : Ts... { using Ts::operator()...; };
 ```
 
 # Part III: New Library Components
