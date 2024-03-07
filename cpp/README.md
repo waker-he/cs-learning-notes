@@ -11,6 +11,7 @@
     - [type-categories](./cppcon/type-categories.md)
 - [template](./cppcon/template/template.md)
 - [value-categories](./cppcon/value-categories/value-categories.md)
+- [name lookup and overload resolution](./overload_resolution/overload_resolution.md)
 - [allocator](./cppcon/allocator/allocator.md)
 - [Application Binary Interface (ABI)](./cppcon/abi/abi.md)
 - [CMake](./cmake/cmake.md)
@@ -32,7 +33,6 @@
     - [casting](#casting)
     - [reference vs pointer](#reference-vs-pointer)
     - [conversion operator](#conversion-operator)
-    - [Argument Dependent Lookup (ADL)](#argument-dependent-lookup-adl)
     - [Trailing Return Types Advantages](#trailing-return-types-advantages)
 
 # Helpful Resouces and Tools
@@ -212,59 +212,6 @@ int main() {
     ```
 - can be defined as `explicit` to only allow conversion with `static_cast`
 - example: `std::string` has a conversion operator to `std::string_view`, that is why `std::string` can be used where `std::string_view` is expected while `std::string_view` does not have a ctor takes `std::string`
-
-# Argument Dependent Lookup (ADL)
-
-- for unqualified function names in function-call expressions, the function names are also looked up in the namespace where the type of the argument is defined
-- one way to implement [customization point](https://stackoverflow.com/questions/76732333/what-is-the-clear-definition-of-customization-point)
-- function object can be used to bypass this rule
-    - __customization point object (CPO)__: a `const` function object that is `semriregular` and all instances are equal
-        - all instances are equal in the sense that with __the same function call arguments__, they return __the same result__
-        - C++20 way to implement customization point
-        - __purpose__: solves customization dispatch (referred from [Barry's C++ Blog](https://brevzin.github.io/c++/2020/12/19/cpo-niebloid/))
-            - without __CPO__:
-                ```cpp
-                namespace std {
-                    template <class C>
-                    requires /*...*/
-                    auto begin(const C& c);
-                }
-
-                namespace ns {
-                    class MyContainer {};
-                    auto begin(const MyContainer& c);
-                }
-
-                template <class C>
-                void foo(const C& c) {
-                    // works for std and ns containers
-                    // does not work for raw arrays
-                    auto beg1 = begin(c);
-
-                    // now it works for raw arrays
-                    using std::begin, ns::begin;
-                    // call customization point
-                    auto beg2 = begin(c);
-                }
-                ```
-            - with __CPO__:
-                ```cpp
-                namespace std::ranges {
-                    struct begin_fn {
-                        template <class C>
-                        requires /* ... */
-                        auto operator()(const C& c) {
-                            /* dispatch to the correct function
-                            in std or other namespaces via ADL*/
-                        };
-                    };
-                    // begin is a CPO
-                    inline constexpr auto begin = begin_fn{};
-                }
-                ```
-                - other benefits: we have a __centralized customization point__ to check if the arguments pass
-                the requirements of the template
-                - utilities in `std::ranges` are implemented using CPO, so prefer `std::ranges` utilities over `std` utilities
 
 
 # Trailing Return Types Advantages
