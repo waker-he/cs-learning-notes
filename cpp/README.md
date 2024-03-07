@@ -37,14 +37,7 @@
 
 # Helpful Resouces and Tools
 
-- Online Resouces
-    - [CppCon](https://www.youtube.com/@CppCon)
-    - [C++ Weekly by Jason Turner](https://www.youtube.com/@cppweekly)
-- Online Tools
-    - [Compiler Explorer](https://godbolt.org/)
-    - [C++ Insignts](https://cppinsights.io/)
-    - [Online GDB and Compiler](https://www.onlinegdb.com/online_c++_compiler#)
-    - [Quick C++ Benchmark](https://quick-bench.com/)
+- [Awesome Modern C++](https://github.com/rigtorp/awesome-modern-cpp)
 
 # C++ Runtime
 
