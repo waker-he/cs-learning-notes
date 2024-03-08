@@ -38,6 +38,7 @@ _thing_ template is a parametrized description of a family of _things_
     - the _thing_ to make
 - Template Instantiation (implicit specialization)
     - __process__ of __compiler__ substituting template arguments for template parameters to make the _thing_(specialization)
+    - for __function template__, can pass part of the template arguments and let compiler deduce the rest
     - instantiation is a synonym for _compiler-generated_ specialization
     - can be done in two ways:
         - implicit/on-demand/automatic
@@ -56,23 +57,8 @@ _thing_ template is a parametrized description of a family of _things_
             ```
 - explicit specialization
     - __user__-provided implementation of a template with all template parameters fully substituted
-    - caveats for __function template__:
-        - avoid using explicit specialization for function templates, use ordinary function with the same name instead
-        - explicit specialization is __NOT__ a candidate for function overload resolution, for following code:
-            - (b) is an explicit speicalization of (a)
-            - (a) and (c) compared
-            - (c) is chosen since it is more specialized
-            - if (b) is declared after (c), (b) becomes explicit specialization of (c), then (b) will get called
-            ```cpp
-            template <class T> void foo(T t);    // (a)
-            template <> void foo(int* t);        // (b)
-            template <class T> void foo(T* t);   // (c)
-
-            int *ptr = nullptr;
-            foo(ptr);           // calls (c)
-            ```
 - partial specialization
-    - used for class template and variable template
+    - used for class template and variable template and a key facility for template metaprogramming
     - cannot specify default template arguments
         - uses default template arguments in primary template
     - examples
@@ -119,7 +105,7 @@ _thing_ template is a parametrized description of a family of _things_
     - check [is_one_of.cpp](./is_one_of.cpp)
 - SFINAE
     - substitution failure is not an error
-    - if substitution fails during template instantiation (__get ill-formed declaration__), it does not immediately result in an error, compiler will search for other overload candidates, if cannot find one, ERROR
+    - if substitution fails during template instantiation (__get ill-formed declaration__), it does not immediately result in an error, compiler will search for other overload candidates
     - used to direct overload resolution
     ```cpp
     // decltype operand is never evaluated
