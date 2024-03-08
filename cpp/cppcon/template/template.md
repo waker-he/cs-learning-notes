@@ -94,11 +94,14 @@ _thing_ template is a parametrized description of a family of _things_
         - runtime performance
 - metafunctions
     - class template
+        - template instantiation process
+            1. find if there is any matching __partial specialization__
+            2. if not found, fall back to primary template
     - called by requesting public data members
     - use metafunction calls (possibly recursive), inheritance and aliasing to factor commonalities
     - pros over `constexpr` function
         - can have type result
-        - can have public members and `constexpr` functions
+        - can have public members and `constexpr` member functions
     - conventions
         - type result should be named `type`
         - value result should be named `value`
@@ -107,13 +110,15 @@ _thing_ template is a parametrized description of a family of _things_
     - substitution failure is not an error
     - if substitution fails during template instantiation (__get ill-formed declaration__), it does not immediately result in an error, compiler will search for other overload candidates
     - used to direct overload resolution
+    - __guideline__: use `if constexpr` (since C++17) and concept (since C++20) to replace SFINAE in template metaprogramming
     ```cpp
+    // With SFINAE:
     // decltype operand is never evaluated
     template <class T>
     using copy_assignable = decltype(declval<T&>() = declval<const T&>());
     // change `const T&` to `T&&` for move_assignable
 
-    // default `void` is essential
+    // with default `void` we do not need to pass second template argument
     template <class T, class = void>
     struct is_copy_assignable : false_type {};
 
@@ -124,6 +129,12 @@ _thing_ template is a parametrized description of a family of _things_
                               void_t< copy_assignable<T> >
                               >
             : is_same<T&, copy_assignable<T>> {};
+    
+    // With concept
+    template <class T>
+    concept is_copy_assignable = requires(T& t1, const T& t2) {
+        { t1 = t2 } -> T&;
+    };
     ```
 
 
