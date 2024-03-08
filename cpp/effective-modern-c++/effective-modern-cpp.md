@@ -264,15 +264,8 @@ self-explanatory
 | ref-qualifiers | Yes               | Yes                                    | Yes               |
 
 ## item 17: understand special member function generation
-- special member function are the member functions that compiler might generate for you: `ctor, dtor, copy, move` (implicitly `inline`)
-- default ctor: generate only if the class contains no user-declared ctors, member would be default-initialized instead of value-initialized
-- default copy and move: memberwise copy/`std::move_if_noexcept` for non-static member variables
 
-### __Rule of Three__ extends to __Rule of Five__
-  - justification
-    - if one kind of memberwise resouce operation is not suitable, others would also be not suitable and need to de defined by users.
-    - dtor would also be participating in management of the resource
-### General rule of thumb: use `default` and `deleted` keywords explicitly
+- refer to [my note about speicial member functions](../class/special_member_func.md)
 
 
 # Chapter 4: Smart Pointers
