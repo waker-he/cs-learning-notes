@@ -18,6 +18,7 @@ Reference: [Programming Language Principles and Paradigms, by Amir Kamil](https:
     - __object-oriented programming__: computation organizeds around "objects" which are instances of "classes"
 - __declarative programming__: specifies what result of the computation to get
     - __functional programming__: computation is treated as evaluation of matematical function and avoids changing state and mutable data
+        - properties of math function: does not rely (read/modify) on external state, with the same values of parameters produce the same output
 - modern languages like C++, Python are multi-paradigm
 
 ## Basic Elements
@@ -240,9 +241,7 @@ Reference: [Programming Language Principles and Paradigms, by Amir Kamil](https:
 
 - the ability to _override_ a method of base class in derived class is the key to polymorphism
 - in some languages, base-class methods that are not overriden but redefined in a derived class are __hidden__ by the definition in the derived class
-    - C++
-        - non-`virtual` functions
-        - `virtual` functions with different signatures
+    - C++: __hidden__ with its [name lookup mechanism](../../cpp/overload_resolution/overload_resolution.md#name-lookup)
     - in Java, treat as __overload__ instead of __hidden__
     - example: __contravariance__ (see below)
 - overriding requires __dynamic binding__, where the actual method to be invoked is determined by the object's __dynamic type__ rather than the __static type__ apparent in the source code
@@ -267,7 +266,9 @@ Reference: [Programming Language Principles and Paradigms, by Amir Kamil](https:
 - __covariance__ vs __contravariance__ patterns
     -
     - __covariance__: return type of an overriding method can be a derived type of the return type in the overridden method
+        - can be achieved in C++ since return type is not part of function signature
     - __contravariance__: parameter type of an overriding method can be a base type of the parameter type in the overriden method
+        - cannot be achieved in C++ with its [name lookup mechanism](../../cpp/overload_resolution/overload_resolution.md#name-lookup)
 
 ### implementing dynamic binding
 
