@@ -8,6 +8,7 @@
 - C++ Class
     - [Special Member Functions](./class/special_member_func.md)
     - [Class Layout](./class/class_layout.md)
+    - [`dynamic_cast`](./class/dynamic_cast.md)
 - C++ Objects
     - [Object Lifetime](./object_lifetime/object_lifetime.md)
     - [Initialization](./initialization/initialization.md)
