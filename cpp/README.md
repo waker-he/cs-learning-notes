@@ -38,6 +38,7 @@
     - [reference vs pointer](#reference-vs-pointer)
     - [conversion operator](#conversion-operator)
     - [Trailing Return Types Advantages](#trailing-return-types-advantages)
+    - [Hashing Aggregates](#hashing-aggregates)
 
 # Helpful Resouces and Tools
 
@@ -265,3 +266,21 @@ int main() {
     ```
 4. Lambda Expression can only use trailing return types
     - consistency between regular function and lambda expression syntax
+
+
+# Hashing Aggregates
+
+```cpp
+struct AggregateHashser {
+    template <class A>
+    // requires tuple-like API
+    size_t operator()(const A& a) const {
+        auto hashComb = [](const auto&... t) {
+            std::size_t seed = 0;
+            return ((seed ^= std::hash<std::decay_t<decltype(t)>>{}(t) + 0x9e3779b9 + (seed << 6) + (seed >> 2)), ...);
+        };
+
+        return std::apply(hashComb, a);
+    }
+};
+```
