@@ -65,6 +65,7 @@ Types with predicatable and consistent layout
 - not user-__provided__
     - for ctor, class has no default member initializers for non-static data members
 - class does not have vtable
+    - except destructor, which only requires non-`virtual` dtor
 - corresponding special member function of base classes and non-static data members is trivial
 
 ## definition
