@@ -266,6 +266,9 @@ int main() {
     ```
 4. Lambda Expression can only use trailing return types
     - consistency between regular function and lambda expression syntax
+5. Readability
+    - function name is the most important thing of a function
+    - trailing return type makes function names neatly aligned
 
 
 # Hashing Aggregates
