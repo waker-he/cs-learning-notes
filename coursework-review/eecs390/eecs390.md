@@ -301,18 +301,22 @@ Reference: [Programming Language Principles and Paradigms, by Amir Kamil](https:
         ```
         <img src="./layout-derived.png">
 
-        1. look up the member in the __static type__ of the receiver
-        2. if non-`virtual`, generate a direct dispatch
-        3. if `virtual`, determine its offset in the __vtable__ of the static type
-            - two extra dereferences:
-                ```cpp
-                A *aptr = new B;
-                aptr->b();
+        - member function call:
+            - if 
+                - called through pointer/reference
+                - contains a vtable pointer
+                - vtable has a corresponding member
+            - then generate dynamic dispatch
+            - else, lookup the member using [name lookup mechanisms](../../cpp/overload_resolution/overload_resolution.md#name-lookup)
+        - two extra dereferences for `virtual` functional call:
+            ```cpp
+            A *aptr = new B;
+            aptr->b();
 
-                // extract vtable pointer from start of object
-                vtable_ptr = aptr-><vtable>;
-                // index into vtable at statically computed offset for b
-                func_ptr = vtable_ptr[1];
-                // call function, pass the implicit this parameter
-                func_ptr(aptr);
-                ```
+            // extract vtable pointer from start of object
+            vtable_ptr = aptr-><vtable>;
+            // index into vtable at statically computed offset for b
+            func_ptr = vtable_ptr[1];
+            // call function, pass the implicit this parameter
+            func_ptr(aptr);
+            ```
