@@ -1,9 +1,8 @@
+# General C++ notes
+
 - [Effective Modern C++](./effective-modern-c%2B%2B/effective-modern-cpp.md)
 - [C++17](./c%2B%2B17/cpp17.md)
 - [C++20](./c%2B%2B20/cpp20.md)
-
-# General C++ notes
-
 - [C++ Abstract Machine](./c++_abstract_machine/c++_abstract_machine.md)
 - C++ Class
     - [Special Member Functions](./class/special_member_func.md)
