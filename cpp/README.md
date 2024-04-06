@@ -117,7 +117,7 @@
     int Widget::i = 0;  // need out-of-line definition
     ```
 - __linkage__: static member variable has external linkage (while static global variable has internal linkage)
-- __one definition rule(ODR)__: the out-of-line definition can only appear in one translation unit
+- __one definition rule(ODR)__: the out-of-line definition can only appear once in the entire program (across multiple translation units)
 
 ## `const`, `constexpr`
 - for `const static` member variable, if the type is __integral__ or __enumeration__ types, it can be initialized inside the class during declaration
