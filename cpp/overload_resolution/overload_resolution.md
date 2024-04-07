@@ -15,10 +15,11 @@
     ```cpp
     entity qualified_name_lookup(entity_name name) {
         auto [left, right] = name.split_by_rightmost_scope_resolution_op();
-        if (leftside.qualified())
+        if (left.empty())
+            scope = global_namespace
+        else if (left.qualified())  // has scope resolution operator
             scope = qualified_name_lookup(left);
         else    
-            // empty leftside results in global namespace scope
             scope = unqualified_name_lookup(left);
         return scope.name_lookup(right)
     }
