@@ -109,3 +109,8 @@ Types that can be contructed, manipulated and returned from `constexpr` function
     - public and non-mutable
         - allows member-wise comparison for equivalence check
     - structural types or array of structural types
+
+# References
+
+- [A Tour of C++ Recognised User Type Categories - Nina Ranns - CppCon 2022](https://www.youtube.com/watch?v=pdoUnvTwnr4)
+- cppreference
