@@ -80,3 +80,8 @@ f();
 auto t2 = std::chrono::steady_clock::now();
 std::cout << std::chrono::microseconds{t1 - t2}.count() << "us\n";
 ```
+
+# References
+
+- [CppCon 2016: Howard Hinnant “A ＜chrono＞ Tutorial"](https://www.youtube.com/watch?v=P32hvk8b13M)
+- [cppreference chrono](https://en.cppreference.com/w/cpp/chrono)
