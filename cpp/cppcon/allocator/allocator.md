@@ -16,6 +16,7 @@
     - [`std::allocator`](#stdallocator)
     - [C++11 `std::allocator_traits`](#c11-stdallocator_traits)
     - [C++17 Allocator Model: Polymorphic Memory Resource (PMR)](#c17-allocator-model-polymorphic-memory-resource)
+- [References](#references)
 
 
 # Memory Allocator
@@ -290,3 +291,12 @@ class S {
     S(S&& other, allocator_type a);
 };
 ```
+
+# References
+
+- [CppCon 2015: Andrei Alexandrescu “std::allocator...”](https://www.youtube.com/watch?v=LIb3L4vKZ7U)
+- [CppCon 2017: Pablo Halpern “Allocators: The Good Parts”](https://www.youtube.com/watch?v=v3dz-AKOVL8)
+- [CppCon 2017: John Lakos “Local ('Arena') Memory Allocators (part 1 of 2)”](https://www.youtube.com/watch?v=nZNd5FjSquk)
+- [CppCon 2017: John Lakos “Local ('Arena') Memory Allocators (part 2 of 2)”](https://www.youtube.com/watch?v=CFzuFNSpycI)
+- [What Programmers Should Know About Memory Allocation - S. Al Bahra, H. Sowa, P. Khuong - CppCon 2019](https://www.youtube.com/watch?v=gYfd25Bdmws)
+- [Getting Allocators out of Our Way - Alisdair Meredith & Pablo Halpern - CppCon 2019](https://www.youtube.com/watch?v=RLezJuqNcEQ)
