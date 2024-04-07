@@ -1,4 +1,3 @@
-My note is selectively written and might miss some key knowledge, a comprehensive cs note can be found at [Xiaoyang Liu's note](https://xiaoyang-liu.com/)
 
 - [EECS 370: Computer Organization](./eecs370/370review.md)
 - [EECS 482: Operating System](./eecs482/482review.md)
