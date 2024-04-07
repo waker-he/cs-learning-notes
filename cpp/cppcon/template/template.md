@@ -5,6 +5,7 @@
     - [Related Terms](#related-terms)
 - [Template Metaprogramming](#template-metaprogramming)
 - [Concepts (since C++20)](#concepts-since-c20)
+- [References](#references)
 
 # Template
 
@@ -243,3 +244,11 @@ _thing_ template is a parametrized description of a family of _things_
         - makes the interface of generic functions clear and understandable
             - make generic code more like ordinary
     - `auto` does not specify anything at all
+
+# References
+
+- [Back to Basics: Templates (part 1 of 2) - Bob Steagall - CppCon 2021](https://www.youtube.com/watch?v=XN319NYEOcE)
+- [Back to Basics: Templates (part 2 of 2) - Bob Steagall - CppCon 2021](https://www.youtube.com/watch?v=2Y9XbltAfXs)
+- [CppCon 2014: Walter E. Brown "Modern Template Metaprogramming: A Compendium, Part I"](https://www.youtube.com/watch?v=Am2is2QCvxY)
+- [CppCon 2014: Walter E. Brown "Modern Template Metaprogramming: A Compendium, Part II"](https://www.youtube.com/watch?v=a0FliKwcwXE)
+- [CppCon 2018: Walter E. Brown “C++ Function Templates: How Do They Really Work?”](https://www.youtube.com/watch?v=NIDEjY5ywqU)
