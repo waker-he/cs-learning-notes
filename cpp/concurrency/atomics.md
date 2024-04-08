@@ -81,7 +81,7 @@ bool compare_exchange_strong( T& expected, T desired,
         ```
     - prefer `compare_exchange_weak` than `compare_exchange_strong` when calculation of the value to be stored is cheap
 - the comparison is bitwise comparison as if using `memcmp`, don't use compare-and-exchange operations for types with padding bits or provides comparison with different semantics
-- __usage example__: unsuppored atomic operations like multiplication or division can be achieved by using compare-exchange operation
+- __usage example__: unsupported atomic operations like multiplication or division can be achieved by using compare-exchange operation
     ```cpp
     extern std::atomic<int> i;
     int expected = i.load(std::memory_order_relaxed);
