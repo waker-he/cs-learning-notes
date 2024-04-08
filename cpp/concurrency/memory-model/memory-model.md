@@ -1,19 +1,12 @@
-# References
+## [Index](../../README.md)
 
-- [C++ and Beyond 2012: Herb Sutter - atomic Weapons 1 of 2](https://www.youtube.com/watch?v=A8eCGOqgvH4&t=1522s)
-- [C++ and Beyond 2012: Herb Sutter - atomic Weapons 2 of 2](https://www.youtube.com/watch?v=KeLBd2EJLOU)
-- [CppCon 2017: Fedor Pikus “C++ atomics, from basic to advanced. What do they really do?”](https://www.youtube.com/watch?v=ZQFzMfHIxng)
-- [CppCon 2015: Michael Wong “C++11/14/17 atomics and memory model..."](https://www.youtube.com/watch?v=DS2m7T6NKZQ&t=2670s)
-- [cppreference std::memory_order](https://en.cppreference.com/w/cpp/atomic/memory_order)
-- [C++ standard [atomics.order]](https://eel.is/c++draft/atomics.order#def:coherence-ordered_before)
+# Multithreading-aware Memory Model
 
-# Content
-
-- [Motivation for defining memory model](#motivation-for-defining-memory-model)
+- [Motivation for defining multithreading-aware memory model](#motivation-for-defining-multithreading-aware-memory-model)
 - [Definition and Some Key Concepts](#definition-and-some-key-concepts)
 - [`std::memory_order`](#stdmemory_order)
 
-# Motivation for defining memory model
+# Motivation for defining multithreading-aware memory model
 
 - two reasons: optimizations and concurrency
     - your program will not be executed as you wrote
@@ -69,45 +62,65 @@
 
 # Definition and Some Key Concepts
 
-- __memory model__ is a __contract between the programmer and the system (comprising the compiler, processor, and cache)__
-    - it specifies the rules and guarantees around how memory operations will appear to execute, relative to each other, __in a concurrent environment__
-    - the model defines if, and under what conditions, the system provides the illusion of __sequentially consistent memory accesses__
+- __C++ memory model__ defines the semantics of computer memory storage for the purpose of the [C++ abstract machine](../../c++_abstract_machine/c++_abstract_machine.md).
 - C++11's default memory model is __Sequentially Consistent for Data Race Free (SC-DRF) programs__
     - this means that if a program is __data race-free__, then the system will provide the illusion that all memory operations are executed in the program order
     - otherwise, it is __undefined behavior__
 - __data race__: a program is said to have __data race__ if two or more threads access the same memory location concurrently and:
     - at least one of the thread performs a __write operation__
     - without __synchronization__
-- __synchronize-with__:
-    - operation A in one thread __synchronizes with__ operation B in another thread if A is a __release operation__ and B is an __acquire operation__ that is __paired with A__
-        - `mutex::unlock()` is a __release operation__ and `mutex::lock()` is an __acquire operation__
-            - they pair with each other when operating on the __same mutex__
-    - to achieve __SC-DRF memory model__, __release operation__ and __acquire operation__ act as __memory barrier__
-    - __memory barrier__ prevents code from being reordered across it in one direction or both directions
-        - it requires cooperation with software (compiler) and hardware (processor and cache)
-        - memory operations before a __release operation__ cannot be reordered to be after the __release operation__
-            - __release__ is considered as publishing data that has been written to other threads
-        - memory operations after a __acquire operation__ cannot be reordered to be before the __acquire operation__
-            - __acquire__ is considered as acquiring data that is published by other threads
-            ```cpp
-            // x = 2 cannot be reordered before mut.lock()
-            mut.lock();
-            x = 2;
-            mut.unlock();
-            // x = 2 cannot be reordered after mut.unlock()
-            ```
-            <img src="./memory_barrier.png" width="500">
-    - memory synchronization __actively works against__ important modern hardware optimizations
-        - => want to do as little as possible
-- __happen-before__:
-    - A happens before B if:
-        - same thread: A is sequenced-before B
-        - different threads: A synchronizes with B
-        - A happens before C and C happens before B
+
+## memory access relations defined by C++ memory model
+
+### __synchronize-with__:
+- relationship that you can get only between operations on atomic types
+    - synchronization primitives (like `mutex`) are all built on top of atomic operations
+- an atomic store in thread A ___synchronizes-with___ an atomic load in thread B if:
+    - they operate on the same variable M
+    - atomic load is an __acquire operation__
+    - atomic store is an __release operation__
+    - atomic load in thread A reads the value that is written by
+        - the atomic store in thread B or
+        - any atomic RMW operation in the __release sequence__ headed by the atomic store in thread B
+            - __release sequence__ consists of:
+                - head: a release operation on M followed by
+                - a ___continuous___ sequence of RMW operations made to M by any threads
+                    - can be _any_ memory ordering (even `memory_order_relaxed`)
+                    - why it can't be pure store? I cannot find answer...
+            - an simple example that makes use of __release sequence__:
+                - thread A pushes 10 items in queue and set atomic count to 10 with release operation
+                - thread B comes to consume one item and performs `fetch_sub(1,std::memory_order_acquire)`
+                - thread C also comes to consume one item, but now the count 9, which is not what thread A stores, since `fetch_sub` in thread B is a RMW operation and thus considered part of release sequence, thread C's acquire operation still ___synchronizes-with___ release operation in thread A and is safe to take item out of queue
+- to achieve __SC-DRF memory model__, when __release operation__ ___synchronizes-with___ __acquire operation__, both operations act as __memory barrier/fence__
+- __memory barrier/fence__ prevents code from being reordered across it in one direction or both directions
+    - it requires cooperation with software (compiler) and hardware (processor and cache)
+    - memory operations before a __release operation__ cannot be reordered to be after the __release operation__
+        - __release__ is considered as publishing data that has been written to other threads
+    - memory operations after a __acquire operation__ cannot be reordered to be before the __acquire operation__
+        - __acquire__ is considered as acquiring data that is published by other threads
+        ```cpp
+        // x = 2 cannot be reordered before mut.lock()
+        mut.lock();
+        x = 2;
+        mut.unlock();
+        // x = 2 cannot be reordered after mut.unlock()
+        ```
+        <img src="./memory_barrier.png" width="500">
+- memory synchronization __actively works against__ important modern hardware optimizations
+    - => want to do as little as possible
+
+### __happens-before__
+
+- A ___happens-before___ B if:
+    - same thread: A is ___sequenced-before___ B
+    - different threads: A ___synchronizes-with___ B
+    - A ___happens-before___ C and C ___happens-before___ B (_Transitivity_)
 
 # `std::memory_order`
 
-- defines how memory operations can be reordered around an __atomic__ operation
+- defines how memory operations can be reordered around an __atomic__ operation when ___synchronizes-with___ relation occurs
+    - an atomic load/RMW is an acquire operation when tagged `std::memory_order_{acquire,acq_rel,seq_cst}`
+    - an atomic store/RMW is a release operation when tagged `std::memory_order_{release,acq_rel,seq_cst}`
 - `std::memory_order_relaxed`: does not form a memory barrier
 - `std::memory_order_acquire`: memory operations after it cannot be reordered before it
 - `std::memory_order_release`: memory operations before it cannot be reordered after it
@@ -166,15 +179,13 @@
     - default `std::memory_order` for all atomic operations
     - it is often used when multiple atomic variables are involved
         - for release/acquire pair, only one atomic variable is involved
-    - avoid mixing `std::memory_order_seq_cst` with other relaxed atomic operations, otherwise it can produce surprising results
-- use `std::atomic` to __synchronize__:
-    - for an atomic load in thread A and an atomic store in thread B:
-        - they operate on the same variable
-        - atomic load is an __acquire operation__
-        - atomic store is a __release operation__
-        - atomic load in thread A reads the value that is written by the atomic store in thread B
-    - `std::memory_order_release`, `std::memory_order_acq_rel`, `std::memory_order_seq_cst`: atomic store with these `std::memory_order` is a __release operation__
-    - `std::memory_order_acquire`, `std::memory_order_acq_rel`, `std::memory_order_seq_cst`: atomic store with these `std::memory_order` is an __acquire operation__
+        - avoid mixing `std::memory_order_seq_cst` with other relaxed atomic operations, otherwise it can produce surprising results
+    - most expensive memory ordering, on a multi-processor system this may require extensive and time-consuming communication between processors
+- distinct memory orderings can have varying costs on different CPUs
+    - x86: strongly-ordered, atomic load and store are acq_rel by default
+    - ARM: weakly-ordered, acq_rel and seq_cst come with more costs
+- `std::memory_order` can also be used with `std::atomic_thread_fence` to get ___synchronizes-with___ relation between atomic operations tagged `std::memory_order_relaxed`
+    - check cppreference for it: https://en.cppreference.com/w/cpp/atomic/atomic_thread_fence
 
 ## usage in double-checked locking pattern (DCLP)
 
@@ -196,6 +207,17 @@ Widget* Widget::instance() {
     return ptr;
 }
 ```
-- for atomic load `1`, if it uses `std::memory_order_relaxed`, it will not synchronize with release operation `3`
+- for atomic load `1`, if it uses `std::memory_order_relaxed`, release operation `3` will not ___synchronizes-with___ it
     - it can see that ptrInstance is not `nullptr` but the memory it points to can still be garbage
     - in this case, it will return a pointer to the `Widget` object that is in a "partially-constructed" state
+
+# References
+
+- [C++ and Beyond 2012: Herb Sutter - atomic Weapons 1 of 2](https://www.youtube.com/watch?v=A8eCGOqgvH4&t=1522s)
+- [C++ and Beyond 2012: Herb Sutter - atomic Weapons 2 of 2](https://www.youtube.com/watch?v=KeLBd2EJLOU)
+- [CppCon 2017: Fedor Pikus “C++ atomics, from basic to advanced. What do they really do?”](https://www.youtube.com/watch?v=ZQFzMfHIxng)
+- [CppCon 2015: Michael Wong “C++11/14/17 atomics and memory model..."](https://www.youtube.com/watch?v=DS2m7T6NKZQ&t=2670s)
+- [cppreference std::memory_order](https://en.cppreference.com/w/cpp/atomic/memory_order)
+- [cppreference Memory model](https://en.cppreference.com/w/cpp/language/memory_model)
+- [C++ standard [atomics.order]](https://eel.is/c++draft/atomics.order#def:coherence-ordered_before)
+- Williams, A. (2019). C++ Concurrency in Action, Second Edition. Chapter 5: The C++ memory model and operations on atomic types. Manning Publications.

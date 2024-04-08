@@ -5,7 +5,7 @@
 - [Definition](#definition)
 - [Characteristics](#characteristics)
 - [Structure](#structure)
-    - [Memory](#memory)
+    - [Memory Model](#memory-model)
     - [Objects](#objects)
     - [Threads](#threads)
 
@@ -76,11 +76,12 @@ The C++ abstract machine is a theoretical model defined by the C++ standard that
 <img src="structure.png" width=400>
 </p>
 
-### Memory
+### Memory Model
 
 - memory is a single flat space, no hierarchy
 - all parts of memory are equally reachable by the abstract machine
 - memory is composed of bytes and every byte has a unique location in memory - its __address__, which are represented by __pointers__
+- since C++11, it is __multithreading-aware__ and defines that memory accesses are sequentially consistent for data-race free program (SC-DRF)
 
 ### Objects
 

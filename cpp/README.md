@@ -19,8 +19,9 @@
 - [Application Binary Interface (ABI)](./cppcon/abi/abi.md)
 - [CMake](./cmake/cmake.md)
 - Concurrency and Parallelism
-    - [C++ Concurrency in Action, by Anthony Willians](./concurrency/concurrency_in_action/concurrency_in_action.md)
-    - [C++ Memory Model](./concurrency/memory-model/memory-model.md)
+    - [Intro to Concurrency](./concurrency/intro.md)
+    - [C++ Atomics](./concurrency/atomics.md)
+    - [Multithreading-aware Memory Model](./concurrency/memory-model/memory-model.md)
 - C++ Standard Library
     - [Classic STL](./classic-stl/classic-stl.md)
     - [\<chrono>](./cppcon/chrono/chrono.md)
@@ -185,13 +186,13 @@ int main() {
 
 ## advantage over C-style casts
 - different notation or different casts, improve code maintainability
-    - easily recognized and searchable
+    - easily recognized and searchable (for example, with ctrl+f)
 - eliminate unintended error
-- perform all __valid__ operations that C casts can
+- perform all __valid__ operations that C casts can perform
     ```cpp
     int i = 1;
     char j = (char) i;  // compiled
-    char k = reinterpret_cast<char>(i); // ERROR
+    char k = reinterpret_cast<char>(i); // ERROR: invalid
     ```
 
 # reference vs pointer
