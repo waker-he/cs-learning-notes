@@ -19,7 +19,7 @@
 - [Application Binary Interface (ABI)](./cppcon/abi/abi.md)
 - [CMake](./cmake/cmake.md)
 - Concurrency and Parallelism
-    - [Intro to Concurrency](./concurrency/intro.md)
+    - [Concurrency Overview](./concurrency/intro.md)
     - [C++ Atomics](./concurrency/atomics.md)
     - [Multithreading-aware Memory Model](./concurrency/memory-model/memory-model.md)
 - C++ Standard Library
