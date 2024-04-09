@@ -9,7 +9,7 @@
 - [Chapter 13: Cocurrency Features](#chapter-13-concurrency-features)
 - [Chapter 14~15: Coroutines](./coroutines/coroutines.md)
 - [Chapter 16: Modules](#chapter-16-modules)
-- [Chapter 17: Lambda Extensions]
+- [Chapter 17: Lambda Extensions](#chapter-17-lambda-extensions)
 - [Chapter 18: Compile-Time Computing](#chapter-18-compile-time-computing)
 - [Chapter 19: Non-Type Template Parameter (NTTP) Extensions](../cppcon/template/template.md#template-parameters)
 - [Chapter 20: Small Improvements for the Core Language](#chapter-20-small-improvements-for-the-core-language)
