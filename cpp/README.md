@@ -20,8 +20,9 @@
 - [CMake](./cmake/cmake.md)
 - Concurrency and Parallelism
     - [Concurrency Overview](./concurrency/intro.md)
-    - [C++ Atomics](./concurrency/atomics.md)
+    - [Atomics](./concurrency/atomics.md)
     - [Multithreading-aware Memory Model](./concurrency/memory-model/memory-model.md)
+    - [Basic Concurrency API](./concurrency/basic_api.md)
 - C++ Standard Library
     - [Classic STL](./classic-stl/classic-stl.md)
     - [\<chrono>](./cppcon/chrono/chrono.md)

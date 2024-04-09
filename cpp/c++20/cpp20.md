@@ -181,23 +181,10 @@ std::format(fmt, "abcdefg", 3.4);
 
 # Chapter 13: Concurrency Features
 
-## Latches and Barriers
+## New Synchronization Primitives
 
-- synchronization primitives
-- __latch__: supports single-use asynchronous countdown
-
-<img src="./latch.png" width="500">
-
-- __barrier__: supports multiple-use asynchronous countdown and allows register callback to be called when reaching zero
-
-## Semaphore
-
-- light-weight synchronization primitive that allow you to synchronize or restrict access to one or a group of resources
-- `std::counting_semaphore<>` to limit the use of multiple resources up to a maximum value
-- `std::binary_semaphore<>` to limit the use of a single resource
-    - `std::counting_semaphore<1>`
-
-<img src="./semaphore.png">
+- latch, barrier
+- semaphore
 
 ## New Atomics
 
