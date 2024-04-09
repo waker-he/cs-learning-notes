@@ -7,6 +7,7 @@ __All following types definition are in C++20__
 - [Trivially Copyable Type](#trivially-copyable-type)
 - [POD Type](#pod-type)
 - [Literal Type](#literal-type)
+- [Structural Type](#structural-type)
 
 # Scalar Type
 
