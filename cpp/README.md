@@ -275,7 +275,7 @@ int main() {
 # Hashing Aggregates
 
 ```cpp
-struct AggregateHashser {
+struct AggregateHasher {
     template <class A>
     // requires tuple-like API
     size_t operator()(const A& a) const {
