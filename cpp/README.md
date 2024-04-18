@@ -27,7 +27,7 @@
     - [Classic STL](./classic-stl/classic-stl.md)
     - [\<chrono>](./cppcon/chrono/chrono.md)
 - others
-    - [Helpful Online Resouces and Tools](#helpful-resouces-and-tools)
+    - [Helpful Resouces](#helpful-resouces)
     - [C++ Runtime](#c-runtime)
     - [translation unit](#trasnlation-unit)
     - [linkage](#linkage)
@@ -41,9 +41,10 @@
     - [Trailing Return Types Advantages](#trailing-return-types-advantages)
     - [Hashing Aggregates](#hashing-aggregates)
 
-# Helpful Resouces and Tools
+# Helpful Resouces
 
 - [Awesome Modern C++](https://github.com/rigtorp/awesome-modern-cpp)
+- [A C++ acronym glossary](https://quuxplusone.github.io/blog/2019/08/02/the-tough-guide-to-cpp-acronyms/)
 
 # C++ Runtime
 
