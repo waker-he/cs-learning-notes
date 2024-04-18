@@ -100,21 +100,25 @@ func(NS::S{});  // Instantiation Phase: doSomething(t) resolves to (2)
 
 Process of selecting the most appropriate overload
 
-## overload vs override
+## polymorphism
 
+- function and __primary__ function templates overloading is a form of polymorphism
+    - for functions with the same name and visible from the same scope to be overloaded:
+        - different parameter lists, _or_
+        - if function template, different template constraints (with C++20 concept)
 - definition of polymorphism
     - having many forms
     - type-based dispatch
 - __compile-time/static polymorphism__
-    - function and __primary__ function templates overloading
-    - dispatch based on __static type__ (of argument specifically)
-    - for functions with the same name and visible from the same scope to be overloaded:
-        - different parameter lists, _or_
-        - if function template, different template constraints (with C++20 concept)
+    - dispatch based on __static type__ and is determined in compile-time
+    - examples:
+        - template
+        - function overload
 - __run-time polymorphism__
-    - member function overriding
-    - dispatch based on __runtime type__ of object
-    - used with inheritance and `virtual` member functions, unrelated to the subject of overload resolution
+    - dispatch based on __runtime type__ of object and is determined in runtime
+    - examples:
+        - used with inheritance and `virtual` member functions
+        - `std::variant` with `std::visit`
 
 ## rationale
 
