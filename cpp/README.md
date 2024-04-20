@@ -180,7 +180,7 @@ int main() {
     - usually used to downcast a pointer or reference from a base type to a derived type
     - if fail:
         - return `nullptr`(when casting pointers)
-        - throw `std::bad_cast`
+        - throw `std::bad_cast` (when casting references)
 - `const_cast`: only way to add or remove `const` qualifier in variable
     - an example where it is useful:
         ```cpp
@@ -198,6 +198,11 @@ int main() {
 - `reinterpret_cast`
     - mainly used in low-level pragramming
     - casting pointer/ref to any other pointer/ref
+        - can also be done by chanining two `static_cast`
+            ```cpp
+            static_cast<Any*>(static_cast<void*>(ptr))
+            ```
+    - only way to cast a ptr to an interger type (that is large enough to hold the pointer value)
 
 ## advantage over C-style casts
 - different notation or different casts, improve code maintainability
