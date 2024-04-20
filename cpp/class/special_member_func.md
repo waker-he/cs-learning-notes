@@ -80,6 +80,7 @@ Widget& operator=(const Widget&&);  // possible, but very likely not reasonable
     - justification:
         - if one kind of memberwise resouce operation is not suitable, others would also be not suitable and need to de defined by users.
         - dtor would also be participating in management of the resource
+- __rule of 3__: if you only wants copy semantics, you can choose not to declare any move operations
 - __rule of 0__: strive to use appropriate types for your member variables so that you do not need to write any of the special member functions
 
 ## References
