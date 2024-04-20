@@ -182,6 +182,19 @@ int main() {
         - return `nullptr`(when casting pointers)
         - throw `std::bad_cast`
 - `const_cast`: only way to add or remove `const` qualifier in variable
+    - an example where it is useful:
+        ```cpp
+        struct FooConstRef {
+            // only takes lvalue reference to non-const,
+            // it prevents taking reference to an rvalue as this class
+            // does not have ctor taking Foo&& and extend lifetime of temporaries
+            FooConstRef(Foo& f) : foo_ptr(std::addressof(f)) {}
+            Foo const * foo_ptr;
+        };
+
+        Foo const& f1;
+        FooRef fooref(const_cast<Foo&>(f1));
+        ```
 - `reinterpret_cast`
     - mainly used in low-level pragramming
     - casting pointer/ref to any other pointer/ref
