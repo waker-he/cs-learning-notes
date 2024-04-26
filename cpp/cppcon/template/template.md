@@ -237,6 +237,23 @@ _thing_ template is a parametrized description of a family of _things_
     - keyword `concept` is part of this general term which specifies __syntactic requirements__, which can be checked in compile time
     - __semantic requirements__ cannot be checked in compile-time
         - like `std::ranges::range` requires amortized constant time for call to `begin()` and `end()`
+        - As a compromise, C++20 `concept` allow programmers to convert semantic constraints into syntactic constraints by providing an interface to specify that a semantic constraint is fulfilled or not, for example:
+            - A semantic constraint is the concept `std::ranges::view`. Besides some syntactic constraints, it also guarantees that move constructor/assignment and copy constructor/assignment (if available) have constant complexity.
+            - An implementor can provide the corresponding guarantee by either
+                - deriving publicly from
+                    - `std::ranges::view_base` or 
+                    - `std::ranges::view_interface<>`
+                - or setting the template specialization `std::ranges::enable_view<Rg>` to true.
+            ```cpp
+            template<class T>
+            concept view = ranges::range<T> && std::movable<T> && ranges::enable_view<T>;
+
+            template<class T>
+            inline constexpr bool enable_view =
+                std::derived_from<T, view_base> || /*is-derived-from-view-interface*/<T>;
+            
+            struct view_base { };
+            ```
 - `concept`: between type and `auto`
     - type specifies the interface and layout in the memory
     - `concept` only specifies the interface
