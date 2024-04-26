@@ -40,6 +40,7 @@
     - [conversion operator](#conversion-operator)
     - [Trailing Return Types Advantages](#trailing-return-types-advantages)
     - [Hashing Aggregates](#hashing-aggregates)
+    - [Prefer STL Algorithms than Raw Loops](#prefer-stl-algorithms-than-raw-loops)
 
 # Helpful Resouces
 
@@ -307,3 +308,13 @@ struct AggregateHasher {
     }
 };
 ```
+
+# Prefer STL Algorithms than Raw Loops
+
+- _prefer_ algorithms in C++ standard library than raw loops
+- benefits
+    - less verbose and more readable with clear algorithm names
+    - less error-prone
+    - avoid Initialize-Then-Modify (ITM) anti-pattern
+    - use execution policies for trivial parallelism
+- raw loops are fine with short and simple body
