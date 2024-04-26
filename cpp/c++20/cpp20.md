@@ -44,7 +44,7 @@
     - contains static member constants `less`, `equal`/`equivalent`, `greater`
 - `std::weak_ordering` for the types that __equivalent__ values might not be __equal__ (eg. case-insensitive strings)
     - contains static member constants `less`, `equivalent`, `greater`
-- `std::partial_ordering` for the types that contains comparable value (e.g. `NaN` in floating-point type, any comparison yields `false`)
+- `std::partial_ordering` for the types that contains non-comparable value (e.g. `NaN` in floating-point type, any comparison yields `false`)
     - contains static member constants `less`, `equivalent`, `greater`, `unordered`
 - notes
     - static member constants have the same type as the class
