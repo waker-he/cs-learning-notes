@@ -8,6 +8,9 @@
     - [Liskov Substitution Principle (LSP)](#liskov-substitution-principle-lsp)
     - [Abstractions in Static Polymorphism](#abstractions-in-static-polymorphism)
     - [Dependency Inversion Principle (DIP)](#dependency-inversion-principle-dip)
+- [Other Design Principles](#other-design-principles)
+    - [Prefer Value Semantics than Reference Semantics](#prefer-value-semantics-than-reference-semantics)
+    - [Prefer Composition than Inheritance](#prefer-composition-than-inheritance)
 
 # The Art of Software Design
 
@@ -202,3 +205,48 @@
         - high-level `std::swap` specifies such expectations and take ownership
         - low-level user-defined `swap` depends on high level `swap`
 
+# Other Design Principles
+
+## Prefer Value Semantics than Reference Semantics
+
+- Definition of Value semantics
+    - __regularity__
+        - `std::regular`: default constructible, copyable, equality comparable
+        - assignment copies value instead of copies pointers/references
+    - __independence__
+        - without forming a pointer or reference to it
+            - `x` cannot be written or read via operations on other variables
+            - writing `x` cannot affect any other variables
+- C++ takes value semantics seriously:
+    - Support for first-class user-defined value types may be among C++'s greatest strengths—one that most recent language designs have sadly failed to emulate.
+    - STL container types are value semantics: copy is deep and `const`-ness is propagated
+    - C++11 `std::function`, C++17 `std::optional`, `std::variant`, `std::any`, C++23 `std::expected`
+- benefits of value semantics
+    - __makes code simpler and more efficient__
+        - no need to deal with pointers which involve indirections and dynamic allocation
+            - for `std::vector`, implementation might still uses pointer and dynamic allocation, but from user's perspective it is not a concern
+        - can eliminate inheritance hierarchies like in __Strategy__ and __Visitor__ design pattern
+    - __no suprise mutable and makes code easier to reason about__
+        - in following example, though `delta` is `const`, it is a reference type and comes with reference semantics, which means no __independence__ property, if `i` and `delta` refers to the same object, we will have suprise mutation here
+            ```cpp
+            template <class Numeric>
+            void offset(Numeric& i, Numeric const& delta) {
+                i += delta;
+            }
+
+            template <class Numeric>
+            void offset2(Numeric& i, Numeric const& delta) {
+                offset(i, delta), offset(i, delta);
+            }
+            ```
+        - `std::span` does not propagate `const`-ness
+    - __no lifetime issues to worry about__
+- References:
+    - [Back to Basics: Cpp Value Semantics - Klaus Iglberger - CppCon 2022](https://www.youtube.com/watch?v=G9MxNwUoSt0&t=1130s)
+    - [Value Semantics: Safety, Independence, Projection, & Future of Programming - Dave Abrahams CppCon 22](https://www.youtube.com/watch?v=QthAU-t3PQ4)
+
+## Prefer Composition than Inheritance
+
+- inheritance (IS-A) creates a stronger coupling than composition (HAS-A)
+- many design patterns are enabled by composition, not by inheritance
+    - adapter, strategy, external polymorphism, decorator
