@@ -225,7 +225,8 @@
     - __makes code simpler and more efficient__
         - no need to deal with pointers which involve indirections and dynamic allocation
             - for `std::vector`, implementation might still uses pointer and dynamic allocation, but from user's perspective it is not a concern
-        - can eliminate inheritance hierarchies like in __Strategy__ and __Visitor__ design pattern
+        - more cache-friendly
+        - can eliminate inheritance hierarchies and result in much simpler dependency graph like in __Strategy__ and __Visitor__ design pattern
     - __no suprise mutable and makes code easier to reason about__
         - in following example, though `delta` is `const`, it is a reference type and comes with reference semantics, which means no __independence__ property, if `i` and `delta` refers to the same object, we will have suprise mutation here
             ```cpp
