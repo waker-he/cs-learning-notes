@@ -207,6 +207,8 @@
 
 # Other Design Principles
 
+## Keep It Simple, Stupid (KISS)
+
 ## Prefer Value Semantics than Reference Semantics
 
 - Definition of Value semantics
@@ -222,7 +224,7 @@
     - STL container types are value semantics: copy is deep and `const`-ness is propagated
     - C++11 `std::function`, C++17 `std::optional`, `std::variant`, `std::any`, C++23 `std::expected`
 - benefits of value semantics
-    - __makes code simpler and more efficient__
+    - __makes code simpler, cleaner (KISS) and more efficient__
         - no need to deal with pointers which involve indirections and dynamic allocation
             - for `std::vector`, implementation might still uses pointer and dynamic allocation, but from user's perspective it is not a concern
         - more cache-friendly
