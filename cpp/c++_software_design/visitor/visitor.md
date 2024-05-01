@@ -3,7 +3,6 @@
 # The Visitor Design Pattern
 
 - [Extend Type vs Extend Operations in Dynamic Polymorphism](#extend-type-vs-extend-operations-in-dynamic-polymorphism)
-- [Intent](#intent)
 - [Analysis](#analysis)
 - [Classic Implementation](#classic-implementation)
 - [`std::variant` Implementation (Value Semantics)](#stdvariant-implementation-value-semantics)
@@ -21,16 +20,11 @@
 - __note__: in static polymorphism, botth aspects can be extended easily with proper design
     - like in STL, you can easily add new operations, i.e., algorithms, but also easily add new types, i.e., containers, that can be copied, sorted, etc.
 
-## Intent
-
-Represent an operation to be performed on the elements of an object structure. Visitor lets you define a new operation without changing the classes of the elements on which it operates.
-
 ## Analysis
 
-- Like procedural solution, Visitor allows you to treat operations as an open set in dynamic polymorphism, but:
-    - it can transform oop solution from open for adding types to open for adding operations
-    - it can be implemented using value semantics with `std::variant`
-- __SRP and OCP__: Visitor identifies the addition of operations as a variation point. By extracting this variation point, i.e., by introducing a Visitor abstraction, you follow the Single-Responsibility Principle (SRP): `Shape` does not have to change for every new operation. This avoids frequent modifications of the `Shape` hierarchy and enables the easy addition of new operations. The SRP therefore acts as an enabler for the OCP.
+- With the Visitor design pattern, we have identified ___the general addition of operations___ as the ___variation point___. Therefore, we created an abstraction for operations in general, which in turn allowed everyone to add operations.
+- Like procedural solution, Visitor allows you to treat operations as an open set in dynamic polymorphism, but it can transform oop solution from open for adding types to open for adding operations
+- __SRP and OCP__: By introducing a Visitor abstraction for operations in general, you follow the SRP: `Shape` does not have to change for every new operation. This avoids frequent modifications of the `Shape` hierarchy and enables the easy addition of new operations. The SRP therefore acts as an enabler for the OCP.
 - __Shortcomings__: types become a closed set unless using [acyclic visitor](#acyclic-visitor)
 
 ## Classic Implementation
