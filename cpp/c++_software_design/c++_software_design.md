@@ -6,6 +6,7 @@
 - [The Art of Software Design](./art_of_software_design/art_of_software_design.md)
 - [Understanding Design Pattern](./understanding_design_pattern/understanding_design_pattern.md)
 - [Visitor](./visitor/visitor.md)
+- [Strategy and Command](./strategy/strategy.md)
 
 
 
