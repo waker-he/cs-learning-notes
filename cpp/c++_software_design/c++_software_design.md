@@ -7,6 +7,7 @@
 - [Understanding Design Pattern](./understanding_design_pattern/understanding_design_pattern.md)
 - [Visitor](./visitor/visitor.md)
 - [Strategy and Command](./strategy/strategy.md)
+- [Adapter](./adapter/adapter.md)
 
 
 
