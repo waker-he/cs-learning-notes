@@ -219,7 +219,7 @@
         - without forming a pointer or reference to it
             - `x` cannot be written or read via operations on other variables
             - writing `x` cannot affect any other variables
-- C++ takes value semantics seriously:
+- C++ takes value semantics seriously and it's modern C++ philosophy:
     - Support for first-class user-defined value types may be among C++'s greatest strengths—one that most recent language designs have sadly failed to emulate.
     - STL container types are value semantics: copy is deep and `const`-ness is propagated
     - C++11 `std::function`, C++17 `std::optional`, `std::variant`, `std::any`, C++23 `std::expected`
