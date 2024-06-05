@@ -8,6 +8,7 @@
 - [Visitor](./visitor/visitor.md)
 - [Strategy and Command](./strategy/strategy.md)
 - [Adapter](./adapter/adapter.md)
+- [Observer](./observer/observer.md)
 
 
 
