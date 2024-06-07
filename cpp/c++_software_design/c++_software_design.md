@@ -9,6 +9,7 @@
 - [Strategy and Command](./strategy/strategy.md)
 - [Adapter](./adapter/adapter.md)
 - [Observer](./observer/observer.md)
+- [CRTP](./CRTP/CRTP.md)
 
 
 
