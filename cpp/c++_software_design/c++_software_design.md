@@ -11,6 +11,7 @@
 - [Observer](./observer/observer.md)
 - [CRTP](./CRTP/CRTP.md)
 - [Bridge](./bridge/bridge.md)
+- [Prototype](./prototype/prototype.md)
 
 
 
