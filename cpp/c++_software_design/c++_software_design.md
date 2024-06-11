@@ -10,6 +10,7 @@
 - [Adapter](./adapter/adapter.md)
 - [Observer](./observer/observer.md)
 - [CRTP](./CRTP/CRTP.md)
+- [Bridge](./bridge/bridge.md)
 
 
 
