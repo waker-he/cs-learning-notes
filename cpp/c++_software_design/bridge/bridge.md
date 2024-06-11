@@ -94,4 +94,5 @@ int Person::year_of_birth() const {
 - it may also be not acceptable to make move operations throw
     - in this case, we allows `pimpl` to be `nullptr` and simply move `std::unique_ptr` in move operations
     - downside is that we need to check if `pimpl_` is `nullptr` in every operation that needs to dereference `pimpl`
+    - another option is just to make the program terminate when `std::bad_alloc` is thrown
 - C++20 module can replace pimpl idiom if ABI stability is not a concern
