@@ -12,7 +12,7 @@
 - [CRTP](./CRTP/CRTP.md)
 - [Bridge](./bridge/bridge.md)
 - [Prototype](./prototype/prototype.md)
-
+- [External Polymorphism](./external_polymorphism/external_polymorphism.md)
 
 
 ## Reference
