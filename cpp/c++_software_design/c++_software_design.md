@@ -13,6 +13,7 @@
 - [Bridge](./bridge/bridge.md)
 - [Prototype](./prototype/prototype.md)
 - [External Polymorphism](./external_polymorphism/external_polymorphism.md)
+- [Type Erasure](./type_erasure/type_erasure.md)
 
 
 ## Reference
