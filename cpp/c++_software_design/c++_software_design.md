@@ -14,7 +14,8 @@
 - [Prototype](./prototype/prototype.md)
 - [External Polymorphism](./external_polymorphism/external_polymorphism.md)
 - [Type Erasure](./type_erasure/type_erasure.md)
-
+- [Decorator](./decorator/decorator.md)
+- [Singleton](./singleton/singleton.md)
 
 ## Reference
 
