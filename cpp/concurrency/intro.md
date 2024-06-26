@@ -36,7 +36,7 @@ Adrian Mouat on stackoverflow
     - can run on distinct machines connected over a network
 - cons
     - IPC is often complicated to setup or slow, or both
-    - starting a process consumes more resources and overhead then thread
+    - starting a process consumes more resources and overhead than thread
     - C++ Standard does not provide intrinsic support for communication between processses, application using multiple process concurrency will have to rely on platform-specific API
 
 ### concurrency with multiple threads

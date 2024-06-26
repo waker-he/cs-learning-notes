@@ -90,7 +90,7 @@
             - an simple example that makes use of __release sequence__:
                 - thread A pushes 10 items in queue and set atomic count to 10 with release operation
                 - thread B comes to consume one item and performs `fetch_sub(1,std::memory_order_acquire)`
-                - thread C also comes to consume one item, but now the count 9, which is not what thread A stores, since `fetch_sub` in thread B is a RMW operation and thus considered part of release sequence, thread C's acquire operation still ___synchronizes-with___ release operation in thread A and is safe to take item out of queue
+                - thread C also comes to consume one item, but now the count 9, which is not what thread A stores, since `fetch_sub` in thread B is a RMW operation and thus considered part of release sequence, release operation in thread A still ___synchronizes-with___ thread C's acquire operation and it is safe for thread C to take item out of queue
 - to achieve __SC-DRF memory model__, when __release operation__ ___synchronizes-with___ __acquire operation__, both operations act as __memory barrier/fence__
 - __memory barrier/fence__ prevents code from being reordered across it in one direction or both directions
     - it requires cooperation with software (compiler) and hardware (processor and cache)
@@ -175,7 +175,7 @@
         }
         ```
         - there is no happen-before relation between `write_x` and `write_y`
-        - without `std::memory_order_seq_cst`, thread c and thread d might see different views of the ordering of `write_x` and `write_y`, and it is possible that thread c sees `write_y` then `write_x`, thread d sees `write_x` then `write_y`
+        - without `std::memory_order_seq_cst`, thread c and thread d might see different views of the ordering of `write_x` and `write_y`, and it is possible that thread c sees `write_x` then `write_y`, thread d sees `write_y` then `write_x`
     - default `std::memory_order` for all atomic operations
     - it is often used when multiple atomic variables are involved
         - for release/acquire pair, only one atomic variable is involved
