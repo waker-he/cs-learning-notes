@@ -1,4 +1,4 @@
-# General C++ notes
+# C++ notes
 
 - [Effective Modern C++](./effective-modern-c%2B%2B/effective-modern-cpp.md)
 - [C++17](./c%2B%2B17/cpp17.md)
@@ -24,6 +24,7 @@
     - [Atomics](./concurrency/atomics.md)
     - [Multithreading-aware Memory Model](./concurrency/memory-model/memory-model.md)
     - [Basic Concurrency API](./concurrency/basic_api.md)
+    - [Concurrent Data Structure](./concurrency/concurrent_data_structure/concurrent_data_structure.md)
 - C++ Standard Library
     - [Classic STL](./classic-stl/classic-stl.md)
     - [\<chrono>](./cppcon/chrono/chrono.md)
