@@ -25,6 +25,7 @@
     - [Multithreading-aware Memory Model](./concurrency/memory-model/memory-model.md)
     - [Basic Concurrency API](./concurrency/basic_api.md)
     - [Concurrent Data Structure](./concurrency/concurrent_data_structure/concurrent_data_structure.md)
+    - [Design Concurrent Code](./concurrency/design_concurrent_code.md)
 - C++ Standard Library
     - [Classic STL](./classic-stl/classic-stl.md)
     - [\<chrono>](./cppcon/chrono/chrono.md)
