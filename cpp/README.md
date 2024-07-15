@@ -26,6 +26,7 @@
     - [Basic Concurrency API](./concurrency/basic_api.md)
     - [Concurrent Data Structure](./concurrency/concurrent_data_structure/concurrent_data_structure.md)
     - [Design Concurrent Code](./concurrency/design_concurrent_code.md)
+    - [Thread Pool](./concurrency/thread_pool/thread_pool.md)
 - C++ Standard Library
     - [Classic STL](./classic-stl/classic-stl.md)
     - [\<chrono>](./cppcon/chrono/chrono.md)
