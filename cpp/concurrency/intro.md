@@ -8,6 +8,7 @@
 - [Race conditions](#race-conditions)
 - [Deadlock](#deadlock)
 - [Monitor](#monitor)
+- [Testing and Debugging Multithreaded Applications](#testing-and-debugging-multithreaded-applications)
 
 ## Concurrency vs. Parallelism
 
@@ -132,9 +133,23 @@ Adrian Mouat on stackoverflow
         unlock
         ```
 
+## Testing and Debugging Multithreaded Applications
+
+- structure of multithreaded test code
+    - general setup code that must be executed before anything else
+    - thread-specific setup code that must run on each thread
+    - code for each thread that you want to run concurrently
+    - the code to be run after the concurrent execution has finished, possibly including assertions on the state of the code
+- techniques for locating concurrency-related bugs
+    - code review
+    - make each test to run the smallest amount of code that could potentially demonstrate a problem
+    - It’s also worth eliminating the concurrency from the test in order to verify that the problem is concurrency-related.
+- testing using brute-force (stress testing): note that it might give you false condfidence
+
 ## References
 
 - Williams, A. (2019). C++ Concurrency in Action, Second Edition. Chapter 1: Hello, world of concurrency in C++. Manning Publications.
 - https://wiki.haskell.org/Parallelism_vs._Concurrency
 - https://stackoverflow.com/questions/1050222/what-is-the-difference-between-concurrency-and-parallelism
 - Winter 2023 EECS 482 slides, Manos Kapritsos
+- Williams, A. (2019). C++ Concurrency in Action, Second Edition. Chapter 11: Testing and debugging multithreaded applications. Manning Publications.
