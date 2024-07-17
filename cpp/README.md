@@ -14,6 +14,7 @@
     - [Initialization](./initialization/initialization.md)
     - [type-categories](./cppcon/type-categories.md)
 - [template](./cppcon/template/template.md)
+- [Exception](./exception/exception.md)
 - [value-categories](./cppcon/value-categories/value-categories.md)
 - [name lookup and overload resolution](./overload_resolution/overload_resolution.md)
 - [allocator](./cppcon/allocator/allocator.md)
