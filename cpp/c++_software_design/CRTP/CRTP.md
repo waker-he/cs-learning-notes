@@ -73,6 +73,7 @@ struct DenseVector {
 ## Use CRTP for Static Mixin Classes (as Implementation Pattern)
 
 - mixin class in C++ is base class that "inject" the desired operations, it serves as implementation details instead of abstraction
+    - Standard library examples: `std::ranges::view_interface`, `std::enable_share_from_this`
 - pre C++23, CRTP is the way to define mixin class
     ```cpp
     template <typename Derived>
