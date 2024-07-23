@@ -1,3 +1,7 @@
+## [Index](../cpp20.md)
+
+# Ranges
+
 - [Ranges and Views](#ranges-and-views)
 - [Benefits](#benefits)
 - [Caveats](#caveats)
@@ -56,6 +60,7 @@
     std::sort(vec.begin(), vec.end());
     std::ranges::sort(vec);
     ```
+    - this also eliminates possibility of UB that passing two iterators belonging to different ranges or in wrong order
 - implementation uses [concepts feature](../../cppcon/template/template.md#concepts-since-c20), which can give more understandble error messages
 - uses __sentinel__ to define end of range
     - does not need to be same type as begin iterator
@@ -72,6 +77,8 @@
     auto first4 = std::views::take(coll, 4);
     auto view2to4 = coll | std::views::take(5) | std::views::drop(2);
     ```
+    - Range views are evaluated lazily: when you call `views::filter` or `views::transform` on a collection, it defines a view; it doesn’t evaluate a single element in that range.
+        <img src="lazy_eval.png">[1]
     - caveat: hard to define custom adapter that opt-in using pipe syntax
 
 # Caveats
@@ -142,3 +149,7 @@ std::span sp2{vec}; // static extent, size fixed
         sp = std::span{vec};
     }
     ```
+
+# Reference
+
+- [1] [Functional Programming in C++, by Ivan Cukic. Chapter 7: Ranges](https://www.manning.com/books/functional-programming-in-c-plus-plus)
