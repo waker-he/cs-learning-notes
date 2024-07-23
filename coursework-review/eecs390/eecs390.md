@@ -129,7 +129,8 @@ Reference: [Programming Language Principles and Paradigms, by Amir Kamil](https:
             - produce a value
     - __composition__: compose the above sequence patterns
     - __partial application__: allows to specify some arguments of a function at a different time than the remaining arguments
-        - currying: transforming a function that takes `n` arguments into a sequence of `n` unary function
+    - __currying:__ transforming a function that takes `n` arguments into a sequence of `n` unary function
+        - advantage over partial application: do not need to know the exact number of arguments the function has, useful in generic contexts
 
 ## Continuations
 
