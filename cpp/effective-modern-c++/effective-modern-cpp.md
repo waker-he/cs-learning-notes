@@ -65,7 +65,7 @@ f(arg); // arg is of type ArgType
 Rules:
 ```
 if ParamType is universal reference and arg is lvalue:
-    T, ParamType = lvalue reference
+    T = ParamType = lvalue reference with cv qualifier of ArgType
     return
 
 if pass-by-value:
