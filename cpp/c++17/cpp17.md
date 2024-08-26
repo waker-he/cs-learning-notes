@@ -53,7 +53,7 @@
     ```
 
 ### usage of structured bindings
-- classes with no non-static private member variables
+- classes with no non-static public member variables
     - if inheritance is involved, all public non-static member variables must be in the same class
 - raw array (non-decay)
 - classes with tuple-like API
