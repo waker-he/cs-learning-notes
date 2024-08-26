@@ -162,6 +162,13 @@ dynamically typed languages such as Python
 ## item 7: uniform/brace initialization (since C++11)
 - pros:
   - versatile for initializing objects
+    ```cpp
+    // default member initializer
+    class C {
+        int a(0);   // ERROR
+        int b{0};   // OK
+    };
+    ```
   - no narrowings
   - immune to C++'s most vexing parse
     ```cpp
@@ -177,11 +184,12 @@ dynamically typed languages such as Python
       ```
 
 ## item 8: prefer nullptr to 0 and NULL
-- `nullptr` is of type `std::nullptr_t` and can only be converted to pointer type (and it can only be implicitly converted to boolearn when a test expression is expected)
-    ```cpp
-    bool b = nullptr;   // ERROR
-    if (nullptr) {}     // OK
-    ```
+- `nullptr` is of type `std::nullptr_t` and can only be implicitly converted to pointer type 
+    - it can also be explicitly converted to boolearn when a test expression is expected
+        ```cpp
+        bool b = nullptr;   // ERROR
+        if (nullptr) {}     // OK
+        ```
 - using 0 or NULL can cause trouble in overload resolution:
   - 0 can be implicitly converted to pointer type
   - NULL depends on implementation, might be 0, 0L or nullptr
@@ -239,12 +247,12 @@ self-explanatory
 - noexcept functions are more optimizable
     - reduce exception handling overhead
         - do not need to handle stack unwinding and destruction of objects in the inverse order they are constructed
-    - allow inline expansion
+    - makes inline expansion less expensive (less code generation)
 - noexcept is part of the interface and caller can depend on it
 - dtor is noexcept by default
 
 ## item 15: constexpr
-- `constexpr` give a function a feature: when it is called with compile-time constants, it will be executed during compile-time
+- `constexpr` give a function a feature: when it is called with compile-time constants and in constant expression context, it will be executed during compile-time
 - `constexpr` is part of a function interface
 
 ## item 15.5: overloading and overriding
@@ -252,16 +260,14 @@ self-explanatory
 - function signature: syntactic representation, used for function overloading
     - function name
     - parameter types (number and order)
-    - qualifiers in member functions (`const`, `volitile`, `&`/`&&`)
+        - for member function: including `this` (whether implicit or explicit)
 - `constexpr`, `noexcept` and return type are parts of function's type instead of signature
 - overriding does not allow looser exception specification
 
 |                | Part of Interface | Part of Signature (Affects Overloading) | Affects Overriding |
 |----------------|-------------------|----------------------------------------|-------------------|
-| const          | Yes               | Yes                                    | Yes               |
 | constexpr      | Yes               | No                                     | No                |
 | noexcept       | Yes               | No                                     | Yes               |
-| ref-qualifiers | Yes               | Yes                                    | Yes               |
 
 ## item 17: understand special member function generation
 
@@ -271,8 +277,7 @@ self-explanatory
 # Chapter 4: Smart Pointers
 
 ## item 18: `std::unique_ptr`
-- with custom deleter, size would grow from one word to two
-  - if the custom deleter has extensive state, size can grow more
+- with stateful custom deleter, size would grow from one word to at least two
 - easy and efficient to convert to `std::shared_ptr`, suitable for factory function
 
 ## item 19: `std::shared_ptr`
@@ -283,6 +288,13 @@ self-explanatory
     - weak count
     - deleter (not part of type as in `std::unique_ptr`)
     - allocator
+- in `std::shared_ptr` with customized __allocator__ and __deleter__:
+    - __allocator__ is used to allocate and deallocate __control block__
+    - __deleter__ is used to destroy and deallocate __managed object__
+    - when `std::shared_ptr` is created using `std::make_shared` or `std::allocate_shared`
+        - managed object is allocated in the control block
+        - cannot specify custom __deleter__
+    - no conflicts between __allocator__ and __deleter__ can occur
 - performance issues:
   - control block is dynamically allocated on heap
   - increments or decrements of counts are atomic operation
@@ -316,43 +328,7 @@ self-explanatory
 
 ## item 22: When using the Pimpl Idiom, define special member functions in the implementation file
 
-### Pimpl Idiom
-- it put private data members into an impl class and store a pointer to the impl class as the member variable
-- it decreases build time by reducing compilation dependencies between class clients and class implementations
-    ```cpp
-    #include "gadget.h" // gadget.h might frequently change
-
-    class Widget {  // in header widget.h
-    public:
-        Widget();
-        ...
-    private:
-        Gadget g1, g2, g3;
-    }
-    ```
-
-    ```cpp
-    // Alternative using Pimpl Idiom
-    #include <memory>
-
-    class Widget {  // in header widget.h
-    public:
-        Widget();
-        ~Widget();
-        ...
-    private:
-        // just declaration, implemented in widget.cpp
-        struct Impl; 
-        std::unique_ptr<Impl> pImpl;
-    }
-    ```
-
-### Caveats using `std::unique_ptr` as the impl pointer
-- dtor of the primary class must be defined in implementation file because:
-  - pointed-to types must be complete when `std::uniqute_ptr` tries to delete its managed object (it call `static_assert` before `delete`)
-  - compiler-generated default dtor is implicitly `inline`
-  - if we define dtor with definition of impl class in implementation file, it would be able to see the complete type when it is called
-- side effects: since dtor is defined, we also need to define `copy` and `move`
+- [Bridge Design Pattern note](../c++_software_design/bridge/bridge.md)
 
 # Chapter 5: Rvalue References, Move Semantics and Perfect Forwarding
 
@@ -413,14 +389,13 @@ T&& forward(std::remove_reference_t<T>&& t) noexcept {
   - the local object has the same type as the return type
 - when RVO conditions are satisfied, the compiler would construct the return object directly in the memory allocated for the return value (in other words, in the caller's stack frame)
 - if not possible to construct the object directly in the caller's stack frame (eg. multiple return statements on lvalues), implicitly `std::move`d would be applied to the returned object
-
 - applied `std::move` to returned rvalue reference or `std::forward` to returned universal reference (that is init as rvalue-ref) can turn a copy construction into a move construction
 
-## item 26: avoid overloading on universal references
+## item 26: avoid overloading on universal references (fixed by C++20 concept)
 - function taking universal references are the greediest functions in C++, they instantiate to match any almost any type of argument
 - for overload resolution, when a non-template function and a template instantiation is equally good matches for a function call, the normal function is preferred
 
-## item 27: alternatives to overloading on universal references
+## item 27: alternatives to overloading on universal references (fixed by C++20 concept)
 - abandon overloading (use different function names)
 - use `const T&`
 - pass by value
@@ -479,6 +454,7 @@ whether the result is rvalue reference == whether both references to be collapse
 - lifetime of object A and object B cannot be seperated and are strictly tied together (object B lives on __stack__ inside object A)
 - example
     - raw array is part of `std::array`
+        - the element can still be moved
     - small string optimization (SSO)
 
 
@@ -578,7 +554,7 @@ int main() {
             - high CPU cache miss rates
     - load balancing
         - runtime scheduler is likely to know more than you
-- solution: use `std::async` with default launch policy, shifting the thread management responsibility to the implementer of C++ Stand Libray
+- solution: use `std::async` with default launch policy, shifting the thread management responsibility to the implementer of C++ Standard Libray
 - cases when you need `std::thread`
     - acceess to the API of the underlying software thread
     - need to and able to optimize thread usage for your application
@@ -599,12 +575,11 @@ For a function `f` passed to `std::async` for execution:
 - `std::terminate` would be called if the destructor of a joinable `std::thread` is called, because:
     - implicit join-on-destruction can lead to difficult-to-debug performance anomalies
     - implicit join-on-detach can lead to difficult-to-debug undefined behavior
-- to handle this, we can use __RAII__, putting `std::thread` in a wrapper
+- to handle this, use C++20 `std::jthread`
 
 ## item 38: be aware of varying thread handle destructor behavior
 - when callee tries to pass the result to caller, the result is stored in a __shared_state__ between caller and callee
 <img src="./item38.png">
-
 - future destructors normally just destroy the future's data members (and decrement the reference count in the __shared_state__) (like `detach`)
 - future destructor will block (like `join`) until the task completes if:
     - the task is launched via `std::async`
