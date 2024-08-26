@@ -92,7 +92,7 @@ T object{};     // since C++11
 
 - if `T` is scalar type or class type with a trivial default ctor, it is __zero-initialized__
     - this is the case when it differs from __default-initialization__
-- otherwise, attemp to call its default ctor
+- otherwise, attempt to call its default ctor
 
 ### list-initialization (since C++11)
 
