@@ -206,6 +206,9 @@ refer to [Coroutines note](./coroutines/coroutines.md)
 # Chapter 16: Modules
 
 - https://en.cppreference.com/w/cpp/language/modules
+- errors encountered when using modules
+    - mixin class in a partition should have `export` when its definition is used even though it is not exported from the module
+    - to use `constexpr` interface, we need to export the mixin class as interface unit even though we consider it implementation details
 
 
 # Chapter 17: Lambda Extensions

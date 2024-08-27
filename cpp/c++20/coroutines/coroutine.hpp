@@ -228,7 +228,7 @@ struct coroutine_traits {
 
 template <class Awaiter, class Promise>
 inline void __exec_await_suspend(Awaiter& awaiter, Promise& promise) {
-    using return_type = decltype(awaiter.await_suepend(declval<std::coroutine_handle<>));
+    using return_type = decltype(awaiter.await_suepend(declval<std::coroutine_handle<>>()));
 
     auto hdl = coroutine_handle<Promise>::from_promise(promise);
     if constexpr (std::same_as<return_type, void>)

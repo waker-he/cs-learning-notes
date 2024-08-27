@@ -80,7 +80,7 @@ void __g_resume(__coroutine_state* s) {
     {
     case 0: goto suspend_point_0;
     case 1: goto suspend_point_1;
-    default: std::unreachable;
+    default: std::unreachable();
     }
 
 suspend_point_0:
