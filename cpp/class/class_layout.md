@@ -76,7 +76,7 @@ public:
     assert(d == (void*)b2);     // false because type information is lost
 
     // we can calculate delta by:
-    void* p1 = reinterpret_cast<void *>(1);
+    void* p1 = reinterpret_cast<void *>(b1);
     void* p2 = static_cast<Base2*>(static_cast<Derive*>(p));
     int delta = reinterpret_cast<intptr_t>(p2) - reinterpret_cast<intptr_t>(p1);
     ```
