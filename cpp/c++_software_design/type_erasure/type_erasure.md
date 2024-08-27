@@ -26,7 +26,7 @@
     - __Setup Costs of Wrapping__: If you already have an object and wants to wrap it into an owning type erasure wrapper, a move/copy operation is required
         - Solutions:
             - construct (emplace) the object directly into the wrapper
-            - defines a non-owning type erasure wrapper: [te.hpp](./te_ref.hpp)
+            - defines a non-owning type erasure wrapper: [te_ref.hpp](./te_ref.hpp)
 - __Optimization Potential__
     - SBO: [te_sbo.hpp](./te_sbo.hpp)
     - Manual Dispatch: [te_md.hpp](./te_md.hpp)
