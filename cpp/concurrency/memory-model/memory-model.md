@@ -79,8 +79,8 @@
     - they operate on the same variable M
     - atomic load is an __acquire operation__
     - atomic store is an __release operation__
-    - atomic load in thread A reads the value that is written by
-        - the atomic store in thread B or
+    - atomic load in thread B reads the value that is written by
+        - the atomic store in thread A or
         - any atomic RMW operation in the __release sequence__ headed by the atomic store in thread B
             - __release sequence__ consists of:
                 - head: a release operation on M followed by

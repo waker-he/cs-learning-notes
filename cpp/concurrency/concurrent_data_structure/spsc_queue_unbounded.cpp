@@ -10,8 +10,8 @@ class waitfree_spsc_queue {
         node* next = nullptr;
     };
 
-    node* head;
-    std::atomic<node*> tail;    // to get synchronizes-with relation
+    alignas(64) node* head;
+    alignas(64) std::atomic<node*> tail;    // to get synchronizes-with relation
 public:
     waitfree_spsc_queue() : head(new node{}), tail(head) {}
     waitfree_spsc_queue(waitfree_spsc_queue const&) = delete;

@@ -19,7 +19,7 @@ public:
                 std::memory_order_release, std::memory_order_relaxed));
     }
 
-    std::optional<T> pop() {
+    std::optional<T> pop() noexcept {
         std::shared_ptr<node> old_head = head.load(std::memory_order_relaxed);
         while (old_head && !head.compare_exchange_weak(old_head, old_head->next,
                 std::memory_order_acquire, std::memory_order_relaxed));

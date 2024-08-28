@@ -11,8 +11,8 @@ class lockfree_queue {
         std::atomic<std::shared_ptr<node>> next{nullptr};
     };
 
-    std::atomic<std::shared_ptr<node>> head;
-    std::atomic<std::shared_ptr<node>> tail;
+    alignas(64) std::atomic<std::shared_ptr<node>> head;
+    alignas(64) std::atomic<std::shared_ptr<node>> tail;
 public:
     lockfree_queue() : head(std::make_shared<node>()), tail(head.load()) {}
     lockfree_queue(lockfree_queue const&) = delete;

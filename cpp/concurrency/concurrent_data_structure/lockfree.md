@@ -92,7 +92,7 @@
 - __identify busy-wait loops and help the other thread__
     -
     - If you end up with a busy-wait loop, you effectively have a blocking operation and might as well use mutexes and locks.
-    - By modifying the algorithm so that the waiting thread performs the incomplete steps if it’s scheduled to run before the original thread completes the operation, you can remove the busy-wait and the operation is no longer blocking.
+    - By modifying the algorithm so that the waiting thread performs the incomplete steps if it’s scheduled to run before the original thread doing the operation, you can remove the busy-wait and the operation is no longer blocking.
 
 ## Case Study
 
