@@ -33,7 +33,7 @@ struct __g_state : __coroutine_state_with_promise<__g_promise_t> {
     __g_state(int&& x_on_stack) : x(std::move(x_on_stack)) {
         // init the function pointers used by coroutine_handle::resume()/destroy()/done()
         resume = &__g_resume;
-        destory = &__g_destroy;
+        destroy = &__g_destroy;
 
         // construct promise
         ::new (static_cast<void*>(std::addressof(promise)))
@@ -85,8 +85,8 @@ void __g_resume(__coroutine_state* s) {
 
 suspend_point_0:
     {
-        tmp1.get().await_resume();
-        tmp1.destroy();
+        state->tmp1.get().await_resume();
+        state->tmp1.destroy();
 
         // execute coroutine body:
         //  int fx = co_await f(x);
