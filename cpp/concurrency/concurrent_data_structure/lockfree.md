@@ -45,7 +45,7 @@
 - cons
     - __Much harder to implement__
     - __More atomic operations than lock-based__: associated cache ping-pong may decrease overall performance
-    - __Bad scalibility__: with high contention, there will be many failing CAS operations, it's like busy-waiting and can be worse than blocking
+    <!-- - __Bad scalibility__: with high contention, there will be many failing CAS operations, it's like busy-waiting and can be worse than blocking -->
 
 ## Guidelines
 
@@ -112,6 +112,7 @@
             - __create `thread_local` reclamation list__
                 - no need for atomic variables for the count or list access
                 - if the thread exits before all its nodes have been reclaimed, they can be stored in the gloabl list as before and added to the local list of the next thread doing a reclamation process
+        - an example implementation of `hazard_pointer`: https://github.com/waker-he/tiny-std/blob/main/doc/hazard_pointer.md
     - __reference counting__
         - use lock-free `atomic<shared_ptr>`: [`lockfree_stack_ref_count1.cpp`](./lockfree_stack_ref_count1.cpp)
         - __Split reference counts__: [`lockfree_stack_split_ref_count.cpp`](./lockfree_stack_split_ref_count.cpp)
