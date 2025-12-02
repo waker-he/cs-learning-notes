@@ -81,7 +81,7 @@
     - atomic store is an __release operation__
     - atomic load in thread B reads the value that is written by
         - the atomic store in thread A or
-        - any atomic RMW operation in the __release sequence__ headed by the atomic store in thread B
+        - any atomic RMW operation in the __release sequence__ headed by the atomic store in thread A
             - __release sequence__ consists of:
                 - head: a release operation on M followed by
                 - a ___continuous___ sequence of RMW operations made to M by any threads

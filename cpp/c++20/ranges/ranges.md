@@ -67,7 +67,7 @@
         - avoid duplicate traversal to find end iterator (c-str)
     - allows unbounded range, which can also avoid bound checking and less assembly code
 - pipeline of __range adapters__, convenient and more readable for processing ranges
-    - __range adaptor object__: [customization point object](../../README.md#argument-dependent-lookup-adl) that takes a `viewable range` and produces a `view`
+    - __range adaptor object__: [customization point object](../../overload_resolution/overload_resolution.md) that takes a `viewable range` and produces a `view`
         - view is adapted according to other passed-in arguments
         - overloaded operator `|` that takes the output range on the other side as first argument
         - all in namespace `std::views` (alias for `std::ranges::views`)

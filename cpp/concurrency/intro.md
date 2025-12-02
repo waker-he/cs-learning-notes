@@ -110,7 +110,7 @@ Adrian Mouat on stackoverflow
 
 ## Monitor
 
-- a monitor = a lock + conditional variables associated with that lock
+- a monitor = a lock + condition variables associated with that lock
 - to program with monitor:
     - __lock/mutex__ for mutual exclusion
         - allowing critical sections to be executed atomically

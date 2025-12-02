@@ -7,6 +7,7 @@
 - [Guidelines](#guidelines)
 - [Case Study](#case-study)
     - [lockfree_stack](#lockfree_stack)
+    - [lockfree_queue](#lockfree_queue)
 
 ## Definition
 

@@ -381,7 +381,7 @@ T&& forward(std::remove_reference_t<T>&& t) noexcept {
   - it must be exactly the form of `T&&` without any other qualifiers
   - there must be type deduction for `T` when the function is called
 - otherwise it is an __rvalue reference__
-- for variable declared as `auto`, there must be type deduction going on, so `auto&&` suffices to be an __rvalue reference__
+- for variable declared as `auto`, there must be type deduction going on, so `auto&&` suffices to be an __universal reference__
 
 ## item 25: return value optimization (RVO)
 - RVO conditions:
@@ -574,7 +574,7 @@ For a function `f` passed to `std::async` for execution:
     - it has been `join`ed
 - `std::terminate` would be called if the destructor of a joinable `std::thread` is called, because:
     - implicit join-on-destruction can lead to difficult-to-debug performance anomalies
-    - implicit join-on-detach can lead to difficult-to-debug undefined behavior
+    - implicit detach-on-destruction can lead to difficult-to-debug undefined behavior
 - to handle this, use C++20 `std::jthread`
 
 ## item 38: be aware of varying thread handle destructor behavior

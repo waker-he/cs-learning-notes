@@ -92,8 +92,8 @@ struct DenseVector {
     ```cpp
     struct Swappable {
         template <typename Self>
-        void swap(this Self&&, Self& rhs) {
-            std::ranges::swap(get(), rhs.get());
+        void swap(this Self&& self, Self& rhs) {
+            std::ranges::swap(self.get(), rhs.get());
         }
     };
     ```

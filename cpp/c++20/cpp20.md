@@ -209,6 +209,7 @@ refer to [Coroutines note](./coroutines/coroutines.md)
 - errors encountered when using modules
     - mixin class in a partition should have `export` when its definition is used even though it is not exported from the module
     - to use `constexpr` interface, we need to export the mixin class as interface unit even though we consider it implementation details
+    - a compile error in Clang 19 occurs when exported function template that uses functionalities from an internal parition (not `export`ed), add `export` in the module statement to change it to interface partition and it fixes, though we still do not export the functionalities used
 
 
 # Chapter 17: Lambda Extensions

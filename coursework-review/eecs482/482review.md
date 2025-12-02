@@ -126,6 +126,23 @@
     - many heuristics and complex tuning
     - no perfect solution
 
+### CFS
+
+- when a task is scheduled to run, its timeslice is determined
+    - target_latency := the ideal time period within which every runnable task should be scheduled to run at least once.
+    - max of
+        - (target_latency / #runnable_tasks) * weight
+        - min granularity := default 0.75ms
+            - used to avoid excessive context-switch
+- runnable tasks are stored in red black tree ordered by vruntime
+- vruntime
+    - actual run time adjusted by weight
+- CFS gets executed when
+    1. periodic timer interrupt (the tick)
+    2. event-driven
+        - some thread waking up (I/O finishes -> sending interrupt, etc.)
+    3. system call
+- it will check if the scheduled task has exceed queue.front() + allocated virtual timeslice
 
 
 # Virtual Memory

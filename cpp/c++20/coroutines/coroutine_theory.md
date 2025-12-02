@@ -48,12 +48,12 @@
 ## Call Operation (Subroutine & Coroutine)
 
 The Call operation creates an activation record, suspends execution of the calling function and transfers execution to the start of the function being called.
-1. save values of registers in current activation record (specifically in coroutine frame if caller is coroutine)
+1. save values of registers in current activation record
 2. construct objects of passed parameter into new stack frame
 3. __coroutine only__: allocate __coroutine frame__ and move/copy the parameters from __stack frame__ to __the coroutine frame__
     - parameters left on stack frame are destroyed on first suspension/return
 4. push __return address__ and __current frame pointer__ on stack
-5. move frame pointer to base of `(isSubroutine ? new stack frame : coroutine frame)`
+5. move frame pointer to base of new stack frame <!--`(isSubroutine ? new stack frame : coroutine frame)`-->
 6. jump to the address of start of the function
 
 ## Return Operation (Subroutine & Coroutine)
@@ -69,8 +69,8 @@ The Return operation marks the completion of the function and it transfers execu
 
 - The Suspend operation of a coroutine allows the coroutine to suspend execution in the middle of the function and transfer execution back to the caller/resumer of the coroutine.
 - keywords `co_await` and `co_yield` will request a suspend operation, if `await_ready()` returns `false`, then start to suspend:
-    1. save values of registers in coroutine frame
-    2. save resumption-point in coroutine frame
+    <!-- 1. save values of registers in coroutine frame -->
+    1. save resumption-point in coroutine frame
 - after suspension, execute some additional logic in `await_suspend()`, it is completely customizable
     - can choose to transfer to another coroutine by changing the return type of `await_suspend`
     - if so, stack frame is reused by the called/resumed coroutine and not popped
@@ -82,7 +82,7 @@ The Resume operation can be performed on a coroutine that is currently in the â€
 
 1. if not resumed by `await_suspend`, allocate a new stack frame
     - save registers, return address and frame pointer
-2. set frame pointer to address of coroutine frame
+2. set frame pointer to address of new stack frame
 3. transfer execution to __resumption-point__ stored in coroutine frame
 
 
@@ -92,5 +92,5 @@ The Destroy operation destroys the coroutine frame without resuming execution of
 
 1. allocate a new stack frame
     - save registers, return address and frame pointer
-    - set frame pointer to address of coroutine frame
+    <!-- - set frame pointer to address of coroutine frame -->
 2. transfer execution to a code-path that calls the destructors of all local variables in-scope at the suspend-point then freeing the memory used by the coroutine frame.

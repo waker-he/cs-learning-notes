@@ -68,7 +68,7 @@ private:
 public:
     threadsafe_queue() : head(new node{}), tail(head) {}
     threadsafe_queue(threadsafe_queue const&) = delete;
-    threadsafe_queue& operator=(threadsafe_queue const&) = delete
+    threadsafe_queue& operator=(threadsafe_queue const&) = delete;
     ~threadsafe_queue() {
         while (head != tail) {
             auto next = head->next;

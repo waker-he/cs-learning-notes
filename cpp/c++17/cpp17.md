@@ -46,14 +46,14 @@
     auto [x, y] = a;
     /*
     auto e = a;
-    aliasname x = a.i;
-    aliasname y = a.s;
+    aliasname x = e.i;
+    aliasname y = e.s;
     */
     // note: aliasname, not reference!
     ```
 
 ### usage of structured bindings
-- classes with no non-static public member variables
+- classes whose non-static member variables are all public
     - if inheritance is involved, all public non-static member variables must be in the same class
 - raw array (non-decay)
 - classes with tuple-like API
@@ -358,7 +358,7 @@ template <typename ... T>
 Merged(T...) -> Merged<std::decay_t<T>...>;
 
 // since C++20, we have CTAD for aggregate
-template <class Ts>
+template <class... Ts>
 struct overloads : Ts... { using Ts::operator()...; };
 ```
 
