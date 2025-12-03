@@ -133,6 +133,55 @@ Adrian Mouat on stackoverflow
         unlock
         ```
 
+## simple mutex implementation
+
+```cpp
+std::atomic<int> state; // 0 = unlocked, 1 = locked, 2 = locked+waiters
+
+void lock() {
+    int expected = 0;
+    if (state.compare_exchange_strong(expected, 1,
+                                      std::memory_order_acquire)) {
+        // fast path: got the lock
+        return;
+    }
+
+    // slow path: someone already holds it
+    for (;;) {
+        expected = 1;
+        if (state.compare_exchange_strong(expected, 2,
+                                          std::memory_order_acquire)) {
+            // we marked "waiters exist", now go to sleep
+            // futex internals are protected using kernel spinlocks
+            // in kernel spinlock, hardware interrupt is disabled
+            futex_wait(&state, 2); // sleep until someone wakes us
+        } else if (expected == 0) {
+            // became free while we were trying → grab it
+            if (state.compare_exchange_strong(expected, 1,
+                                              std::memory_order_acquire)) {
+                return;
+            }
+            // otherwise, retry
+        } else {
+            // state is already 2 (locked+waiters)
+            futex_wait(&state, 2);
+        }
+    }
+}
+
+void unlock() {
+    int old = state.exchange(0, std::memory_order_release);
+    if (old == 1) {
+        // fast path: no waiters
+        return;
+    }
+
+    // there are waiters
+    futex_wake_one(&state);
+}
+
+```
+
 ## Testing and Debugging Multithreaded Applications
 
 - structure of multithreaded test code

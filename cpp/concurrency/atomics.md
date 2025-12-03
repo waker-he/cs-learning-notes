@@ -69,7 +69,7 @@ bool compare_exchange_strong( T& expected, T desired,
         - stored value = desired
         - return true
     - else:
-        - expected = desire
+        - expected = stored value
         - return false
 - the __spurious failure__ only occurs for `compare_exchange_weak`
     - This is most likely to happen on machines that lack a single compare-and-exchange instruction, if the processor can’t guarantee that the operation has been done atomically—possibly because the thread performing the operation was switched out in the middle of the necessary sequence of instructions and another thread scheduled in its place by the operating system where there are more threads than processors. This is called a __spurious failure__, because the reason for the failure is a function of timing rather than the values of the variables.
